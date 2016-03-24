@@ -1,0 +1,101 @@
+﻿<Page
+    x:Class="OpenWeen.UWP.View.PostWeiboPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:OpenWeen.UWP.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <CollectionViewSource x:Name="cvs" IsSourceGrouped="true"/>
+        <MenuFlyout x:Key="PictureFlyout">
+            <MenuFlyoutItem Text="拍照" Click="TakePhoto"/>
+            <MenuFlyoutItem Text="添加图片" Click="AddSingleImage"/>
+            <MenuFlyoutItem Text="添加多图" Click="AddMultipleImage"/>
+        </MenuFlyout>
+    </Page.Resources>
+
+    <Grid Padding="8" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <RichEditBox x:Name="richEditBox" DragOver="richEditBox_DragOver" Drop="richEditBox_Drop" TextChanged="RichEditBox_TextChanged" Paste="RichEditBox_Paste" BorderThickness="0"/>
+            <Grid Grid.Row="1">
+                <TextBlock HorizontalAlignment="Right" Text="{x:Bind TextCount,Mode=OneWay}"/>
+            </Grid>
+            <ItemsControl Grid.Row="2" ItemsSource="{x:Bind Images,Mode=OneWay}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Image MaxHeight="100" Margin="4" Source="{Binding Image}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.Template>
+                    <ControlTemplate TargetType="ItemsControl">
+                        <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
+                            <ItemsPresenter/>
+                        </ScrollViewer>
+                    </ControlTemplate>
+                </ItemsControl.Template>
+            </ItemsControl>
+        </Grid>
+        <Grid Grid.Row="1">
+            <SemanticZoom x:Name="semanticZoom">
+
+                <SemanticZoom.ZoomedOutView>
+                    <GridView>
+                        <GridView.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Group.Key}"/>
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+                    </GridView>
+                </SemanticZoom.ZoomedOutView>
+
+                <SemanticZoom.ZoomedInView>
+                    <GridView ItemClick="GridView_ItemClick" SelectionMode="None" ItemsSource="{Binding Source={StaticResource cvs}}" IsItemClickEnabled="True">
+                        <GridView.ItemTemplate>
+                            <DataTemplate>
+                                <Image Width="30" Height="30" Margin="4" Source="{Binding Url}"/>
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+                        <GridView.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text='{Binding Key}' />
+                                    </DataTemplate>
+                                </GroupStyle.HeaderTemplate>
+                            </GroupStyle>
+                        </GridView.GroupStyle>
+                    </GridView>
+                </SemanticZoom.ZoomedInView>
+
+            </SemanticZoom>
+        </Grid>
+    </Grid>
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton Visibility="{x:Bind AllowPicture,Mode=OneWay,Converter={StaticResource BoolToVisibilityConverter},ConverterParameter=true}" Icon="Camera" Label="添加图片" Click="{x:Bind AddImage}"/>
+            <AppBarButton Icon="Emoji" Label="表情" Click="{x:Bind ShowEmoji}"/>
+            <AppBarButton Visibility="Collapsed" Icon="Account" Label="@好友" Click="{x:Bind AddFriend}"/>
+            <AppBarButton Click="{x:Bind AddTopic}" Label="添加话题">
+                <AppBarButton.Icon>
+                    <FontIcon FontFamily="Segoe UI" Glyph="#" FontSize="25"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton Icon="Send" Click="{x:Bind PostWeibo}" Label="发送"/>
+        </CommandBar>
+    </Page.BottomAppBar>
+</Page>
