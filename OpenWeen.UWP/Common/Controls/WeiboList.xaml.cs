@@ -75,10 +75,7 @@ namespace OpenWeen.UWP.Common.Controls
             e.Handled = true;
             Favor?.Invoke(this, new WeiboActionEventArgs((e.OriginalSource as FrameworkElement).DataContext as MessageModel));
         }
-
-        private void ScrollViewer_ViewChanging(object sender, ScrollViewerViewChangingEventArgs e)
-        {
-        }
+        
 
         private void WeiboTextBlock_UserClick(object sender, WeiboUserClickEventArgs e)
         {

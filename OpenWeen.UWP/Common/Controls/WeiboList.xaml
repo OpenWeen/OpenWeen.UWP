@@ -13,7 +13,7 @@
     d:DesignWidth="400">
     <ItemsControl.ItemTemplate>
         <DataTemplate x:DataType="statusmodel:MessageModel">
-            <Grid Tapped="Grid_Tapped" Margin="8">
+            <Grid Visibility="{x:Bind Converter={StaticResource BlockToVisibilityConverter}}" Tapped="Grid_Tapped" Margin="8">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
@@ -31,7 +31,11 @@
                         <ColumnDefinition Width="8"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Image DataContext="{x:Bind User}" Width="50" Height="50" Source="{x:Bind User.ProfileImageUrl}"/>
+                    <Ellipse DataContext="{x:Bind User}" Width="50" Height="50">
+                        <Ellipse.Fill>
+                            <ImageBrush ImageSource="{x:Bind User.ProfileImageUrl}"/>
+                        </Ellipse.Fill>
+                    </Ellipse>
                     <Grid Grid.Column="2">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
@@ -65,7 +69,7 @@
                         <TextBlock Foreground="Gray" Padding="8,0,12,0" Text="{x:Bind RepostsCount}"/>
                         <SymbolIcon Tapped="Comment_Tapped" Foreground="LightGray" Symbol="Comment"/>
                         <TextBlock Foreground="Gray" Padding="8,0,12,0" Text="{x:Bind CommentsCount}"/>
-                        <SymbolIcon Tapped="Favor_Tapped" Foreground="LightGray" Symbol="Favorite"/>
+                        <SymbolIcon x:Name="FavorIcon" Tapped="Favor_Tapped" Foreground="{x:Bind Favorited,Mode=OneWay,Converter={StaticResource FavorToColorConverter}}" Symbol="Favorite"/>
                     </StackPanel>
                 </Grid>
             </Grid>
@@ -79,7 +83,7 @@
     <ItemsControl.Template>
         <ControlTemplate TargetType="ItemsControl">
             <Border>
-                <ScrollViewer ViewChanged="ScrollViewer_ViewChanged" ViewChanging="ScrollViewer_ViewChanging" x:Name="ScrollViewer" AutomationProperties.AccessibilityView="Raw" BringIntoViewOnFocusChange="True" IsDeferredScrollingEnabled="True">
+                <ScrollViewer ViewChanged="ScrollViewer_ViewChanged" x:Name="ScrollViewer" AutomationProperties.AccessibilityView="Raw" BringIntoViewOnFocusChange="True" IsDeferredScrollingEnabled="True">
                     <ItemsPresenter/>
                 </ScrollViewer>
             </Border>

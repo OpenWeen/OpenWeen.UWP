@@ -5,12 +5,15 @@
     xmlns:local="using:OpenWeen.UWP.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Background="{StaticResource AppTheme}"
+    RequestedTheme="Dark"
     mc:Ignorable="d">
 
-    <Grid Background="#464646">
+    <Grid>
         <Canvas>
-            <Image x:Name="extendedSplashImage" Source="Assets/SplashScreen.png"/>
-            <ProgressRing Name="splashProgressRing" IsActive="True" Width="20" HorizontalAlignment="Center"/>
+            <Image x:Name="extendedSplashImage" Source="ms-appx:///Assets/SplashScreen.png"/>
+            <ProgressRing Foreground="White" Name="splashProgressRing" IsActive="True" Width="20" HorizontalAlignment="Center"/>
+            <TextBlock x:Name="textBlock" HorizontalAlignment="Center" Text="坐和放宽，这不需要太久"/>
         </Canvas>
     </Grid>
 </Page>

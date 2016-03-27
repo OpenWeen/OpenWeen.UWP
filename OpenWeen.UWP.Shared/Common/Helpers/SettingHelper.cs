@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
 
-namespace OpenWeen.UWP.Common.Helpers
+namespace OpenWeen.UWP.Shared.Common.Helpers
 {
     internal class SettingException : Exception
     {
@@ -44,6 +44,11 @@ namespace OpenWeen.UWP.Common.Helpers
             return chackValue;
         }
 
+        internal static object GetListSetting<T>(object settingName)
+        {
+            throw new NotImplementedException();
+        }
+
         public static void SetListSetting<T>(string settingName, IEnumerable<T> values, SetListSettingOption option = SetListSettingOption.ReplaceExisting)
         {
             var settings = ApplicationData.Current.LocalSettings;
@@ -56,14 +61,18 @@ namespace OpenWeen.UWP.Common.Helpers
                         break;
                     case SetListSettingOption.FailIfExists:
                         throw new SettingException($"{settingName} already exist");
-                    case SetListSettingOption.AddIdExists:
+                    case SetListSettingOption.AddIfExists:
                         values = GetListSetting<T>(settingName).Concat(values);
                         settings.Values.Remove(settingName);
                         break;
                 }
             }
-            settings.Values.Add(settingName, values.ToArray());
+            if (values.Count() != 0)
+            {
+                settings.Values.Add(settingName, values.ToArray());
+            }
         }
+
 
         public static IEnumerable<T> GetListSetting<T>(string settingName, bool isThrowException = false)
         {
@@ -86,7 +95,7 @@ namespace OpenWeen.UWP.Common.Helpers
     {
         ReplaceExisting,
         FailIfExists,
-        AddIdExists
+        AddIfExists
     }
     
 }

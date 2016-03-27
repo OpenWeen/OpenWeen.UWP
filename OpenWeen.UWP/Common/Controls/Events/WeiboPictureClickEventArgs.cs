@@ -15,6 +15,6 @@ namespace OpenWeen.UWP.Common.Controls.Events
             ClickedPicture = clickedPicture;
         }
         public PictureModel ClickedPicture { get; set; }
-        public BaseModel DataContext { get; set; }
+        public MessageModel DataContext { get; set; }
     }
 }

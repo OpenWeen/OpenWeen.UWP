@@ -27,7 +27,11 @@
                         <ColumnDefinition Width="8"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Image DataContext="{x:Bind User}" Width="50" Height="50" Source="{x:Bind User.ProfileImageUrl}"/>
+                    <Ellipse DataContext="{x:Bind User}" Width="50" Height="50">
+                        <Ellipse.Fill>
+                            <ImageBrush ImageSource="{x:Bind User.ProfileImageUrl}"/>
+                        </Ellipse.Fill>
+                    </Ellipse>
                     <Grid Grid.Column="2">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>

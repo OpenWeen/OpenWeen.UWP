@@ -12,13 +12,7 @@ namespace OpenWeen.UWP.ViewModel
         public UserTimelineViewModel(long uid) : base(uid)
         {
         }
-        public UserTimelineViewModel(string userName) : base(userName)
-        {
-        }
-        public UserTimelineViewModel(object uidOrUserName) : base(uidOrUserName)
-        {
-        }
-        protected override async Task<IEnumerable<MessageModel>> LoadMoreOverride() => (await Core.Api.Statuses.UserTimeline.GetUserTimeline(UidOrUserName, page: _pageCount++)).Statuses;
-        protected override async Task<IEnumerable<MessageModel>> RefreshOverride() => (await Core.Api.Statuses.UserTimeline.GetUserTimeline(UidOrUserName, page: _pageCount++)).Statuses;
+        protected override async Task<IEnumerable<MessageModel>> LoadMoreOverride() => (await Core.Api.Statuses.UserTimeline.GetUserTimeline(Uid, page: _pageCount++)).Statuses;
+        protected override async Task<IEnumerable<MessageModel>> RefreshOverride() => (await Core.Api.Statuses.UserTimeline.GetUserTimeline(Uid, page: _pageCount++)).Statuses;
     }
 }

@@ -1,4 +1,5 @@
-﻿using OpenWeen.UWP.Common;
+﻿using Microsoft.ApplicationInsights;
+using OpenWeen.UWP.Common;
 using OpenWeen.UWP.Common.Helpers;
 using OpenWeen.UWP.View;
 using System;
@@ -10,6 +11,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -53,6 +55,10 @@ namespace OpenWeen.UWP
                 this.DebugSettings.EnableFrameRateCounter = true;
             }
 #endif
+            Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar.BackgroundColor = Color.FromArgb(255, 35, 85, 178);
+            Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar.ButtonBackgroundColor = Color.FromArgb(255, 35, 85, 178);
+
+            UnhandledException += App_UnhandledException;
             Frame rootFrame = Window.Current.Content as Frame;
             
             if (rootFrame == null)
@@ -72,20 +78,13 @@ namespace OpenWeen.UWP
             }
             Window.Current.Activate();
         }
-        private void App_BackRequested(object sender, BackRequestedEventArgs e)
-        {
-            e.Handled = true;
-            Frame rootFrame = Window.Current.Content as Frame;
-            if (rootFrame.CanGoBack)
-            {
-                rootFrame.GoBack();
-            }
-            else
-            {
-                Exit();
-            }
-        }
 
+        private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            TelemetryClient telemetry = new TelemetryClient();
+            telemetry.TrackException(e.Exception);
+        }
+        
         /// <summary>
         /// 导航到特定页失败时调用
         /// </summary>

@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>9b6a668f-9764-474c-97f3-b7c206fc5926</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>OpenWeen.UWP.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Common\Helpers\SettingHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\Helpers\ToastNotificationHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\SettingNames.cs" />
+  </ItemGroup>
+</Project>

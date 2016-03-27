@@ -1,0 +1,54 @@
+﻿<ContentDialog
+    x:Class="OpenWeen.UWP.Common.Controls.ImageViewDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:OpenWeen.UWP.Common.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:imgcontrol="using:ImageLib.Controls"
+    xmlns:model="using:OpenWeen.UWP.Model"
+    BorderThickness="0"
+    RequestedTheme="Dark"
+    SecondaryButtonText="关闭"
+    RightTapped="ContentDialog_RightTapped"
+    mc:Ignorable="d" FullSizeDesired="True" Background="#7F000000">
+    <ContentDialog.Style>
+        <Style TargetType="ContentDialog">
+            <Setter Property="Foreground" Value="{ThemeResource SystemControlPageTextBaseHighBrush}" />
+            <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="IsTabStop" Value="False" />
+            <Setter Property="MaxWidth" Value="{ThemeResource ContentDialogMaxWidth}" />
+            <Setter Property="MinWidth" Value="{ThemeResource ContentDialogMinWidth}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ContentDialog">
+                        <Border x:Name="BackgroundElement" Background="{TemplateBinding Background}" FlowDirection="{TemplateBinding FlowDirection}" BorderThickness="0" BorderBrush="{ThemeResource SystemControlForegroundAccentBrush}" MaxWidth="{TemplateBinding MaxWidth}" MinWidth="{TemplateBinding MinWidth}" >
+                            <ContentPresenter x:Name="Content" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" FontSize="{ThemeResource ControlContentThemeFontSize}" FontFamily="{ThemeResource ContentControlThemeFontFamily}" Margin="{ThemeResource ContentDialogContentMargin}" Foreground="{TemplateBinding Foreground}" Grid.Row="1" TextWrapping="Wrap" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </ContentDialog.Style>
+    <Grid>
+        <FlipView x:Name="flipView" Background="Transparent" ItemsSource="{x:Bind Items}">
+            <FlipView.ItemTemplate>
+                <DataTemplate x:DataType="model:ImageModel">
+                    <ScrollViewer PointerExited="ScrollViewer_PointerExited" PointerPressed="ScrollViewer_PointerPressed" PointerReleased="ScrollViewer_PointerReleased" PointerMoved="ScrollViewer_PointerMoved" HorizontalScrollBarVisibility="Auto" HorizontalScrollMode="Auto" ZoomMode="Enabled" HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" VerticalScrollBarVisibility="Auto">
+                        <Grid>
+                            <ProgressRing Foreground="White" IsActive="{x:Bind IsLoading,Mode=OneWay}"/>
+                            <imgcontrol:ImageView LoadingFailed="{x:Bind LoadFailed}" Margin="0,0,16,16" UriSource="{x:Bind SourceUri}" LoadingCompleted="{x:Bind Loaded}"/>
+                        </Grid>
+                    </ScrollViewer>
+                </DataTemplate>
+            </FlipView.ItemTemplate>
+        </FlipView>
+        <AppBarButton Background="#7F000000" Icon="Back" IsCompact="True" Click="{x:Bind Hide}"/>
+        <StackPanel Background="#7F000000" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <AppBarButton IsCompact="True" Click="{x:Bind ZoomOut}" Icon="ZoomOut"/>
+            <AppBarButton IsCompact="True" Click="{x:Bind ZoomIn}" Icon="ZoomIn"/>
+        </StackPanel>
+    </Grid>
+</ContentDialog>

@@ -37,6 +37,7 @@ namespace OpenWeen.UWP.View
     public sealed partial class PostWeiboPage : Page ,INotifyPropertyChanged
     {
         public ObservableCollection<ImageData> Images { get; private set; }
+        public bool IsSending { get; private set; }
         private IPostWeibo _data;
         public bool AllowPicture { get; set; } = true;
         public int TextCount
@@ -82,10 +83,17 @@ namespace OpenWeen.UWP.View
             if (_data is IPostWeiboData)
             {
                 var data = _data as IPostWeiboData;
-                Text = data.Data;
-                if (_data.Type == PostWeiboType.RePost)
+                if (!string.IsNullOrEmpty(data.Data))
                 {
-                    richEditBox.Document.Selection.SetIndex(Windows.UI.Text.TextRangeUnit.Character, 0, false);
+                    Text = data.Data;
+                    if (_data.Type == PostWeiboType.RePost)
+                    {
+                        richEditBox.Document.Selection.StartPosition = 0;
+                    }
+                    else
+                    {
+                        richEditBox.Document.Selection.StartPosition = Text.Length;
+                    }
                 }
             }
         }
@@ -161,7 +169,7 @@ namespace OpenWeen.UWP.View
         
         public async void PostWeibo()
         {
-            if (Text?.Length < 0)
+            if (IsSending || Text?.Length < 0)
                 return;
             if (TextCount < 0)
             {
@@ -171,43 +179,56 @@ namespace OpenWeen.UWP.View
                 await dialog.ShowAsync();
                 return;
             }
+            IsSending = true;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsSending)));
+            bool isSuccess = false;
             switch (_data.Type)
             {
                 case PostWeiboType.NewPost:
-                    await NewPost();
+                    isSuccess = await NewPost();
                     break;
                 case PostWeiboType.RePost:
-                    await RePost();
+                    isSuccess = await RePost();
                     break;
                 case PostWeiboType.Comment:
-                    await Comment();
+                    isSuccess = await Comment();
                     break;
                 default:
                     break;
             }
+            if (isSuccess)
+            {
+                Frame.GoBack();
+                IsSending = false;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsSending)));
+            }
         }
 
-        private async Task Comment()
+        private async Task<bool> Comment()
         {
             if (_data is ReplyCommentData)
             {
                 var data = _data as ReplyCommentData;
                 await Core.Api.Comments.Reply(data.ID, data.CID, Text);
+                return true;
             }
             else if (_data is CommentData)
             {
                 var data = _data as CommentData;
                 await Core.Api.Comments.PostComment(data.ID, Text);
+                return true;
             }
+            return false;
         }
 
-        private async Task RePost()
+        private async Task<bool> RePost()
         {
             var data = _data as RepostData;
             await Core.Api.Statuses.PostWeibo.Repost(data.ID, Text);
+            return true;
         }
 
-        private async Task NewPost()
+        private async Task<bool> NewPost()
         {
             if (Images.Count > 0)
             {
@@ -217,13 +238,14 @@ namespace OpenWeen.UWP.View
                     pics.Add(await Core.Api.Statuses.PostWeibo.UploadPicture(item.Data));
                 }
                 await Core.Api.Statuses.PostWeibo.PostWithMultiPics(Text?.Length > 0 ? Text : "分享图片", string.Join(",", pics.Select(item => item.PicID)));
-                Frame.GoBack();
+                return true;
             }
             else if (Text?.Length > 0)
             {
                 await Core.Api.Statuses.PostWeibo.Post(Text);
-                Frame.GoBack();
+                return true;
             }
+            return false;
         }
 
         private void DeleteOverflow(IUICommand command)
@@ -312,9 +334,9 @@ namespace OpenWeen.UWP.View
         }
         public void AddTopic()
         {
-            var index = richEditBox.Document.Selection.GetIndex(Windows.UI.Text.TextRangeUnit.Character);
+            var index = richEditBox.Document.Selection.StartPosition;
             Text = Text.Insert(index, "##");
-            richEditBox.Document.Selection.SetIndex(Windows.UI.Text.TextRangeUnit.Character, index + 1, false);
+            richEditBox.Document.Selection.StartPosition = index + 1;
         }
         public void AddFriend()
         {
@@ -324,9 +346,9 @@ namespace OpenWeen.UWP.View
         private void GridView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var item = e.ClickedItem as EmotionModel;
-            var index = richEditBox.Document.Selection.GetIndex(Windows.UI.Text.TextRangeUnit.Character);
+            var index = richEditBox.Document.Selection.StartPosition;
             Text = Text.Insert(index, item.Value);
-            richEditBox.Document.Selection.SetIndex(Windows.UI.Text.TextRangeUnit.Character, index + item.Value.Length, false);
+            richEditBox.Document.Selection.StartPosition = index + item.Value.Length;
         }
 
         private async void AddMultipleImage(object sender, RoutedEventArgs e)
@@ -366,6 +388,28 @@ namespace OpenWeen.UWP.View
             if (file != null)
             {
                 await AddImageDataFromFile(file);
+            }
+        }
+
+        private bool _isCtrlDown;
+
+        private void richEditBox_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Control)
+            {
+                _isCtrlDown = true;
+            };
+            if (_isCtrlDown && e.Key == Windows.System.VirtualKey.Enter)
+            {
+                PostWeibo();
+            }
+        }
+
+        private void richEditBox_KeyUp(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Control)
+            {
+                _isCtrlDown = false;
             }
         }
     }

@@ -16,7 +16,7 @@
     </ItemsControl.ItemTemplate>
     <ItemsControl.ItemsPanel>
         <ItemsPanelTemplate>
-            <VirtualizingStackPanel Orientation="Horizontal"/>
+            <ItemsWrapGrid Orientation="Horizontal"/>
         </ItemsPanelTemplate>
     </ItemsControl.ItemsPanel>
     <ItemsControl.Template>

@@ -32,7 +32,5 @@ namespace OpenWeen.UWP.Common.Controls
             e.Handled = true;
             PictureClick?.Invoke(this, new WeiboPictureClickEventArgs((sender as Image).DataContext as PictureModel));
         }
-
-
     }
 }

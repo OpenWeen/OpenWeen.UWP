@@ -9,24 +9,28 @@
     mc:Ignorable="d">
     <Page.Resources>
         <MenuFlyout x:Key="SettingFlyout">
-            <MenuFlyoutItem Text="屏蔽" Click="MenuFlyoutItem_Click"/>
-            <MenuFlyoutItem Text="加入黑名单" Click="{x:Bind UserPageVM.AddBlock}"/>
+            <MenuFlyoutItem Text="{x:Bind UserPageVM.BlockState,Mode=OneWay}" Click="{x:Bind UserPageVM.AddBlock}"/>
+            <MenuFlyoutItem Text="加入黑名单" Click="{x:Bind UserPageVM.AddWeiboBlock}"/>
         </MenuFlyout>
     </Page.Resources>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid DataContext="{x:Bind UserPageVM.User,Mode=OneWay}" Background="MidnightBlue">
+        <Grid RequestedTheme="Dark" Background="{StaticResource AppTheme}" Grid.Row="1">
+            <TextBlock Margin="125,0,0,0" Style="{ThemeResource FlyoutPickerTitleTextBlockStyle}" Text="{x:Bind UserPageVM.User.ScreenName,Mode=OneWay}"/>
+        </Grid>
+        <Grid DataContext="{x:Bind UserPageVM.User,Mode=OneWay}" Background="{StaticResource AppTheme}">
             <Image Height="150" Source="{Binding Coverimage}" Stretch="UniformToFill"/>
             <Ellipse Width="75" Height="75" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="25,-25" Stroke="White">
                 <Ellipse.Fill>
                     <ImageBrush ImageSource="{Binding AvatarLarge}"/>
                 </Ellipse.Fill>
             </Ellipse>
-            <Button Click="Button_Click" Margin="0,8" Style="{ThemeResource DateTimePickerFlyoutButtonStyle}" HorizontalAlignment="Right" VerticalAlignment="Top">
+            <Button Visibility="{x:Bind UserPageVM.IsMe,Mode=OneWay,Converter={StaticResource BoolToVisibilityConverter},ConverterParameter=true}" Click="Button_Click" Margin="0,8" Style="{ThemeResource DateTimePickerFlyoutButtonStyle}" HorizontalAlignment="Right" VerticalAlignment="Top">
                 <SymbolIcon Foreground="White" Symbol="More" RenderTransformOrigin="0.5,0.5" >
                     <SymbolIcon.RenderTransform>
                         <CompositeTransform Rotation="90"/>
@@ -34,27 +38,26 @@
                 </SymbolIcon>
             </Button>
         </Grid>
-        <Grid Grid.Row="1" Margin="125,0,0,0">
-            <TextBlock Style="{ThemeResource FlyoutPickerTitleTextBlockStyle}" Text="{x:Bind UserPageVM.User.ScreenName,Mode=OneWay}"/>
-            <Button Visibility="{x:Bind UserPageVM.IsMe,Mode=OneWay,Converter={StaticResource BoolToVisibilityConverter},ConverterParameter=true}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="16,0,16,-40" Content="{x:Bind UserPageVM.Follow.Text,Mode=OneWay}"/>
+        <Grid RequestedTheme="Dark" Background="{StaticResource AppTheme}" Padding="8" Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Padding="0,0,8,0">
+                关注:
+                <Run Text="{x:Bind UserPageVM.User.FriendsCount,Mode=OneWay}"/>
+                <LineBreak/>粉丝:
+                <Run Text="{x:Bind UserPageVM.User.FollowersCount,Mode=OneWay}"/>
+            </TextBlock>
+            <Grid Grid.Column="1" BorderBrush="#3FFFFFFF" BorderThickness="2,0">
+                <TextBlock TextWrapping="WrapWholeWords" MaxLines="2"  Padding="8,0" Text="{x:Bind UserPageVM.User.Description,Mode=OneWay}" TextTrimming="CharacterEllipsis"/>
+
+            </Grid>
+            <Button Margin="8,0,0,0" Grid.Column="2" Click="{x:Bind UserPageVM.ChangeFollow}" Visibility="{x:Bind UserPageVM.IsMe,Mode=OneWay,Converter={StaticResource BoolToVisibilityConverter},ConverterParameter=true}" HorizontalAlignment="Right" VerticalAlignment="Center" Content="{x:Bind UserPageVM.Follow.Text,Mode=OneWay}"/>
         </Grid>
-        <Grid Grid.Row="2">
-            <Pivot>
-                <Pivot.ItemContainerStyle>
-                    <Style TargetType="PivotItem">
-                        <Setter Property="Margin" Value="0"/>
-                    </Style>
-                </Pivot.ItemContainerStyle>
-                <PivotItem Header="微博">
-                    <controls:WeiboList ItemsSource="{x:Bind UserPageVM.UserTimeline.WeiboList,Mode=OneWay}"/>
-                </PivotItem>
-                <PivotItem Header="相册">
-
-                </PivotItem>
-                <PivotItem Header="资料">
-
-                </PivotItem>
-            </Pivot>
+        <Grid Grid.Row="3">
+            <controls:WeiboList Favor="{x:Bind ActionModel.Favor}" PictureClick="{x:Bind ActionModel.PictureClick}" UserClick="{x:Bind ActionModel.UserClick}" Comment="{x:Bind ActionModel.Comment}" Repost="{x:Bind ActionModel.Repost}" ItemsSource="{x:Bind UserPageVM.UserTimeline.WeiboList,Mode=OneWay}"/>
         </Grid>
     </Grid>
 </Page>

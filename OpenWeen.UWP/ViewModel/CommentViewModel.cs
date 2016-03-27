@@ -11,6 +11,10 @@ namespace OpenWeen.UWP.ViewModel
     {
         protected override async Task<IEnumerable<CommentModel>> LoadMoreOverride() => (await Core.Api.Comments.GetComment(page: _pageCount++)).Comments;
 
-        protected override async Task<IEnumerable<CommentModel>> RefreshOverride() => (await Core.Api.Comments.GetComment(page: _pageCount++)).Comments;
+        protected override async Task<IEnumerable<CommentModel>> RefreshOverride()
+        {
+            await Core.Api.Remind.ClearUnRead(Core.Api.RemindType.Cmt);
+            return (await Core.Api.Comments.GetComment(page: _pageCount++)).Comments;
+        }
     }
 }

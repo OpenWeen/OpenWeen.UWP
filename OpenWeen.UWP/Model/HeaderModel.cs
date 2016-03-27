@@ -10,8 +10,20 @@ namespace OpenWeen.UWP.Model
 {
     public class HeaderModel : INotifyPropertyChanged
     {
-        public Symbol Icon { get; set; }
-        public string Text { get; set; }
+        public Symbol Icon { get; internal set; }
+        public string Text { get; internal set; }
+        private int _unreadCount = 0;
+
+        public int UnreadCount
+        {
+            get { return _unreadCount; }
+            internal set
+            {
+                _unreadCount = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UnreadCount)));
+            }
+        }
+
         public double Opacity => IsActive ? 1d : 0.37;
         private bool _isActive;
 

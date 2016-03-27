@@ -9,7 +9,7 @@ namespace OpenWeen.UWP.Common.Controls.Events
 {
     public class WeiboUserClickEventArgs : EventArgs
     {
-        public dynamic UidOrUserName { get; }
+        public object UidOrUserName { get; }
         
         public WeiboUserClickEventArgs(string userName)
         {

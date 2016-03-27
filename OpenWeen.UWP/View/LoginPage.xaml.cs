@@ -1,6 +1,8 @@
 ﻿using OpenWeen.Core.Helper;
 using OpenWeen.UWP.Common;
 using OpenWeen.UWP.Common.Helpers;
+using OpenWeen.UWP.Shared.Common;
+using OpenWeen.UWP.Shared.Common.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -64,7 +66,7 @@ namespace OpenWeen.UWP.View
             {
                 var regex = Regex.Match(result.ResponseData, "access_token=(.*)\\&remind_in=([0-9]*)");
                 var token = regex.Groups[1].Value;
-                SettingHelper.SetListSetting(SettingNames.AccessToken, new[] { token }, SetListSettingOption.AddIdExists);
+                SettingHelper.SetListSetting(SettingNames.AccessToken, new[] { token }, SetListSettingOption.AddIfExists);
                 Core.Api.Entity.AccessToken = token;
                 await InitEmotion();
                 await InitUid();

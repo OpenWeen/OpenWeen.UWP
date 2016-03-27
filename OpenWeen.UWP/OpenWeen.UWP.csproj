@@ -16,7 +16,10 @@
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <PackageCertificateKeyFile>OpenWeen.UWP_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>OpenWeen.UWP_StoreKey.pfx</PackageCertificateKeyFile>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
+    <PackageCertificateThumbprint>126559E006A14707084A7D13B935653CAA541F12</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -40,6 +43,7 @@
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
     <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+    <EnableGatekeeperAnalysis>false</EnableGatekeeperAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>
@@ -63,6 +67,7 @@
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
     <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+    <EnableGatekeeperAnalysis>false</EnableGatekeeperAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -86,12 +91,14 @@
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
     <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+    <EnableGatekeeperAnalysis>false</EnableGatekeeperAnalysis>
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="OpenWeen.UWP_StoreKey.pfx" />
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
@@ -103,6 +110,9 @@
     <Compile Include="Common\Controls\Events\WeiboPictureClickEventArgs.cs" />
     <Compile Include="Common\Controls\Events\WeiboTopicClickEventArgs.cs" />
     <Compile Include="Common\Controls\Events\WeiboUserClickEventArgs.cs" />
+    <Compile Include="Common\Controls\ImageViewDialog.xaml.cs">
+      <DependentUpon>ImageViewDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Common\Controls\PivotHeader.xaml.cs">
       <DependentUpon>PivotHeader.xaml</DependentUpon>
     </Compile>
@@ -121,18 +131,22 @@
     <Compile Include="Common\Controls\WeiboTextBlock.xaml.cs">
       <DependentUpon>WeiboTextBlock.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\Converter\BlockToVisibilityConverter.cs" />
     <Compile Include="Common\Converter\BoolToVisibilityConverter.cs" />
+    <Compile Include="Common\Converter\FavorToColorConverter.cs" />
     <Compile Include="Common\Converter\NullToVisibilityConverter.cs" />
     <Compile Include="Common\Converter\PicIDToThumbnailConverter.cs" />
     <Compile Include="Common\Converter\TimeConverter.cs" />
+    <Compile Include="Common\Converter\UnreadCountToVisibilityConverter.cs" />
     <Compile Include="Common\Entities\FollowState.cs" />
     <Compile Include="Common\Entities\PostWeiboType.cs" />
     <Compile Include="Common\Extension\IEnumerableExtension.cs" />
-    <Compile Include="Common\Helpers\SettingHelper.cs" />
-    <Compile Include="Common\SettingNames.cs" />
+    <Compile Include="Common\Helpers\BackgroundHelper.cs" />
+    <Compile Include="Common\Helpers\MoreVisualTreeHelper.cs" />
     <Compile Include="Common\StaticResource.cs" />
     <Compile Include="Model\FollowModel.cs" />
     <Compile Include="Model\HeaderModel.cs" />
+    <Compile Include="Model\ImageModel.cs" />
     <Compile Include="Model\WeiboActionModel.cs" />
     <Compile Include="ViewModel\CommentMentionViewModel.cs" />
     <Compile Include="ViewModel\CommentViewModel.cs" />
@@ -144,6 +158,9 @@
     <Compile Include="ViewModel\UserViewModelBase.cs" />
     <Compile Include="ViewModel\MainPageViewModel.cs" />
     <Compile Include="ViewModel\WeiboListViewModelBase.cs" />
+    <Compile Include="View\AboutPage.xaml.cs">
+      <DependentUpon>AboutPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\ExtendedSplash.xaml.cs">
       <DependentUpon>ExtendedSplash.xaml</DependentUpon>
     </Compile>
@@ -157,6 +174,9 @@
     <Compile Include="View\PostWeiboPage.xaml.cs">
       <DependentUpon>PostWeiboPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\SettingPage.xaml.cs">
+      <DependentUpon>SettingPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\UserPage.xaml.cs">
       <DependentUpon>UserPage.xaml</DependentUpon>
     </Compile>
@@ -168,8 +188,8 @@
     <None Include="OpenWeen.UWP_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Package.StoreAssociation.xml" />
     <Content Include="Properties\Default.rd.xml" />
-    <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
     <Content Include="Assets\Square150x150Logo.scale-200.png" />
     <Content Include="Assets\Square44x44Logo.scale-200.png" />
@@ -182,6 +202,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Common\Controls\ImageViewDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Common\Controls\PivotHeader.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -206,6 +230,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\AboutPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\ExtendedSplash.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -222,11 +250,22 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\SettingPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\UserPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OpenWeen.UWP.BackgroundTask\OpenWeen.UWP.BackgroundTask.csproj">
+      <Project>{62fc5331-972f-4599-b405-aabd3b4512ad}</Project>
+      <Name>OpenWeen.UWP.BackgroundTask</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="..\OpenWeen.UWP.Shared\OpenWeen.UWP.Shared.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

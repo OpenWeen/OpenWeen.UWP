@@ -1,4 +1,6 @@
-﻿using OpenWeen.Core.Model.Status;
+﻿using OpenWeen.Core.Model;
+using OpenWeen.Core.Model.Status;
+using OpenWeen.UWP.Common.Controls.Events;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,10 +10,11 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Popups;
 
 namespace OpenWeen.UWP.ViewModel
 {
-    public abstract class WeiboListViewModelBase<T> : INotifyPropertyChanged
+    public abstract class WeiboListViewModelBase<T> : INotifyPropertyChanged where T : BaseModel
     {
         public ObservableCollection<T> WeiboList { get; private set; } = new ObservableCollection<T>();
         protected int _pageCount = 1;
@@ -30,6 +33,11 @@ namespace OpenWeen.UWP.ViewModel
                 WeiboList = new ObservableCollection<T>((await RefreshOverride()));
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WeiboList)));
             }
+            catch (NullReferenceException e)
+            {
+                await new MessageDialog(e.Message + e.StackTrace).ShowAsync();
+                throw;
+            }
             catch (Exception e) when (e is HttpRequestException || e is WebException)
             {
 #if DEBUG
@@ -39,6 +47,7 @@ namespace OpenWeen.UWP.ViewModel
             }
             _isLoading = false;
         }
+        
 
         public async Task LoadMore()
         {
@@ -60,27 +69,10 @@ namespace OpenWeen.UWP.ViewModel
             _isLoading = false;
         }
 
-        internal async Task<bool> Favor(object sender, Common.Controls.Events.WeiboActionEventArgs e)
-        {
-            if (!(e.TargetItem is MessageModel))
-                throw new ArgumentException("TargetItem must be MessageModel");
-            var item = e.TargetItem as MessageModel;
-            try
-            {
-                return item.Favorited ?
-                    (await Core.Api.Favorites.RemoveFavor(item.ID)).Status.Favorited :
-                    (await Core.Api.Favorites.AddFavor(item.ID)).Status.Favorited;
-            }
-            catch (Exception ex) when (ex is HttpRequestException || ex is WebException)
-            {
-                OnWebException();
-                return item.Favorited;
-            }
-        }
 
-        private void OnWebException()
+        private async void OnWebException()
         {
-            throw new NotImplementedException();
+            await new MessageDialog("网络错误").ShowAsync();
         }
 
         protected abstract Task<IEnumerable<T>> LoadMoreOverride();

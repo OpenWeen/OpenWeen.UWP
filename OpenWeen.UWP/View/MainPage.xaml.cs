@@ -23,6 +23,7 @@ using OpenWeen.UWP.Common;
 using OpenWeen.UWP.View;
 using OpenWeen.UWP.ViewModel;
 using OpenWeen.UWP.Common.Entities;
+using OpenWeen.UWP.Common.Helpers;
 
 //“空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409 上有介绍
 
@@ -33,13 +34,8 @@ namespace OpenWeen.UWP
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        public List<HeaderModel> Header { get; set; } = new List<HeaderModel>()
-        {
-            new HeaderModel() { Icon = Symbol.Home, Text = "主页" },
-            new HeaderModel() { Icon = Symbol.Account, Text = "提及" },
-            new HeaderModel() { Icon = Symbol.Comment, Text = "评论" },
-        };
         public MainPageViewModel MainVM { get; } = new MainPageViewModel();
+        public WeiboActionModel ActionModel { get; } = new WeiboActionModel();
         public MainPage()
         {
             InitializeComponent();
@@ -56,46 +52,37 @@ namespace OpenWeen.UWP
         {
             Frame.Navigate(typeof(PostWeiboPage), new PostWeibo());
         }
-
-        private void WeiboList_Repost(object sender, Common.Controls.Events.WeiboActionEventArgs e)
+        
+        public void BackTop()
         {
-
-        }
-
-        private void WeiboList_Comment(object sender, Common.Controls.Events.WeiboActionEventArgs e)
-        {
-
+            var scrollViewer = MoreVisualTreeHelper.GetObject<ScrollViewer>(pivot.SelectedItem as PivotItem);
+            scrollViewer.ChangeView(0, 0, 1f, false);
         }
 
         private void WeiboList_ItemClick(object sender, Common.Controls.Events.WeiboItemClickEventArgs e)
         {
 
         }
-
-        private void WeiboList_UserClick(object sender, Common.Controls.Events.WeiboUserClickEventArgs e)
-        {
-            Frame.Navigate(typeof(UserPage), new UserPageViewModel(e.UidOrUserName));
-        }
-
-        private void WeiboList_PictureClick(object sender, Common.Controls.Events.WeiboPictureClickEventArgs e)
-        {
-
-        }
+        
 
         private void WeiboList_TopicClick(object sender, Common.Controls.Events.WeiboTopicClickEventArgs e)
         {
 
         }
 
-        private void WeiboList_Favor(object sender, Common.Controls.Events.WeiboActionEventArgs e)
+        private void Ellipse_Tapped(object sender, TappedRoutedEventArgs e)
         {
-
+            ActionModel.UserClick(null, new Common.Controls.Events.WeiboUserClickEventArgs(StaticResource.Uid));
         }
 
-        private void WeiboList_LoadMore(object sender, EventArgs e)
+        private void AppBarButton_Click_1(object sender, RoutedEventArgs e)
         {
-
+            Frame.Navigate(typeof(SettingPage));
         }
 
+        private void AppBarButton_Click_2(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(AboutPage));
+        }
     }
 }

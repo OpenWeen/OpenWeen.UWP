@@ -50,12 +50,39 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <controls:PivotHeader SelectedIndex="{Binding ElementName=pivot,Path=SelectedIndex,Mode=TwoWay}" x:Name="pivotHeader" ItemsSource="{x:Bind Header}"/>
-
-
-        <SplitView x:Name="splitView" Grid.Row="1" DisplayMode="Inline">
+        <Grid Background="{StaticResource AppTheme}" RequestedTheme="Dark" x:Name="pivotHeader">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Ellipse Tapped="Ellipse_Tapped" DataContext="{x:Bind MainVM.User}" Width="48" Height="48">
+                <Ellipse.Fill>
+                    <ImageBrush ImageSource="{x:Bind MainVM.User.ProfileImageUrl,Mode=OneWay}"/>
+                </Ellipse.Fill>
+            </Ellipse>
+            <controls:PivotHeader Refresh="{x:Bind MainVM.Refresh}" Grid.Column="1" BackToTop="{x:Bind BackTop}" SelectedIndex="{Binding ElementName=pivot,Path=SelectedIndex,Mode=TwoWay}" ItemsSource="{x:Bind MainVM.Header}"/>
+        </Grid>
+        <SplitView x:Name="splitView" Grid.Row="1" DisplayMode="Inline" OpenPaneLength="150">
             <SplitView.Pane>
-                <controls:SplitViewPaneList SelectedIndex="{Binding ElementName=pivot,Path=SelectedIndex,Mode=TwoWay}" ItemsSource="{x:Bind Header}"/>
+                <Grid Background="{StaticResource AppTheme}" RequestedTheme="Dark">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Tapped="Ellipse_Tapped" DataContext="{x:Bind MainVM.User}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Ellipse HorizontalAlignment="Left" Width="48" Height="48">
+                            <Ellipse.Fill>
+                                <ImageBrush ImageSource="{x:Bind MainVM.User.ProfileImageUrl,Mode=OneWay}"/>
+                            </Ellipse.Fill>
+                        </Ellipse>
+                        <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{x:Bind MainVM.User.ScreenName,Mode=OneWay}"/>
+                    </Grid>
+                    <controls:SplitViewPaneList Refresh="{x:Bind MainVM.Refresh}" Grid.Row="1" BackToTop="{x:Bind BackTop}" SelectedIndex="{Binding ElementName=pivot,Path=SelectedIndex,Mode=TwoWay}" ItemsSource="{x:Bind MainVM.Header}"/>
+                </Grid>
             </SplitView.Pane>
             <SplitView.Content>
                 <Pivot x:Name="pivot" Style="{StaticResource PiovtWithoutHeaderStyle}">
@@ -65,13 +92,16 @@
                         </Style>
                     </Pivot.ItemContainerStyle>
                     <PivotItem>
-                        <controls:WeiboList LoadMore="{x:Bind MainVM.Timeline.LoadMore}" Repost="WeiboList_Repost" Comment="WeiboList_Comment" ItemClick="WeiboList_ItemClick" UserClick="WeiboList_UserClick" PictureClick="WeiboList_PictureClick" TopicClick="WeiboList_TopicClick" Favor="WeiboList_Favor" ItemsSource="{x:Bind MainVM.Timeline.WeiboList,Mode=OneWay}"/>
+                        <controls:WeiboList LoadMore="{x:Bind MainVM.Timeline.LoadMore}" Repost="{x:Bind ActionModel.Repost}" Comment="{x:Bind ActionModel.Comment}" ItemClick="WeiboList_ItemClick" UserClick="{x:Bind ActionModel.UserClick}" PictureClick="{x:Bind ActionModel.PictureClick}" TopicClick="WeiboList_TopicClick" Favor="{x:Bind ActionModel.Favor}" ItemsSource="{x:Bind MainVM.Timeline.WeiboList,Mode=OneWay}"/>
                     </PivotItem>
                     <PivotItem>
-                        <controls:WeiboList LoadMore="{x:Bind MainVM.Mention.LoadMore}" Repost="WeiboList_Repost" Comment="WeiboList_Comment" ItemClick="WeiboList_ItemClick" UserClick="WeiboList_UserClick" PictureClick="WeiboList_PictureClick" TopicClick="WeiboList_TopicClick" Favor="WeiboList_Favor" ItemsSource="{x:Bind MainVM.Mention.WeiboList,Mode=OneWay}"/>
+                        <controls:WeiboList LoadMore="{x:Bind MainVM.Mention.LoadMore}" Repost="{x:Bind ActionModel.Repost}" Comment="{x:Bind ActionModel.Comment}" ItemClick="WeiboList_ItemClick" UserClick="{x:Bind ActionModel.UserClick}" PictureClick="{x:Bind ActionModel.PictureClick}" TopicClick="WeiboList_TopicClick" Favor="{x:Bind ActionModel.Favor}" ItemsSource="{x:Bind MainVM.Mention.WeiboList,Mode=OneWay}"/>
                     </PivotItem>
                     <PivotItem>
-                        <controls:WeiboCommentList LoadMore="{x:Bind MainVM.Comment.LoadMore}" UserClick="WeiboList_UserClick" ItemClick="WeiboList_ItemClick" Comment="WeiboList_Comment" ItemsSource="{x:Bind MainVM.Comment.WeiboList,Mode=OneWay}"/>
+                        <controls:WeiboCommentList LoadMore="{x:Bind MainVM.Comment.LoadMore}" UserClick="{x:Bind ActionModel.UserClick}" ItemClick="WeiboList_ItemClick" Comment="{x:Bind ActionModel.Comment}" ItemsSource="{x:Bind MainVM.Comment.WeiboList,Mode=OneWay}"/>
+                    </PivotItem>
+                    <PivotItem>
+                        <controls:WeiboCommentList LoadMore="{x:Bind MainVM.CommentMention.LoadMore}" UserClick="{x:Bind ActionModel.UserClick}" ItemClick="WeiboList_ItemClick" Comment="{x:Bind ActionModel.Comment}" ItemsSource="{x:Bind MainVM.CommentMention.WeiboList,Mode=OneWay}"/>
                     </PivotItem>
                 </Pivot>
             </SplitView.Content>
@@ -79,7 +109,12 @@
     </Grid>
     <Page.BottomAppBar>
         <CommandBar>
+            <AppBarButton Click="{x:Bind MainVM.Refresh}" Icon="Refresh" Label="刷新"/>
             <AppBarButton Click="AppBarButton_Click" Icon="Edit" Label="发微博"/>
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Label="设置" Click="AppBarButton_Click_1"/>
+                <AppBarButton Label="关于" Click="AppBarButton_Click_2"/>
+            </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>
 </Page>

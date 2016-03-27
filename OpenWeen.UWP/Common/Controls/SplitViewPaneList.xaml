@@ -25,6 +25,10 @@
                     </Grid.ColumnDefinitions>
                     <SymbolIcon Width="48" Height="48" Symbol="{x:Bind Icon}"/>
                     <TextBlock VerticalAlignment="Center" Grid.Column="1" Text="{x:Bind Text}"/>
+                    <Grid Margin="10" Visibility="{x:Bind UnreadCount,Mode=OneWay,Converter={StaticResource UnreadCountToVisibilityConverter}}" Width="10" Height="10" HorizontalAlignment="Right" VerticalAlignment="Top" >
+                        <Ellipse Fill="Red"/>
+                        <TextBlock FontSize="8" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{x:Bind UnreadCount,Mode=OneWay}"/>
+                    </Grid>
                 </Grid>
             </DataTemplate>
         </ItemsControl.ItemTemplate>

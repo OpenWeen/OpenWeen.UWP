@@ -1,4 +1,5 @@
-﻿using OpenWeen.UWP.ViewModel;
+﻿using OpenWeen.UWP.Model;
+using OpenWeen.UWP.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,6 +25,7 @@ namespace OpenWeen.UWP.View
     public sealed partial class UserPage : Page
     {
         public UserPageViewModel UserPageVM { get; private set; }
+        public WeiboActionModel ActionModel { get; } = new WeiboActionModel();
 
         public UserPage()
         {
@@ -44,12 +46,8 @@ namespace OpenWeen.UWP.View
 
         private void MenuFlyoutItem_Click(object sender, RoutedEventArgs e)
         {
-
+             
         }
-
-        private void MenuFlyoutItem_Click_1(object sender, RoutedEventArgs e)
-        {
-
-        }
+        
     }
 }

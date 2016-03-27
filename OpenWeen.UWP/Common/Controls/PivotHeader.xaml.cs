@@ -21,6 +21,9 @@ namespace OpenWeen.UWP.Common.Controls
 {
     public sealed partial class PivotHeader : UserControl
     {
+        public event EventHandler BackToTop;
+        public event EventHandler Refresh;
+
         public List<HeaderModel> ItemsSource { get; set; }
         public PivotHeader()
         {
@@ -48,6 +51,11 @@ namespace OpenWeen.UWP.Common.Controls
             try
             {
                 ItemsSource[newValue].IsActive = true;
+                if (ItemsSource[newValue].UnreadCount > 0)
+                {
+                    ItemsSource[newValue].UnreadCount = 0;
+                    Refresh?.Invoke(this, new EventArgs());
+                }
                 ItemsSource[oldValue].IsActive = false;
             }
             catch { }
@@ -55,7 +63,15 @@ namespace OpenWeen.UWP.Common.Controls
 
         private void ItemsControl_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            SelectedIndex = ItemsSource.FindIndex(item => item == (e.OriginalSource as FrameworkElement).DataContext as HeaderModel);
+            var index = ItemsSource.FindIndex(item => item == (e.OriginalSource as FrameworkElement).DataContext as HeaderModel);
+            if (SelectedIndex == index)
+            {
+                BackToTop?.Invoke(this, new EventArgs());
+            }
+            else
+            {
+                SelectedIndex = index;
+            }
         }
     }
 }

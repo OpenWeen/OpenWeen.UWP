@@ -11,6 +11,10 @@ namespace OpenWeen.UWP.ViewModel
     {
         protected override async Task<IEnumerable<MessageModel>> LoadMoreOverride() => (await Core.Api.Statuses.Mentions.GetMentions(page: _pageCount++)).Statuses;
 
-        protected override async Task<IEnumerable<MessageModel>> RefreshOverride() => (await Core.Api.Statuses.Mentions.GetMentions(page: _pageCount++)).Statuses;
+        protected override async Task<IEnumerable<MessageModel>> RefreshOverride()
+        {
+            await Core.Api.Remind.ClearUnRead(Core.Api.RemindType.MentionStatus);
+            return (await Core.Api.Statuses.Mentions.GetMentions(page: _pageCount++)).Statuses;
+        }
     }
 }
