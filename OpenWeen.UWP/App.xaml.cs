@@ -34,9 +34,9 @@ namespace OpenWeen.UWP
         /// </summary>
         public App()
         {
-            Microsoft.ApplicationInsights.WindowsAppInitializer.InitializeAsync(
-                Microsoft.ApplicationInsights.WindowsCollectors.Metadata |
-                Microsoft.ApplicationInsights.WindowsCollectors.Session);
+            WindowsAppInitializer.InitializeAsync(
+                WindowsCollectors.Metadata |
+                WindowsCollectors.Session);
             this.InitializeComponent();
             this.Suspending += OnSuspending;
         }
@@ -54,7 +54,18 @@ namespace OpenWeen.UWP
             {
                 this.DebugSettings.EnableFrameRateCounter = true;
             }
+#else
+            
+            Xamarin.Insights.HasPendingCrashReport += (sender, isStartupCrash) =>
+            {
+                if (isStartupCrash)
+                {
+                    Xamarin.Insights.PurgePendingCrashReports().Wait();
+                }
+            };
+            Xamarin.Insights.Initialize(XamarinInsightsKey.Key);
 #endif
+
             Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar.BackgroundColor = Color.FromArgb(255, 35, 85, 178);
             Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar.ButtonBackgroundColor = Color.FromArgb(255, 35, 85, 178);
 

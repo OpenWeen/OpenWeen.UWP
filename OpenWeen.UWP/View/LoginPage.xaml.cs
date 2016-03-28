@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Security.Authentication.Web;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -52,7 +53,7 @@ namespace OpenWeen.UWP.View
                     Scope_TB.Text = data[3];
                     PackageName_TB.Text = data[4];
                 }
-                catch (Exception)
+                catch
                 {
                 }
             }
@@ -60,21 +61,33 @@ namespace OpenWeen.UWP.View
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            WebAuthenticationResult result = await WebAuthenticationBroker.AuthenticateAsync(WebAuthenticationOptions.None, new Uri($"https://api.weibo.com/oauth2/authorize?client_id={AppID_TB.Text}&response_type=token&display=mobile&redirect_uri={RedirectUri_TB.Text}&key_hash={AppSecret_TB.Text}{(string.IsNullOrEmpty(PackageName_TB.Text)?"": $"&packagename={PackageName_TB.Text}")}&scope={Scope_TB.Text}"), new Uri(RedirectUri_TB.Text));
-
-            if (result.ResponseStatus == WebAuthenticationStatus.Success)
+            try
             {
-                var regex = Regex.Match(result.ResponseData, "access_token=(.*)\\&remind_in=([0-9]*)");
-                var token = regex.Groups[1].Value;
-                SettingHelper.SetListSetting(SettingNames.AccessToken, new[] { token }, SetListSettingOption.AddIfExists);
-                Core.Api.Entity.AccessToken = token;
-                await InitEmotion();
-                await InitUid();
-                Frame.Navigate(typeof(MainPage));
-                while (Frame.BackStack.Count > 0)
+                var requri = new Uri($"https://api.weibo.com/oauth2/authorize?client_id={AppID_TB.Text}&response_type=token&display=mobile&redirect_uri={RedirectUri_TB.Text}&key_hash={AppSecret_TB.Text}{(string.IsNullOrEmpty(PackageName_TB.Text) ? "" : $"&packagename={PackageName_TB.Text}")}&scope={Scope_TB.Text}");
+                var callbackuri = new Uri(RedirectUri_TB.Text);
+                var result = await WebAuthenticationBroker.AuthenticateAsync(WebAuthenticationOptions.None, requri, callbackuri);
+                if (result.ResponseStatus == WebAuthenticationStatus.Success)
                 {
-                    Frame.BackStack.RemoveAt(0);
+                    var regex = Regex.Match(result.ResponseData, "access_token=(.*)\\&remind_in=([0-9]*)");
+                    var token = regex.Groups[1].Value;
+                    SettingHelper.SetListSetting(SettingNames.AccessToken, new[] { token }, SetListSettingOption.AddIfExists);
+                    Core.Api.Entity.AccessToken = token;
+                    await InitEmotion();
+                    await InitUid();
+                    Frame.Navigate(typeof(MainPage));
+                    while (Frame.BackStack.Count > 0)
+                    {
+                        Frame.BackStack.RemoveAt(0);
+                    }
                 }
+            }
+            catch (UriFormatException)
+            {
+                await new MessageDialog("请输入正确的参数内容").ShowAsync();
+            }
+            catch (FileNotFoundException)
+            {
+                //user can not connect to the auth page and close the auth page
             }
         }
         private async Task InitUid()
@@ -82,7 +95,7 @@ namespace OpenWeen.UWP.View
             StaticResource.Uid = long.Parse(await Core.Api.User.Account.GetUid());
         }
 
-        private static async System.Threading.Tasks.Task InitEmotion()
+        private static async Task InitEmotion()
         {
             StaticResource.Emotions = (await Core.Api.Statuses.Emotions.GetEmotions()).ToList();
             StaticResource.EmotionPattern = string.Join("|", StaticResource.Emotions.Select(item => item.Value)).Replace("[", @"\[").Replace("]", @"\]");

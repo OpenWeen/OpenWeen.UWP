@@ -144,6 +144,7 @@
     <Compile Include="Common\Helpers\BackgroundHelper.cs" />
     <Compile Include="Common\Helpers\MoreVisualTreeHelper.cs" />
     <Compile Include="Common\StaticResource.cs" />
+    <Compile Include="Common\XamarinInsightsKey.cs" />
     <Compile Include="Model\FollowModel.cs" />
     <Compile Include="Model\HeaderModel.cs" />
     <Compile Include="Model\ImageModel.cs" />

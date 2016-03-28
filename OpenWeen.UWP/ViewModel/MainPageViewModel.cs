@@ -34,6 +34,9 @@ namespace OpenWeen.UWP.ViewModel
             new HeaderModel() { Icon = Symbol.Comment, Text = "评论" },
             new HeaderModel() { Icon = Symbol.Comment, Text = "@的评论" },
         };
+        public int SelectedIndex { get; set; }
+        private UnReadModel _prevUnread;
+
 
         public MainPageViewModel()
         {
@@ -42,22 +45,31 @@ namespace OpenWeen.UWP.ViewModel
             timer.Tick += Timer_Tick;
             timer.Start();
             InitUser();
-            Refresh();
+            InitAllList();
+        }
+
+        private async void InitAllList()
+        {
+            await GetUnreadCount();
+            await Timeline.Refresh();
+            await Mention.Refresh();
+            await Comment.Refresh();
+            await CommentMention.Refresh();
         }
 
         private async void Timer_Tick(object sender, object e)
         {
             var unread = await GetUnreadCount();
             var builder = new StringBuilder();
-            if (unread.MentionStatus > 0)
+            if (unread.MentionStatus > 0 && unread.MentionStatus != _prevUnread?.MentionStatus)
             {
                 builder.Append($"{unread.MentionStatus} 条新@");
             }
-            if (unread.Cmt > 0)
+            if (unread.Cmt > 0 && unread.Cmt != _prevUnread?.Cmt)
             {
                 builder.Append($"{unread.Cmt} 条新评论");
             }
-            if (unread.MentionCmt > 0)
+            if (unread.MentionCmt > 0 && unread.MentionCmt != _prevUnread?.MentionCmt)
             {
                 builder.Append($"{unread.MentionCmt} 条新提及的评论");
             }
@@ -65,6 +77,7 @@ namespace OpenWeen.UWP.ViewModel
             {
                 ToastNotificationHelper.SendToast(builder.ToString());
             }
+            _prevUnread = unread;
         }
 
         //private void StaticResource_UpdateUnreadCountTaskComplete(object sender, EventArgs e)
@@ -83,10 +96,28 @@ namespace OpenWeen.UWP.ViewModel
         public async void Refresh()
         {
             await GetUnreadCount();
-            await Timeline.Refresh();
-            await Mention.Refresh();
-            await Comment.Refresh();
-            await CommentMention.Refresh();
+            RefreshWithoutGetUnreadCount();
+        }
+
+        public async void RefreshWithoutGetUnreadCount()
+        {
+            switch (SelectedIndex)
+            {
+                case 0:
+                    await Timeline.Refresh();
+                    break;
+                case 1:
+                    await Mention.Refresh();
+                    break;
+                case 2:
+                    await Comment.Refresh();
+                    break;
+                case 3:
+                    await CommentMention.Refresh();
+                    break;
+                default:
+                    break;
+            }
         }
 
         private async Task<UnReadModel> GetUnreadCount()

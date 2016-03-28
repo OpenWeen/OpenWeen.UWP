@@ -11,10 +11,10 @@
         <StackPanel Orientation="Vertical">
             <TextBlock Style="{ThemeResource TitleTextBlockStyle}">请输入以下内容完成登陆过程</TextBlock>
             <TextBox x:Name="AppID_TB" Paste="TextBox_Paste" Header="App ID"/>
-            <TextBox x:Name="AppSecret_TB" Header="App Secret"/>
-            <TextBox x:Name="RedirectUri_TB" Header="Redirect Uri"/>
-            <TextBox x:Name="Scope_TB" Header="Scope"/>
-            <TextBox x:Name="PackageName_TB" Header="Package Name"/>
+            <TextBox x:Name="AppSecret_TB" Paste="TextBox_Paste" Header="App Secret"/>
+            <TextBox x:Name="RedirectUri_TB" Paste="TextBox_Paste" Header="Redirect Uri"/>
+            <TextBox x:Name="Scope_TB" Paste="TextBox_Paste" Header="Scope"/>
+            <TextBox x:Name="PackageName_TB" Paste="TextBox_Paste" Header="Package Name"/>
             <Grid Padding="0,8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>

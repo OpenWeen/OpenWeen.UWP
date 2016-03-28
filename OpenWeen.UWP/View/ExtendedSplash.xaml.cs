@@ -167,12 +167,15 @@ namespace OpenWeen.UWP.View
 
         private void ExtendedSplash_BackRequested(object sender, BackRequestedEventArgs e)
         {
-            rootFrame.GoBack();
+            if (rootFrame.CanGoBack)
+            {
+                rootFrame.GoBack();
+            }
         }
 
         private void RootFrame_Navigated(object sender, NavigationEventArgs e)
         {
-            if ((Window.Current.Content as Frame).CanGoBack)
+            if (rootFrame.CanGoBack)
                 SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
             else
                 SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;

@@ -60,7 +60,7 @@
                     <ImageBrush ImageSource="{x:Bind MainVM.User.ProfileImageUrl,Mode=OneWay}"/>
                 </Ellipse.Fill>
             </Ellipse>
-            <controls:PivotHeader Refresh="{x:Bind MainVM.Refresh}" Grid.Column="1" BackToTop="{x:Bind BackTop}" SelectedIndex="{Binding ElementName=pivot,Path=SelectedIndex,Mode=TwoWay}" ItemsSource="{x:Bind MainVM.Header}"/>
+            <controls:PivotHeader Refresh="{x:Bind MainVM.RefreshWithoutGetUnreadCount}" Grid.Column="1" BackToTop="{x:Bind BackTop}" SelectedIndex="{Binding ElementName=pivot,Path=SelectedIndex,Mode=TwoWay}" ItemsSource="{x:Bind MainVM.Header}"/>
         </Grid>
         <SplitView x:Name="splitView" Grid.Row="1" DisplayMode="Inline" OpenPaneLength="150">
             <SplitView.Pane>
@@ -81,11 +81,11 @@
                         </Ellipse>
                         <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{x:Bind MainVM.User.ScreenName,Mode=OneWay}"/>
                     </Grid>
-                    <controls:SplitViewPaneList Refresh="{x:Bind MainVM.Refresh}" Grid.Row="1" BackToTop="{x:Bind BackTop}" SelectedIndex="{Binding ElementName=pivot,Path=SelectedIndex,Mode=TwoWay}" ItemsSource="{x:Bind MainVM.Header}"/>
+                    <controls:SplitViewPaneList Refresh="{x:Bind MainVM.RefreshWithoutGetUnreadCount}" Grid.Row="1" BackToTop="{x:Bind BackTop}" SelectedIndex="{Binding ElementName=pivot,Path=SelectedIndex,Mode=TwoWay}" ItemsSource="{x:Bind MainVM.Header}"/>
                 </Grid>
             </SplitView.Pane>
             <SplitView.Content>
-                <Pivot x:Name="pivot" Style="{StaticResource PiovtWithoutHeaderStyle}">
+                <Pivot SelectedIndex="{x:Bind MainVM.SelectedIndex,Mode=TwoWay}" x:Name="pivot" Style="{StaticResource PiovtWithoutHeaderStyle}">
                     <Pivot.ItemContainerStyle>
                         <Style TargetType="PivotItem">
                             <Setter Property="Margin" Value="0"/>
