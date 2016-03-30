@@ -19,8 +19,6 @@
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Top" />
             <Setter Property="IsTabStop" Value="False" />
-            <Setter Property="MaxWidth" Value="{ThemeResource ContentDialogMaxWidth}" />
-            <Setter Property="MinWidth" Value="{ThemeResource ContentDialogMinWidth}" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ContentDialog">
@@ -45,10 +43,13 @@
                 </DataTemplate>
             </FlipView.ItemTemplate>
         </FlipView>
-        <AppBarButton Background="#7F000000" Icon="Back" IsCompact="True" Click="{x:Bind Hide}"/>
+        <AppBarButton Background="#7F000000" Icon="Back" IsCompact="True" Click="{x:Bind HideEx}"/>
         <StackPanel Background="#7F000000" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <AppBarButton Icon="Save" IsCompact="True" Click="{x:Bind Save}"/>
             <AppBarButton IsCompact="True" Click="{x:Bind ZoomOut}" Icon="ZoomOut"/>
             <AppBarButton IsCompact="True" Click="{x:Bind ZoomIn}" Icon="ZoomIn"/>
         </StackPanel>
+
+
     </Grid>
 </ContentDialog>

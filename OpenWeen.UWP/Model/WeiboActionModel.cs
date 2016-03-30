@@ -78,5 +78,15 @@ namespace OpenWeen.UWP.Model
             var dialog = new ImageViewDialog(items);
             await dialog.ShowAsync();
         }
+
+        public void ItemClick(object sender, WeiboItemClickEventArgs e)
+        {
+            (Window.Current.Content as Frame).Navigate(typeof(WeiboDetailPage), new WeiboDetailViewModel(e.ClickedItem));
+        }
+
+        public void TopicClick(object sender, WeiboTopicClickEventArgs e)
+        {
+
+        }
     }
 }

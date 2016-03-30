@@ -12,6 +12,10 @@ namespace OpenWeen.UWP.ViewModel
     {
         protected override async Task<IEnumerable<MessageModel>> LoadMoreOverride() => (await Core.Api.Statuses.Home.GetTimeline(page: _pageCount++)).Statuses;
 
-        protected override async Task<IEnumerable<MessageModel>> RefreshOverride() => (await Core.Api.Statuses.Home.GetTimeline(page: _pageCount++)).Statuses;
+        protected override async Task<Tuple<int, List<MessageModel>>> RefreshOverride()
+        {
+            var item = await Core.Api.Statuses.Home.GetTimeline(page: _pageCount++);
+            return Tuple.Create(item.TotalNumber, item.Statuses);
+        }
     }
 }

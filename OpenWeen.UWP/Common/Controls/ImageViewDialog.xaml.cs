@@ -4,9 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
+using Windows.Storage.Pickers;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -29,15 +32,25 @@ namespace OpenWeen.UWP.Common.Controls
             this.InitializeComponent();
             MinHeight = (Window.Current.Content as Frame).ActualHeight;
             MinWidth = (Window.Current.Content as Frame).ActualWidth;
+            (Window.Current.Content as Frame).SizeChanged += ImageViewDialog_SizeChanged;
         }
-        
+        public void HideEx()
+        {
+            (Window.Current.Content as Frame).SizeChanged -= ImageViewDialog_SizeChanged;
+            Hide();
+        }
+        private void ImageViewDialog_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            MinHeight = (Window.Current.Content as Frame).ActualHeight;
+            MinWidth = (Window.Current.Content as Frame).ActualWidth;
+        }
         public ImageViewDialog(List<ImageModel> items) : this()
         {
             Items = items;
         }
         private void ContentDialog_RightTapped(object sender, RightTappedRoutedEventArgs e)
         {
-            Hide();
+            HideEx();
         }
         public void ZoomOut()
         {
@@ -45,19 +58,25 @@ namespace OpenWeen.UWP.Common.Controls
                 return;
             var scrollViewer = MoreVisualTreeHelper.GetObject<ScrollViewer>(flipView.ItemContainerGenerator.ContainerFromItem(flipView.SelectedItem));
             if (scrollViewer.ZoomFactor - 0.1f > scrollViewer.MinZoomFactor)
-            {
                 scrollViewer.ZoomToFactor(scrollViewer.ZoomFactor - 0.1f);
-            }
         }
+        public async void Save()
+        {
+            var name = Path.GetFileName(Items[flipView.SelectedIndex].SourceUri.ToString());
+            var file = await KnownFolders.SavedPictures.CreateFileAsync(name);
+            using (var client = new HttpClient())
+            using (var fstream = await file.OpenStreamForWriteAsync())
+            using (var stream = await client.GetStreamAsync(Items[flipView.SelectedIndex].SourceUri))
+                await stream.CopyToAsync(fstream);
+        }
+
         public void ZoomIn()
         {
             if (flipView?.SelectedItem == null && !(flipView.SelectedItem　as ImageModel).IsLoading)
                 return;
             var scrollViewer = MoreVisualTreeHelper.GetObject<ScrollViewer>(flipView.ItemContainerGenerator.ContainerFromItem(flipView.SelectedItem));
             if (scrollViewer.ZoomFactor + 0.1f < scrollViewer.MaxZoomFactor)
-            {
                 scrollViewer.ZoomToFactor(scrollViewer.ZoomFactor + 0.1f);
-            }
         }
 
         private Point _prevPoint;

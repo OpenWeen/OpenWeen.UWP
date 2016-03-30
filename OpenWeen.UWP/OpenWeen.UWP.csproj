@@ -122,6 +122,9 @@
     <Compile Include="Common\Controls\WeiboCommentList.xaml.cs">
       <DependentUpon>WeiboCommentList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\Controls\WeiboDetailRepostList.xaml.cs">
+      <DependentUpon>WeiboDetailRepostList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Common\Controls\WeiboImageList.xaml.cs">
       <DependentUpon>WeiboImageList.xaml</DependentUpon>
     </Compile>
@@ -158,7 +161,11 @@
     <Compile Include="ViewModel\UserTimelineViewModel.cs" />
     <Compile Include="ViewModel\UserViewModelBase.cs" />
     <Compile Include="ViewModel\MainPageViewModel.cs" />
+    <Compile Include="ViewModel\WeiboCommentViewModel.cs" />
+    <Compile Include="ViewModel\WeiboDetailListBase.cs" />
+    <Compile Include="ViewModel\WeiboDetailViewModel.cs" />
     <Compile Include="ViewModel\WeiboListViewModelBase.cs" />
+    <Compile Include="ViewModel\WeiboRepostViewModel.cs" />
     <Compile Include="View\AboutPage.xaml.cs">
       <DependentUpon>AboutPage.xaml</DependentUpon>
     </Compile>
@@ -180,6 +187,9 @@
     </Compile>
     <Compile Include="View\UserPage.xaml.cs">
       <DependentUpon>UserPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\WeiboDetailPage.xaml.cs">
+      <DependentUpon>WeiboDetailPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -216,6 +226,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Common\Controls\WeiboCommentList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Common\Controls\WeiboDetailRepostList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -256,6 +270,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\UserPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\WeiboDetailPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

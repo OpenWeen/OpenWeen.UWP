@@ -57,7 +57,7 @@
             <Button Margin="8,0,0,0" Grid.Column="2" Click="{x:Bind UserPageVM.ChangeFollow}" Visibility="{x:Bind UserPageVM.IsMe,Mode=OneWay,Converter={StaticResource BoolToVisibilityConverter},ConverterParameter=true}" HorizontalAlignment="Right" VerticalAlignment="Center" Content="{x:Bind UserPageVM.Follow.Text,Mode=OneWay}"/>
         </Grid>
         <Grid Grid.Row="3">
-            <controls:WeiboList Favor="{x:Bind ActionModel.Favor}" PictureClick="{x:Bind ActionModel.PictureClick}" UserClick="{x:Bind ActionModel.UserClick}" Comment="{x:Bind ActionModel.Comment}" Repost="{x:Bind ActionModel.Repost}" ItemsSource="{x:Bind UserPageVM.UserTimeline.WeiboList,Mode=OneWay}"/>
+            <controls:WeiboList ItemClick="{x:Bind ActionModel.ItemClick}" TopicClick="{x:Bind ActionModel.TopicClick}" Favor="{x:Bind ActionModel.Favor}" PictureClick="{x:Bind ActionModel.PictureClick}" UserClick="{x:Bind ActionModel.UserClick}" Comment="{x:Bind ActionModel.Comment}" Repost="{x:Bind ActionModel.Repost}" ItemsSource="{x:Bind UserPageVM.UserTimeline.WeiboList,Mode=OneWay}"/>
         </Grid>
     </Grid>
 </Page>

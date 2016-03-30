@@ -25,10 +25,10 @@ namespace OpenWeen.UWP.Common.Controls
         public event EventHandler<WeiboUserClickEventArgs> UserClick;
         public event EventHandler<WeiboItemClickEventArgs> ItemClick;
         public event EventHandler<WeiboPictureClickEventArgs> PictureClick;
+        public event EventHandler<WeiboTopicClickEventArgs> TopicClick;
         public event EventHandler<WeiboActionEventArgs> Repost;
         public event EventHandler<WeiboActionEventArgs> Comment;
         public event EventHandler<WeiboActionEventArgs> Favor;
-        public event EventHandler<WeiboTopicClickEventArgs> TopicClick;
 
         public event EventHandler LoadMore;
 

@@ -34,7 +34,6 @@ namespace OpenWeen.UWP.ViewModel
             new HeaderModel() { Icon = Symbol.Comment, Text = "评论" },
             new HeaderModel() { Icon = Symbol.Comment, Text = "@的评论" },
         };
-        public int SelectedIndex { get; set; }
         private UnReadModel _prevUnread;
 
 
@@ -101,7 +100,7 @@ namespace OpenWeen.UWP.ViewModel
 
         public async void RefreshWithoutGetUnreadCount()
         {
-            switch (SelectedIndex)
+            switch (Header.FindIndex(item => item.IsActive))
             {
                 case 0:
                     await Timeline.Refresh();

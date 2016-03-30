@@ -10,11 +10,13 @@ namespace OpenWeen.UWP.ViewModel
     public class MentionViewModel : WeiboListViewModelBase<MessageModel>
     {
         protected override async Task<IEnumerable<MessageModel>> LoadMoreOverride() => (await Core.Api.Statuses.Mentions.GetMentions(page: _pageCount++)).Statuses;
-
-        protected override async Task<IEnumerable<MessageModel>> RefreshOverride()
+        
+        protected override async Task<Tuple<int, List<MessageModel>>> RefreshOverride()
         {
             await Core.Api.Remind.ClearUnRead(Core.Api.RemindType.MentionStatus);
-            return (await Core.Api.Statuses.Mentions.GetMentions(page: _pageCount++)).Statuses;
+            var item = await Core.Api.Statuses.Mentions.GetMentions(page: _pageCount++);
+            return Tuple.Create(item.TotalNumber, item.Statuses);
+
         }
     }
 }

@@ -11,6 +11,7 @@
     mc:Ignorable="d"
     >
     <Page.Resources>
+        <x:Double x:Key="UserImageSize">32</x:Double>
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -55,7 +56,7 @@
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Ellipse Tapped="Ellipse_Tapped" DataContext="{x:Bind MainVM.User}" Width="48" Height="48">
+            <Ellipse Tapped="Ellipse_Tapped" DataContext="{x:Bind MainVM.User}" Width="{StaticResource UserImageSize}" Height="{StaticResource UserImageSize}" Margin="8">
                 <Ellipse.Fill>
                     <ImageBrush ImageSource="{x:Bind MainVM.User.ProfileImageUrl,Mode=OneWay}"/>
                 </Ellipse.Fill>
@@ -74,34 +75,34 @@
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Ellipse HorizontalAlignment="Left" Width="48" Height="48">
+                        <Ellipse HorizontalAlignment="Left" Width="{StaticResource UserImageSize}" Height="{StaticResource UserImageSize}" Margin="8">
                             <Ellipse.Fill>
                                 <ImageBrush ImageSource="{x:Bind MainVM.User.ProfileImageUrl,Mode=OneWay}"/>
                             </Ellipse.Fill>
                         </Ellipse>
-                        <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{x:Bind MainVM.User.ScreenName,Mode=OneWay}"/>
+                        <TextBlock TextWrapping="Wrap" MaxLines="2" TextTrimming="CharacterEllipsis" Grid.Column="1" VerticalAlignment="Center" Text="{x:Bind MainVM.User.ScreenName,Mode=OneWay}"/>
                     </Grid>
                     <controls:SplitViewPaneList Refresh="{x:Bind MainVM.RefreshWithoutGetUnreadCount}" Grid.Row="1" BackToTop="{x:Bind BackTop}" SelectedIndex="{Binding ElementName=pivot,Path=SelectedIndex,Mode=TwoWay}" ItemsSource="{x:Bind MainVM.Header}"/>
                 </Grid>
             </SplitView.Pane>
             <SplitView.Content>
-                <Pivot SelectedIndex="{x:Bind MainVM.SelectedIndex,Mode=TwoWay}" x:Name="pivot" Style="{StaticResource PiovtWithoutHeaderStyle}">
+                <Pivot x:Name="pivot" Style="{StaticResource PiovtWithoutHeaderStyle}">
                     <Pivot.ItemContainerStyle>
                         <Style TargetType="PivotItem">
                             <Setter Property="Margin" Value="0"/>
                         </Style>
                     </Pivot.ItemContainerStyle>
                     <PivotItem>
-                        <controls:WeiboList LoadMore="{x:Bind MainVM.Timeline.LoadMore}" Repost="{x:Bind ActionModel.Repost}" Comment="{x:Bind ActionModel.Comment}" ItemClick="WeiboList_ItemClick" UserClick="{x:Bind ActionModel.UserClick}" PictureClick="{x:Bind ActionModel.PictureClick}" TopicClick="WeiboList_TopicClick" Favor="{x:Bind ActionModel.Favor}" ItemsSource="{x:Bind MainVM.Timeline.WeiboList,Mode=OneWay}"/>
+                        <controls:WeiboList LoadMore="{x:Bind MainVM.Timeline.LoadMore}" Repost="{x:Bind ActionModel.Repost}" Comment="{x:Bind ActionModel.Comment}" ItemClick="{x:Bind ActionModel.ItemClick}" UserClick="{x:Bind ActionModel.UserClick}" PictureClick="{x:Bind ActionModel.PictureClick}" TopicClick="{x:Bind ActionModel.TopicClick}" Favor="{x:Bind ActionModel.Favor}" ItemsSource="{x:Bind MainVM.Timeline.WeiboList,Mode=OneWay}"/>
                     </PivotItem>
                     <PivotItem>
-                        <controls:WeiboList LoadMore="{x:Bind MainVM.Mention.LoadMore}" Repost="{x:Bind ActionModel.Repost}" Comment="{x:Bind ActionModel.Comment}" ItemClick="WeiboList_ItemClick" UserClick="{x:Bind ActionModel.UserClick}" PictureClick="{x:Bind ActionModel.PictureClick}" TopicClick="WeiboList_TopicClick" Favor="{x:Bind ActionModel.Favor}" ItemsSource="{x:Bind MainVM.Mention.WeiboList,Mode=OneWay}"/>
+                        <controls:WeiboList LoadMore="{x:Bind MainVM.Mention.LoadMore}" Repost="{x:Bind ActionModel.Repost}" Comment="{x:Bind ActionModel.Comment}" ItemClick="{x:Bind ActionModel.ItemClick}" UserClick="{x:Bind ActionModel.UserClick}" PictureClick="{x:Bind ActionModel.PictureClick}" TopicClick="{x:Bind ActionModel.TopicClick}" Favor="{x:Bind ActionModel.Favor}" ItemsSource="{x:Bind MainVM.Mention.WeiboList,Mode=OneWay}"/>
                     </PivotItem>
                     <PivotItem>
-                        <controls:WeiboCommentList LoadMore="{x:Bind MainVM.Comment.LoadMore}" UserClick="{x:Bind ActionModel.UserClick}" ItemClick="WeiboList_ItemClick" Comment="{x:Bind ActionModel.Comment}" ItemsSource="{x:Bind MainVM.Comment.WeiboList,Mode=OneWay}"/>
+                        <controls:WeiboCommentList LoadMore="{x:Bind MainVM.Comment.LoadMore}" UserClick="{x:Bind ActionModel.UserClick}" ItemClick="{x:Bind ActionModel.ItemClick}" Comment="{x:Bind ActionModel.Comment}" ItemsSource="{x:Bind MainVM.Comment.WeiboList,Mode=OneWay}"/>
                     </PivotItem>
                     <PivotItem>
-                        <controls:WeiboCommentList LoadMore="{x:Bind MainVM.CommentMention.LoadMore}" UserClick="{x:Bind ActionModel.UserClick}" ItemClick="WeiboList_ItemClick" Comment="{x:Bind ActionModel.Comment}" ItemsSource="{x:Bind MainVM.CommentMention.WeiboList,Mode=OneWay}"/>
+                        <controls:WeiboCommentList LoadMore="{x:Bind MainVM.CommentMention.LoadMore}" UserClick="{x:Bind ActionModel.UserClick}" ItemClick="{x:Bind ActionModel.ItemClick}" Comment="{x:Bind ActionModel.Comment}" ItemsSource="{x:Bind MainVM.CommentMention.WeiboList,Mode=OneWay}"/>
                     </PivotItem>
                 </Pivot>
             </SplitView.Content>

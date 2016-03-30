@@ -1,0 +1,85 @@
+﻿<Page
+    x:Class="OpenWeen.UWP.View.WeiboDetailPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:OpenWeen.UWP.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:OpenWeen.UWP.Common.Controls"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Padding="8" Background="{StaticResource AppTheme}" RequestedTheme="Dark"  Grid.ColumnSpan="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="8"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Ellipse DataContext="{x:Bind WeiboDetailVM.Item.User}" Width="50" Height="50">
+                    <Ellipse.Fill>
+                        <ImageBrush ImageSource="{x:Bind WeiboDetailVM.Item.User.ProfileImageUrl}"/>
+                    </Ellipse.Fill>
+                </Ellipse>
+                <Grid Grid.Column="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock DataContext="{x:Bind WeiboDetailVM.Item.User}" Style="{ThemeResource BodyTextBlockStyle}" Padding="8,4" Text="{x:Bind WeiboDetailVM.Item.User.ScreenName}" FontWeight="Bold"/>
+                    <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Foreground="LightGray" Grid.Row="1" Padding="8,4" Text="{x:Bind WeiboDetailVM.Item.CreateTime,Converter={StaticResource TimeConverter}}"/>
+                </Grid>
+            </Grid>
+            <Grid Grid.Column="2" Grid.Row="1" Padding="8,4,8,4">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <controls:WeiboImageList PictureClick="WeiboImageList_PictureClick" Visibility="{x:Bind WeiboDetailVM.Item.PicUrls,Converter={StaticResource NullToVisibilityConverter}}" ItemsSource="{x:Bind WeiboDetailVM.Item.PicUrls}"/>
+                <controls:WeiboTextBlock UserClick="{x:Bind ActionModel.UserClick}" TopicClick="{x:Bind ActionModel.TopicClick}" Grid.Row="1" Text="{x:Bind WeiboDetailVM.Item.Text}"/>
+            </Grid>
+            <Grid DataContext="{x:Bind WeiboDetailVM.Item.RetweetedStatus}" Margin="8,4" Padding="8,4" Grid.Column="2" BorderBrush="LightGray" Grid.Row="2" Visibility="{x:Bind WeiboDetailVM.Item.RetweetedStatus,Converter={StaticResource NullToVisibilityConverter}}" BorderThickness="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock DataContext="{x:Bind WeiboDetailVM.Item.RetweetedStatus.User}" Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind WeiboDetailVM.Item.RetweetedStatus.User.ScreenName}" FontWeight="Bold"/>
+                <controls:WeiboImageList PictureClick="WeiboImageList_PictureClick" Grid.Row="1" Visibility="{x:Bind WeiboDetailVM.Item.RetweetedStatus.PicUrls,Converter={StaticResource NullToVisibilityConverter}}" ItemsSource="{x:Bind WeiboDetailVM.Item.RetweetedStatus.PicUrls}"/>
+                <controls:WeiboTextBlock UserClick="{x:Bind ActionModel.UserClick}" TopicClick="{x:Bind ActionModel.TopicClick}"  Grid.Row="2" Text="{x:Bind WeiboDetailVM.Item.RetweetedStatus.Text}"/>
+            </Grid>
+            <Grid Padding="8,4" Grid.Column="2" Grid.Row="3">
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon Tapped="Reshare_Tapped" Foreground="LightGray" Symbol="ReShare"/>
+                    <TextBlock Foreground="DarkGray" Padding="8,0,12,0" Text="{x:Bind WeiboDetailVM.Item.RepostsCount}"/>
+                    <SymbolIcon Tapped="Comment_Tapped" Foreground="LightGray" Symbol="Comment"/>
+                    <TextBlock Foreground="DarkGray" Padding="8,0,12,0" Text="{x:Bind WeiboDetailVM.Item.CommentsCount}"/>
+                    <SymbolIcon x:Name="FavorIcon" Tapped="Favor_Tapped" Foreground="{x:Bind WeiboDetailVM.Item.Favorited,Mode=OneWay,Converter={StaticResource FavorToColorConverter}}" Symbol="Favorite"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+        <Pivot Grid.Row="1">
+            <PivotItem Header="转发">
+                <controls:WeiboDetailRepostList LoadMore="{x:Bind WeiboDetailVM.Repost.LoadMore}" UserClick="{x:Bind ActionModel.UserClick}" ItemsSource="{x:Bind WeiboDetailVM.Repost.WeiboList,Mode=OneWay}"/>
+            </PivotItem>
+            <PivotItem Header="评论">
+                <controls:WeiboDetailRepostList LoadMore="{x:Bind WeiboDetailVM.Comment.LoadMore}" UserClick="{x:Bind ActionModel.UserClick}" ItemsSource="{x:Bind WeiboDetailVM.Comment.WeiboList,Mode=OneWay}"/>
+            </PivotItem>
+        </Pivot>
+    </Grid>
+</Page>

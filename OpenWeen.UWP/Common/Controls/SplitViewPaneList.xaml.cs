@@ -48,12 +48,12 @@ namespace OpenWeen.UWP.Common.Controls
             try
             {
                 ItemsSource[newValue].IsActive = true;
+                ItemsSource[oldValue].IsActive = false;
                 if (ItemsSource[newValue].UnreadCount > 0)
                 {
                     ItemsSource[newValue].UnreadCount = 0;
                     Refresh?.Invoke(this, new EventArgs());
                 }
-                ItemsSource[oldValue].IsActive = false;
             }
             catch { }
         }

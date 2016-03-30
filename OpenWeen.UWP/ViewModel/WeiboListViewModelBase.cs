@@ -19,6 +19,8 @@ namespace OpenWeen.UWP.ViewModel
         public ObservableCollection<T> WeiboList { get; private set; } = new ObservableCollection<T>();
         protected int _pageCount = 1;
         private bool _isLoading;
+        private bool _hasMore => WeiboList.Count < _totalNumber;
+        private int _totalNumber = 0;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -30,13 +32,10 @@ namespace OpenWeen.UWP.ViewModel
             try
             {
                 _pageCount = 1;
-                WeiboList = new ObservableCollection<T>((await RefreshOverride()));
+                var item = await RefreshOverride();
+                WeiboList = new ObservableCollection<T>((item.Item2));
+                _totalNumber = item.Item1;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WeiboList)));
-            }
-            catch (NullReferenceException e)
-            {
-                await new MessageDialog(e.Message + e.StackTrace).ShowAsync();
-                throw;
             }
             catch (Exception e) when (e is HttpRequestException || e is WebException)
             {
@@ -51,7 +50,7 @@ namespace OpenWeen.UWP.ViewModel
 
         public async Task LoadMore()
         {
-            if (_isLoading)
+            if (_isLoading || !_hasMore)
                 return;
             _isLoading = true;
             try
@@ -69,7 +68,7 @@ namespace OpenWeen.UWP.ViewModel
             _isLoading = false;
         }
 
-
+        
         private async void OnWebException()
         {
             await new MessageDialog("网络错误").ShowAsync();
@@ -77,7 +76,7 @@ namespace OpenWeen.UWP.ViewModel
 
         protected abstract Task<IEnumerable<T>> LoadMoreOverride();
 
-        protected abstract Task<IEnumerable<T>> RefreshOverride();
+        protected abstract Task<Tuple<int,List<T>>> RefreshOverride();
         
     }
 }
