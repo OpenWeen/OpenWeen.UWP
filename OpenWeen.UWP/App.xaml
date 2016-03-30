@@ -210,6 +210,7 @@
         <converter:FavorToColorConverter x:Key="FavorToColorConverter"/>
         <converter:UnreadCountToVisibilityConverter x:Key="UnreadCountToVisibilityConverter"/>
         <SolidColorBrush x:Key="AppTheme" Color="#FF327AFF"/>
+        <x:Double x:Key="PaneWidth">150</x:Double>
         <Style x:Key="PivotWithHeaderBackgroundStyle" TargetType="Pivot">
             <Setter Property="Margin" Value="0"/>
             <Setter Property="Padding" Value="0"/>
@@ -417,6 +418,23 @@
             </Setter>
         </Style>
 
+        <Style x:Key="AppBarButtonHorizonLabelStyle" TargetType="AppBarButton">
+            <Setter Property="MinWidth" Value="150"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="AppBarButton">
+                        <Grid x:Name="Root" Background="{TemplateBinding Background}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <ContentPresenter Width="48" Height="48"  x:Name="Content" AutomationProperties.AccessibilityView="Raw" Content="{TemplateBinding Icon}" Foreground="{TemplateBinding Foreground}"/>
+                            <TextBlock x:Name="TextLabel" Text="{TemplateBinding Label}" VerticalAlignment="Center" Grid.Column="1" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
     </Application.Resources>
 </Application>

@@ -12,7 +12,7 @@
     d:DesignWidth="400">
     <ItemsControl.ItemTemplate>
         <DataTemplate x:DataType="statusmodel:BaseModel">
-            <Grid Visibility="{x:Bind Converter={StaticResource BlockToVisibilityConverter}}" Tapped="Grid_Tapped" Margin="8">
+            <Grid BorderBrush="LightGray" BorderThickness="0,0,0,1" Visibility="{x:Bind Converter={StaticResource BlockToVisibilityConverter}}" Tapped="Grid_Tapped" Margin="8">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>

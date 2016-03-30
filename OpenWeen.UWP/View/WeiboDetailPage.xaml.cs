@@ -1,4 +1,7 @@
-﻿using OpenWeen.UWP.Model;
+﻿using OpenWeen.Core.Model.Status;
+using OpenWeen.Core.Model.User;
+using OpenWeen.UWP.Common.Controls.Events;
+using OpenWeen.UWP.Model;
 using OpenWeen.UWP.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -37,23 +40,38 @@ namespace OpenWeen.UWP.View
         }
         private void Reshare_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            ActionModel.Repost(sender, new Common.Controls.Events.WeiboActionEventArgs(WeiboDetailVM.Item));
+            ActionModel.Repost(sender, new WeiboActionEventArgs(WeiboDetailVM.Item));
         }
 
         private void Comment_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            ActionModel.Comment(sender, new Common.Controls.Events.WeiboActionEventArgs(WeiboDetailVM.Item));
+            ActionModel.Comment(sender, new WeiboActionEventArgs(WeiboDetailVM.Item));
         }
 
-        private void Favor_Tapped(object sender, TappedRoutedEventArgs e)
+        private async void Favor_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            
+            WeiboDetailVM.Item.Favorited = await ActionModel.FavorAndChangeSymbolIcon(WeiboDetailVM.Item, FavorIcon);
         }
 
-        private void WeiboImageList_PictureClick(object sender, Common.Controls.Events.WeiboPictureClickEventArgs e)
+        private void WeiboImageList_PictureClick(object sender, WeiboPictureClickEventArgs e)
         {
             e.DataContext = WeiboDetailVM.Item;
             ActionModel.PictureClick(sender, e);
+        }
+
+        private void Grid_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var context = (e.OriginalSource as FrameworkElement).DataContext;
+            if (context is UserModel)
+            {
+                e.Handled = true;
+                ActionModel.UserClick(this, new WeiboUserClickEventArgs((context as UserModel).ID));
+            }
+            else if (context is MessageModel)
+            {
+                e.Handled = true;
+                ActionModel.ItemClick(this, new WeiboItemClickEventArgs(context as MessageModel));
+            }
         }
     }
 }

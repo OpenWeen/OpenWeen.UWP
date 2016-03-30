@@ -8,8 +8,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Popups;
 
 namespace OpenWeen.UWP.ViewModel
 {
@@ -47,17 +49,24 @@ namespace OpenWeen.UWP.ViewModel
 
         private async void Init()
         {
-            if (UidOrUserName is string)
+            try
             {
-                User = await Core.Api.User.User.GetUser(UidOrUserName as string);
+                if (UidOrUserName is string)
+                {
+                    User = await Core.Api.User.User.GetUser(UidOrUserName as string);
+                }
+                else if (UidOrUserName is long)
+                {
+                    User = await Core.Api.User.User.GetUser((long)UidOrUserName);
+                }
+                else
+                {
+                    throw new ArgumentException("parameter must be string or long");
+                }
             }
-            else if(UidOrUserName is long)
+            catch (WebException)
             {
-                User = await Core.Api.User.User.GetUser((long)UidOrUserName);
-            }
-            else
-            {
-                throw new ArgumentException("parameter must be string or long");
+                await new MessageDialog("无效的用户").ShowAsync();
             }
             //Fuck weibo does not weico to check the block state
             //IsBlocked = await Core.Api.Blocks.IsBlocked(User.ID);

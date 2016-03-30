@@ -59,17 +59,22 @@ namespace OpenWeen.UWP.Model
             var favorIcon = MoreVisualTreeHelper.GetObjectByName<SymbolIcon>(list.ContainerFromItem(item), "FavorIcon");
             try
             {
-                var state = item.Favorited ?
-                    (await Core.Api.Favorites.RemoveFavor(item.ID)).Status.Favorited :
-                    (await Core.Api.Favorites.AddFavor(item.ID)).Status.Favorited;
-                (list.ItemFromContainer(list.ContainerFromItem(item)) as MessageModel).Favorited = state;
-                favorIcon.Foreground = state ? new SolidColorBrush(Colors.Red) : new SolidColorBrush(Colors.LightGray);
+                (list.ItemFromContainer(list.ContainerFromItem(item)) as MessageModel).Favorited = await FavorAndChangeSymbolIcon(item, favorIcon);
             }
             catch (Exception ex) when (ex is HttpRequestException || ex is WebException)
             {
 
             }
             _isFavoring = false;
+        }
+
+        internal async Task<bool> FavorAndChangeSymbolIcon(MessageModel item, SymbolIcon favorIcon)
+        {
+            var state = item.Favorited ?
+                (await Core.Api.Favorites.RemoveFavor(item.ID)).Status.Favorited :
+                (await Core.Api.Favorites.AddFavor(item.ID)).Status.Favorited;
+            favorIcon.Foreground = state ? new SolidColorBrush(Colors.Red) : new SolidColorBrush(Colors.LightGray);
+            return state;
         }
 
         public async void PictureClick(object sender, WeiboPictureClickEventArgs e)

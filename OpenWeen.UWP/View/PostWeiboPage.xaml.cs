@@ -62,7 +62,7 @@ namespace OpenWeen.UWP.View
                 richEditBox.Document.SetText(Windows.UI.Text.TextSetOptions.None, value);
             }
         }
-        public List<IGrouping<string, EmotionModel>> Emojis => StaticResource.Emotions.GroupBy(item => item.Category).ToList();
+        public List<IGrouping<string, EmotionModel>> Emojis => StaticResource.Emotions.GroupBy(item => string.IsNullOrEmpty(item.Category) ? "表情" : item.Category).ToList();
 
         public PostWeiboPage()
         {

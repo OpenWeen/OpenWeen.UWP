@@ -8,12 +8,10 @@
     mc:Ignorable="d"
     VirtualizingStackPanel.VirtualizationMode="Recycling"
     xmlns:statusmodel="using:OpenWeen.Core.Model.Status"
-    xmlns:controls="using:OpenWeen.UWP.Common.Controls"
-    d:DesignHeight="300"
-    d:DesignWidth="400">
+    xmlns:controls="using:OpenWeen.UWP.Common.Controls">
     <ItemsControl.ItemTemplate>
         <DataTemplate x:DataType="statusmodel:MessageModel">
-            <Grid Visibility="{x:Bind Converter={StaticResource BlockToVisibilityConverter}}" Tapped="Grid_Tapped" Margin="8">
+            <Grid BorderBrush="LightGray" Visibility="{x:Bind Converter={StaticResource BlockToVisibilityConverter}}" Tapped="Grid_Tapped" Margin="8" BorderThickness="0,0,0,1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>

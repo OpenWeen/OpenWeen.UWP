@@ -24,6 +24,7 @@
                     <VisualState.Setters>
                         <Setter Target="pivotHeader.Visibility" Value="Visible"/>
                         <Setter Target="splitView.IsPaneOpen" Value="False"/>
+                        <Setter Target="BottomCommandBar.Visibility" Value="Visible"/>
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState>
@@ -34,6 +35,7 @@
                         <Setter Target="splitView.DisplayMode" Value="CompactInline"/>
                         <Setter Target="pivotHeader.Visibility" Value="Collapsed"/>
                         <Setter Target="splitView.IsPaneOpen" Value="False"/>
+                        <Setter Target="BottomCommandBar.Visibility" Value="Collapsed"/>
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState>
@@ -43,10 +45,12 @@
                     <VisualState.Setters>
                         <Setter Target="pivotHeader.Visibility" Value="Collapsed"/>
                         <Setter Target="splitView.IsPaneOpen" Value="True"/>
+                        <Setter Target="BottomCommandBar.Visibility" Value="Collapsed"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
@@ -63,12 +67,14 @@
             </Ellipse>
             <controls:PivotHeader Refresh="{x:Bind MainVM.RefreshWithoutGetUnreadCount}" Grid.Column="1" BackToTop="{x:Bind BackTop}" SelectedIndex="{Binding ElementName=pivot,Path=SelectedIndex,Mode=TwoWay}" ItemsSource="{x:Bind MainVM.Header}"/>
         </Grid>
-        <SplitView x:Name="splitView" Grid.Row="1" DisplayMode="Inline" OpenPaneLength="150">
+        <SplitView x:Name="splitView" Grid.Row="1" DisplayMode="Inline" OpenPaneLength="{StaticResource PaneWidth}">
             <SplitView.Pane>
                 <Grid Background="{StaticResource AppTheme}" RequestedTheme="Dark">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     <Grid Tapped="Ellipse_Tapped" DataContext="{x:Bind MainVM.User}">
                         <Grid.ColumnDefinitions>
@@ -83,6 +89,11 @@
                         <TextBlock TextWrapping="Wrap" MaxLines="2" TextTrimming="CharacterEllipsis" Grid.Column="1" VerticalAlignment="Center" Text="{x:Bind MainVM.User.ScreenName,Mode=OneWay}"/>
                     </Grid>
                     <controls:SplitViewPaneList Refresh="{x:Bind MainVM.RefreshWithoutGetUnreadCount}" Grid.Row="1" BackToTop="{x:Bind BackTop}" SelectedIndex="{Binding ElementName=pivot,Path=SelectedIndex,Mode=TwoWay}" ItemsSource="{x:Bind MainVM.Header}"/>
+                    <StackPanel Orientation="Vertical" Grid.Row="2">
+                        <AppBarButton Click="{x:Bind MainVM.Refresh}" Icon="Refresh" Label="刷新" Style="{StaticResource AppBarButtonHorizonLabelStyle}" />
+                        <AppBarButton Click="AppBarButton_Click" Icon="Edit" Style="{StaticResource AppBarButtonHorizonLabelStyle}" Label="发微博" />
+                        <AppBarButton Click="AppBarButton_Click_1" Icon="Setting" Style="{StaticResource AppBarButtonHorizonLabelStyle}" Label="设置" />
+                    </StackPanel>
                 </Grid>
             </SplitView.Pane>
             <SplitView.Content>
@@ -109,7 +120,7 @@
         </SplitView>
     </Grid>
     <Page.BottomAppBar>
-        <CommandBar>
+        <CommandBar x:Name="BottomCommandBar">
             <AppBarButton Click="{x:Bind MainVM.Refresh}" Icon="Refresh" Label="刷新"/>
             <AppBarButton Click="AppBarButton_Click" Icon="Edit" Label="发微博"/>
             <CommandBar.SecondaryCommands>

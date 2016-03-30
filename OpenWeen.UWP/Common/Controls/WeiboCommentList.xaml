@@ -10,7 +10,7 @@
 
     <ItemsControl.ItemTemplate>
         <DataTemplate x:DataType="commentModel:CommentModel">
-            <Grid Tapped="Grid_Tapped" Margin="8">
+            <Grid BorderBrush="LightGray" BorderThickness="0,0,0,1" Tapped="Grid_Tapped" Margin="8">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
