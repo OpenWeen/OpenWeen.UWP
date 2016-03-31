@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using Windows.UI.Xaml.Controls;
 
 namespace OpenWeen.UWP.Model
@@ -38,6 +33,5 @@ namespace OpenWeen.UWP.Model
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Opacity)));
             }
         }
-
     }
 }

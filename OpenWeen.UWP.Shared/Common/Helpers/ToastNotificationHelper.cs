@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Windows.UI.Notifications;
+﻿using Windows.UI.Notifications;
 
 namespace OpenWeen.UWP.Shared.Common.Helpers
 {

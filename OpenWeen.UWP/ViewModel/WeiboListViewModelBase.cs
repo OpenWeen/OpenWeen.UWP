@@ -1,15 +1,12 @@
-﻿using OpenWeen.Core.Model;
-using OpenWeen.Core.Model.Status;
-using OpenWeen.UWP.Common.Controls.Events;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
+using OpenWeen.Core.Model;
 using Windows.UI.Popups;
 
 namespace OpenWeen.UWP.ViewModel
@@ -46,7 +43,6 @@ namespace OpenWeen.UWP.ViewModel
             }
             _isLoading = false;
         }
-        
 
         public async Task LoadMore()
         {
@@ -68,7 +64,6 @@ namespace OpenWeen.UWP.ViewModel
             _isLoading = false;
         }
 
-        
         private async void OnWebException()
         {
             await new MessageDialog("网络错误").ShowAsync();
@@ -76,7 +71,6 @@ namespace OpenWeen.UWP.ViewModel
 
         protected abstract Task<IEnumerable<T>> LoadMoreOverride();
 
-        protected abstract Task<Tuple<int,List<T>>> RefreshOverride();
-        
+        protected abstract Task<Tuple<int, List<T>>> RefreshOverride();
     }
 }

@@ -1,26 +1,16 @@
-﻿using OpenWeen.Core.Helper;
-using OpenWeen.UWP.Common;
-using OpenWeen.UWP.Common.Helpers;
-using OpenWeen.UWP.Shared.Common;
-using OpenWeen.UWP.Shared.Common.Helpers;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using OpenWeen.Core.Helper;
+using OpenWeen.UWP.Common;
+using OpenWeen.UWP.Shared.Common;
+using OpenWeen.UWP.Shared.Common.Helpers;
 using Windows.Security.Authentication.Web;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // “空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=234238 上提供
 
@@ -74,6 +64,7 @@ namespace OpenWeen.UWP.View
                     Core.Api.Entity.AccessToken = token;
                     await InitEmotion();
                     await InitUid();
+
                     Frame.Navigate(typeof(MainPage));
                     while (Frame.BackStack.Count > 0)
                     {
@@ -90,6 +81,7 @@ namespace OpenWeen.UWP.View
                 //user can not connect to the auth page and close the auth page
             }
         }
+
         private async Task InitUid()
         {
             StaticResource.Uid = long.Parse(await Core.Api.User.Account.GetUid());

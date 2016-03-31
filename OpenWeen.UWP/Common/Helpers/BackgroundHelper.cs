@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
 
@@ -26,6 +25,7 @@ namespace OpenWeen.UWP.Common.Helpers
                 case BackgroundAccessStatus.AllowedWithAlwaysOnRealTimeConnectivity:
                 case BackgroundAccessStatus.AllowedMayUseActiveRealTimeConnectivity:
                     break;
+
                 case BackgroundAccessStatus.Unspecified:
                 case BackgroundAccessStatus.Denied:
                     return null;
@@ -48,7 +48,7 @@ namespace OpenWeen.UWP.Common.Helpers
                 foreach (var condition in conditions)
                     task.AddCondition(condition);
             }
-            
+
             return task.Register();
         }
 
@@ -61,6 +61,7 @@ namespace OpenWeen.UWP.Common.Helpers
                 case BackgroundAccessStatus.AllowedWithAlwaysOnRealTimeConnectivity:
                 case BackgroundAccessStatus.AllowedMayUseActiveRealTimeConnectivity:
                     break;
+
                 case BackgroundAccessStatus.Unspecified:
                 case BackgroundAccessStatus.Denied:
                     return false;

@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OpenWeen.UWP.Common.Extension
 {
     public static class IEnumerableExtension
     {
-        public static IEnumerable<T> Distinct<T, V>(this IEnumerable<T> source, Func<T, V> keySelector) 
+        public static IEnumerable<T> Distinct<T, V>(this IEnumerable<T> source, Func<T, V> keySelector)
             => source.Distinct(new EqualityComparer<T, V>(keySelector));
     }
+
     public class EqualityComparer<T, V> : IEqualityComparer<T>
     {
         private Func<T, V> keySelector;

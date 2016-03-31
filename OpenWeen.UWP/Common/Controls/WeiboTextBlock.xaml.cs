@@ -1,23 +1,13 @@
-﻿using OpenWeen.UWP.Common.Controls.Events;
-using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text.RegularExpressions;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using OpenWeen.UWP.Common.Controls.Events;
+using OpenWeen.UWP.Common.Extension;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Markup;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-using OpenWeen.UWP.Common.Extension;
-using System.Diagnostics;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -26,13 +16,13 @@ namespace OpenWeen.UWP.Common.Controls
     public sealed partial class WeiboTextBlock : UserControl
     {
         public event EventHandler<WeiboTopicClickEventArgs> TopicClick;
+
         public event EventHandler<WeiboUserClickEventArgs> UserClick;
 
         public WeiboTextBlock()
         {
             this.InitializeComponent();
         }
-
 
         public string Text
         {
@@ -82,6 +72,7 @@ namespace OpenWeen.UWP.Common.Controls
         }
 
         private bool CheckIsTopic(string text) => Regex.IsMatch(text, @"#[^#]+#");
+
         private bool CheckIsUserName(string text) => Regex.IsMatch(text, @"@[^,，：:\s@]+");
 
         private string ReplaceTopic(string text)

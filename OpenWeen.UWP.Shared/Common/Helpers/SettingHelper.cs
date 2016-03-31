@@ -1,18 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Storage;
 
 namespace OpenWeen.UWP.Shared.Common.Helpers
 {
     internal class SettingException : Exception
     {
-        public SettingException() { }
-        public SettingException(string message) : base(message) { }
-        public SettingException(string message, Exception inner) : base(message, inner) { }
+        public SettingException()
+        {
+        }
+
+        public SettingException(string message) : base(message)
+        {
+        }
+
+        public SettingException(string message, Exception inner) : base(message, inner)
+        {
+        }
     }
+
     internal static class SettingHelper
     {
         public static void SetSetting<T>(string settingName, T setValue)
@@ -31,7 +38,6 @@ namespace OpenWeen.UWP.Shared.Common.Helpers
             T chackValue = defaultValue;
             if (settings.Values.ContainsKey(settingName))
             {
-                
                 chackValue = (T)settings.Values[settingName];
             }
             else
@@ -59,6 +65,7 @@ namespace OpenWeen.UWP.Shared.Common.Helpers
                     case SetListSettingOption.ReplaceExisting:
                         settings.Values.Remove(settingName);
                         break;
+
                     case SetListSettingOption.FailIfExists:
                         throw new SettingException($"{settingName} already exist");
                     case SetListSettingOption.AddIfExists:
@@ -72,7 +79,6 @@ namespace OpenWeen.UWP.Shared.Common.Helpers
                 settings.Values.Add(settingName, values.ToArray());
             }
         }
-
 
         public static IEnumerable<T> GetListSetting<T>(string settingName, bool isThrowException = false)
         {
@@ -91,11 +97,11 @@ namespace OpenWeen.UWP.Shared.Common.Helpers
             return null;
         }
     }
+
     internal enum SetListSettingOption
     {
         ReplaceExisting,
         FailIfExists,
         AddIfExists
     }
-    
 }

@@ -13,8 +13,8 @@
             <PivotItem Header="屏蔽">
                 <ScrollViewer>
                     <StackPanel Orientation="Vertical">
-                        <TextBox Header="屏蔽关键词（以英文逗号分隔）" x:Name="BlockTextTB" TextWrapping="Wrap" Text="{x:Bind BlockText,Mode=TwoWay}"/>
-                        <TextBox Header="屏蔽用户（UID，以英文逗号分隔）" x:Name="BlockUserTB" TextWrapping="Wrap" Text="{x:Bind BlockUser,Mode=TwoWay}"/>
+                        <TextBox Header="屏蔽关键词（以英文逗号分隔）" x:Name="BlockTextTB" TextWrapping="Wrap" Text="{x:Bind BlockText,Mode=TwoWay}" />
+                        <TextBox Header="屏蔽用户（UID，以英文逗号分隔）" x:Name="BlockUserTB" TextWrapping="Wrap" Text="{x:Bind BlockUser,Mode=TwoWay}" />
                     </StackPanel>
                 </ScrollViewer>
             </PivotItem>

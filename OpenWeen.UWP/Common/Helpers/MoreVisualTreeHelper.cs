@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
+﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 
 namespace OpenWeen.UWP.Common.Helpers
@@ -34,7 +28,8 @@ namespace OpenWeen.UWP.Common.Helpers
             }
             return null;
         }
-        public static T GetObjectByName<T>(DependencyObject o,string name) where T : DependencyObject
+
+        public static T GetObjectByName<T>(DependencyObject o, string name) where T : DependencyObject
         {
             if (o is T && o.GetValue(FrameworkElement.NameProperty) as string == name)
             {

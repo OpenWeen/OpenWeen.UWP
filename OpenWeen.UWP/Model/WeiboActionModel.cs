@@ -1,4 +1,9 @@
-﻿using OpenWeen.Core.Helper;
+﻿using System;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
+using OpenWeen.Core.Helper;
 using OpenWeen.Core.Model.Comment;
 using OpenWeen.Core.Model.Status;
 using OpenWeen.UWP.Common.Controls;
@@ -7,13 +12,6 @@ using OpenWeen.UWP.Common.Entities;
 using OpenWeen.UWP.Common.Helpers;
 using OpenWeen.UWP.View;
 using OpenWeen.UWP.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -27,6 +25,7 @@ namespace OpenWeen.UWP.Model
         {
             (Window.Current.Content as Frame).Navigate(typeof(UserPage), new UserPageViewModel(e.UidOrUserName));
         }
+
         public void Comment(object sender, WeiboActionEventArgs e)
         {
             if (e.TargetItem is MessageModel)
@@ -40,6 +39,7 @@ namespace OpenWeen.UWP.Model
                 (Window.Current.Content as Frame).Navigate(typeof(PostWeiboPage), new ReplyCommentData(data.Status.ID, data.ID, $"回复@{data.User.ScreenName}:"));
             }
         }
+
         public void Repost(object sender, WeiboActionEventArgs e)
         {
             var item = e.TargetItem as MessageModel;
@@ -47,6 +47,7 @@ namespace OpenWeen.UWP.Model
         }
 
         private bool _isFavoring;
+
         public async void Favor(object sender, WeiboActionEventArgs e)
         {
             if (_isFavoring)
@@ -63,7 +64,6 @@ namespace OpenWeen.UWP.Model
             }
             catch (Exception ex) when (ex is HttpRequestException || ex is WebException)
             {
-
             }
             _isFavoring = false;
         }
@@ -91,7 +91,6 @@ namespace OpenWeen.UWP.Model
 
         public void TopicClick(object sender, WeiboTopicClickEventArgs e)
         {
-
         }
     }
 }

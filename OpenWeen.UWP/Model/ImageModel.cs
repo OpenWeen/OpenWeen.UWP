@@ -1,10 +1,5 @@
-﻿using ImageLib.Controls;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
+using ImageLib.Controls;
 
 namespace OpenWeen.UWP.Model
 {
@@ -12,7 +7,9 @@ namespace OpenWeen.UWP.Model
     {
         public string SourceUri { get; }
         public bool IsLoading { get; private set; } = true;
+
         public event PropertyChangedEventHandler PropertyChanged;
+
         public ImageModel(string source)
         {
             SourceUri = source;

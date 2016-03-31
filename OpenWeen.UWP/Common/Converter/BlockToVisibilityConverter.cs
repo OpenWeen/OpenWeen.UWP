@@ -1,14 +1,9 @@
-﻿using OpenWeen.Core.Model;
+﻿using System;
+using System.Linq;
 using OpenWeen.Core.Model.Comment;
 using OpenWeen.Core.Model.Status;
-using OpenWeen.UWP.Common.Helpers;
 using OpenWeen.UWP.Shared.Common;
 using OpenWeen.UWP.Shared.Common.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 
@@ -32,7 +27,7 @@ namespace OpenWeen.UWP.Common.Converter
                 var data = value as CommentModel;
                 return SettingHelper.GetListSetting<long>(SettingNames.BlockUser)?.Contains(data.User.ID) == true ||
                     (data.ReplyComment?.User?.ID != null && SettingHelper.GetListSetting<long>(SettingNames.BlockUser)?.Contains(data.ReplyComment.User.ID) == true) ||
-                    (SettingHelper.GetListSetting<string>(SettingNames.BlockText)?.Any(item => string.IsNullOrEmpty(item)? false : data.Text.Contains(item)) == true) ||
+                    (SettingHelper.GetListSetting<string>(SettingNames.BlockText)?.Any(item => string.IsNullOrEmpty(item) ? false : data.Text.Contains(item)) == true) ||
                     (data.ReplyComment?.Text != null && SettingHelper.GetListSetting<string>(SettingNames.BlockText)?.Any(item => string.IsNullOrEmpty(item) ? false : data.ReplyComment.Text.Contains(item)) == true) ?
                     Visibility.Collapsed : Visibility.Visible;
             }

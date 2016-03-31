@@ -9,17 +9,17 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid Background="{ThemeResource AppTheme}" RequestedTheme="Dark">
-            <TextBlock Text="关于" Style="{ThemeResource HeaderTextBlockStyle}" Padding="16"/>
+            <TextBlock Text="关于" Style="{ThemeResource HeaderTextBlockStyle}" Padding="16" />
         </Grid>
         <StackPanel Orientation="Vertical" Grid.Row="1" Padding="16">
-            <TextBlock Margin="4" Style="{ThemeResource SubtitleTextBlockStyle}" Text="OpenWeen是一个开源的微博客户端"/>
-            <TextBlock Margin="4" Style="{ThemeResource SubtitleTextBlockStyle}" Text="内测用户可以发送反馈来反馈"/>
-            <Button Click="Button_Click" Margin="4" Content="项目地址" HorizontalAlignment="Stretch"/>
-            <Button Click="Button_Click_1" Margin="4" Content="反馈" HorizontalAlignment="Stretch"/>
+            <TextBlock Margin="4" Style="{ThemeResource SubtitleTextBlockStyle}" Text="OpenWeen是一个开源的微博客户端" />
+            <TextBlock Margin="4" Style="{ThemeResource SubtitleTextBlockStyle}" Text="内测用户可以发送反馈来反馈" />
+            <Button Click="Button_Click" Margin="4" Content="项目地址" HorizontalAlignment="Stretch" />
+            <Button Click="Button_Click_1" Margin="4" Content="反馈" HorizontalAlignment="Stretch" />
         </StackPanel>
     </Grid>
 </Page>

@@ -11,9 +11,9 @@
 
     <Grid>
         <Canvas>
-            <Image x:Name="extendedSplashImage" Source="ms-appx:///Assets/SplashScreen.png"/>
-            <ProgressRing Foreground="White" Name="splashProgressRing" IsActive="True" Width="20" HorizontalAlignment="Center"/>
-            <TextBlock x:Name="textBlock" HorizontalAlignment="Center" Text="坐和放宽，这不需要太久"/>
+            <Image x:Name="extendedSplashImage" Source="ms-appx:///Assets/SplashScreen.png" />
+            <ProgressRing Foreground="White" Name="splashProgressRing" IsActive="True" Width="20" HorizontalAlignment="Center" />
+            <TextBlock x:Name="textBlock" HorizontalAlignment="Center" Text="坐和放宽，这不需要太久" />
         </Canvas>
     </Grid>
 </Page>

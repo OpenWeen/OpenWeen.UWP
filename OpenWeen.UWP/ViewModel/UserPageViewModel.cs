@@ -1,16 +1,12 @@
-﻿using OpenWeen.Core.Model.User;
-using OpenWeen.UWP.Common;
-using OpenWeen.UWP.Common.Helpers;
-using OpenWeen.UWP.Model;
-using OpenWeen.UWP.Shared.Common;
-using OpenWeen.UWP.Shared.Common.Helpers;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+using OpenWeen.Core.Model.User;
+using OpenWeen.UWP.Common;
+using OpenWeen.UWP.Model;
+using OpenWeen.UWP.Shared.Common;
+using OpenWeen.UWP.Shared.Common.Helpers;
 using Windows.UI.Popups;
 
 namespace OpenWeen.UWP.ViewModel
@@ -26,17 +22,19 @@ namespace OpenWeen.UWP.ViewModel
         public bool IsMe => StaticResource.Uid == User?.ID;
         public string BlockState => SettingHelper.GetListSetting<long>(SettingNames.BlockUser)?.Contains(User?.ID ?? -1) == true ? "已屏蔽" : "屏蔽";
         private bool _isLoading;
+
         public UserPageViewModel(long uid)
         {
             UidOrUserName = uid;
             Init();
         }
+
         public UserPageViewModel(string userName)
         {
             UidOrUserName = userName;
             Init();
         }
-        
+
         public UserPageViewModel(object uidOrUserName)
         {
             if (!(uidOrUserName is string || uidOrUserName is long))

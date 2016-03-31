@@ -12,68 +12,68 @@
         <DataTemplate x:DataType="commentModel:CommentModel">
             <Grid BorderBrush="LightGray" BorderThickness="0,0,0,1" Tapped="Grid_Tapped" Margin="8">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="50"/>
-                    <ColumnDefinition Width="8"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Grid Grid.ColumnSpan="3">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="50"/>
-                        <ColumnDefinition Width="8"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="8" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Ellipse DataContext="{x:Bind User}" Width="50" Height="50">
                         <Ellipse.Fill>
-                            <ImageBrush ImageSource="{x:Bind User.ProfileImageUrl}"/>
+                            <ImageBrush ImageSource="{x:Bind User.ProfileImageUrl}" />
                         </Ellipse.Fill>
                     </Ellipse>
                     <Grid Grid.Column="2">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
-                        <SymbolIcon Grid.Column="1" Tapped="Comment_Tapped" Foreground="LightGray" Symbol="Comment"/>
-                        <TextBlock DataContext="{x:Bind User}" Style="{ThemeResource BodyTextBlockStyle}" Padding="8,4" Text="{x:Bind User.ScreenName}" FontWeight="Bold"/>
-                        <TextBlock Grid.ColumnSpan="2" Style="{ThemeResource CaptionTextBlockStyle}" Foreground="LightGray" Grid.Row="1" Padding="8,4" Text="{x:Bind CreateTime,Converter={StaticResource TimeConverter}}"/>
+                        <SymbolIcon Grid.Column="1" Tapped="Comment_Tapped" Foreground="LightGray" Symbol="Comment" />
+                        <TextBlock DataContext="{x:Bind User}" Style="{ThemeResource BodyTextBlockStyle}" Padding="8,4" Text="{x:Bind User.ScreenName}" FontWeight="Bold" />
+                        <TextBlock Grid.ColumnSpan="2" Style="{ThemeResource CaptionTextBlockStyle}" Foreground="LightGray" Grid.Row="1" Padding="8,4" Text="{x:Bind CreateTime,Converter={StaticResource TimeConverter}}" />
                     </Grid>
                 </Grid>
                 <Grid Grid.Column="2" Grid.Row="1" Padding="8,4,8,4">
-                    <local:WeiboTextBlock Grid.Row="1" Text="{x:Bind Text}"/>
+                    <local:WeiboTextBlock Grid.Row="1" Text="{x:Bind Text}" />
                 </Grid>
                 <Grid MaxHeight="100" DataContext="{x:Bind Status}" Margin="8,4" Padding="8,4" Grid.Column="2" BorderBrush="LightGray" Grid.Row="2" Visibility="{x:Bind Status,Converter={StaticResource NullToVisibilityConverter}}" BorderThickness="1">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.ColumnSpan="2" Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind Status.User.ScreenName}" FontWeight="Bold"/>
-                    <Image Grid.Row="1" Source="{Binding ThumbnailPic}" Visibility="{Binding ThumbnailPic,Converter={StaticResource NullToVisibilityConverter}}" MaxHeight="50" MaxWidth="50" Margin="8"/>
-                    <local:WeiboTextBlock Grid.Column="1" Grid.Row="1" Text="{x:Bind Status.Text}"/>
+                    <TextBlock Grid.ColumnSpan="2" Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind Status.User.ScreenName}" FontWeight="Bold" />
+                    <Image Grid.Row="1" Source="{Binding ThumbnailPic}" Visibility="{Binding ThumbnailPic,Converter={StaticResource NullToVisibilityConverter}}" MaxHeight="50" MaxWidth="50" Margin="8" />
+                    <local:WeiboTextBlock Grid.Column="1" Grid.Row="1" Text="{x:Bind Status.Text}" />
                 </Grid>
             </Grid>
         </DataTemplate>
     </ItemsControl.ItemTemplate>
     <ItemsControl.ItemsPanel>
         <ItemsPanelTemplate>
-            <ItemsStackPanel  />
+            <ItemsStackPanel />
         </ItemsPanelTemplate>
     </ItemsControl.ItemsPanel>
     <ItemsControl.Template>
         <ControlTemplate TargetType="ItemsControl">
-            <ScrollViewer ViewChanging="ScrollViewer_ViewChanging" >
-                <ItemsPresenter/>
+            <ScrollViewer ViewChanging="ScrollViewer_ViewChanging">
+                <ItemsPresenter />
             </ScrollViewer>
         </ControlTemplate>
     </ItemsControl.Template>

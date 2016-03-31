@@ -1,20 +1,10 @@
-﻿using OpenWeen.Core.Model.Status;
+﻿using System;
+using OpenWeen.Core.Model.Status;
 using OpenWeen.Core.Model.User;
 using OpenWeen.UWP.Common.Controls.Events;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -23,11 +13,17 @@ namespace OpenWeen.UWP.Common.Controls
     public sealed partial class WeiboList : ItemsControl
     {
         public event EventHandler<WeiboUserClickEventArgs> UserClick;
+
         public event EventHandler<WeiboItemClickEventArgs> ItemClick;
+
         public event EventHandler<WeiboPictureClickEventArgs> PictureClick;
+
         public event EventHandler<WeiboTopicClickEventArgs> TopicClick;
+
         public event EventHandler<WeiboActionEventArgs> Repost;
+
         public event EventHandler<WeiboActionEventArgs> Comment;
+
         public event EventHandler<WeiboActionEventArgs> Favor;
 
         public event EventHandler LoadMore;
@@ -75,7 +71,6 @@ namespace OpenWeen.UWP.Common.Controls
             e.Handled = true;
             Favor?.Invoke(this, new WeiboActionEventArgs((e.OriginalSource as FrameworkElement).DataContext as MessageModel));
         }
-        
 
         private void WeiboTextBlock_UserClick(object sender, WeiboUserClickEventArgs e)
         {
@@ -86,7 +81,7 @@ namespace OpenWeen.UWP.Common.Controls
         {
             TopicClick?.Invoke(this, e);
         }
-        
+
         private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
             var scrollViewer = sender as ScrollViewer;

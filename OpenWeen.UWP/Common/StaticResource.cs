@@ -1,9 +1,5 @@
-﻿using OpenWeen.Core.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using OpenWeen.Core.Model;
 
 namespace OpenWeen.UWP.Common
 {
@@ -13,6 +9,5 @@ namespace OpenWeen.UWP.Common
         public static string EmotionPattern { get; set; }
         public static long Uid { get; set; }
         //public static event EventHandler UpdateUnreadCountTaskComplete;
-
     }
 }

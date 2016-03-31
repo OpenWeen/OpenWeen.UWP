@@ -1,9 +1,7 @@
-﻿using OpenWeen.Core.Model.Comment;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using OpenWeen.Core.Model.Comment;
 
 namespace OpenWeen.UWP.ViewModel
 {

@@ -1,10 +1,5 @@
-﻿using OpenWeen.Core.Model;
+﻿using System;
 using OpenWeen.Core.Model.Status;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OpenWeen.UWP.Common.Controls.Events
 {
@@ -14,6 +9,7 @@ namespace OpenWeen.UWP.Common.Controls.Events
         {
             ClickedPicture = clickedPicture;
         }
+
         public PictureModel ClickedPicture { get; set; }
         public MessageModel DataContext { get; set; }
     }

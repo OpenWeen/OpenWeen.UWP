@@ -1,34 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-using Windows.ApplicationModel.Activation;
-using Windows.UI.Core;
 using System.Threading.Tasks;
-using OpenWeen.UWP.Common;
-using OpenWeen.UWP.Common.Helpers;
 using ImageLib;
 using ImageLib.Cache.Memory;
-using ImageLib.Cache.Storage.CacheImpl;
-using Windows.Storage;
 using ImageLib.Cache.Storage;
+using ImageLib.Cache.Storage.CacheImpl;
 using ImageLib.Gif;
-using Windows.Storage.Streams;
-using OpenWeen.UWP.Shared.Common.Helpers;
-using OpenWeen.UWP.Shared.Common;
 using OpenWeen.UWP.BackgroundTask;
+using OpenWeen.UWP.Common;
+using OpenWeen.UWP.Common.Helpers;
+using OpenWeen.UWP.Shared.Common;
+using OpenWeen.UWP.Shared.Common.Helpers;
+using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Background;
-
+using Windows.Foundation;
+using Windows.Storage;
+using Windows.Storage.Streams;
+using Windows.UI.Core;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 
 // “空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=234238 上提供
 
@@ -66,6 +57,7 @@ namespace OpenWeen.UWP.View
             StaticResource.Emotions = (await Core.Api.Statuses.Emotions.GetEmotions()).ToList();
             StaticResource.EmotionPattern = string.Join("|", StaticResource.Emotions.Select(item => item.Value)).Replace("[", @"\[").Replace("]", @"\]");
         }
+
         private bool CheckForLogin()
         {
             try
@@ -78,35 +70,36 @@ namespace OpenWeen.UWP.View
                 return false;
             }
         }
-        void RestoreStateAsync(bool loadState)
+
+        private void RestoreStateAsync(bool loadState)
         {
             if (loadState)
             {
                 // TODO: write code to load state
             }
         }
-        void PositionImage()
+
+        private void PositionImage()
         {
             extendedSplashImage.SetValue(Canvas.LeftProperty, splashImageRect.X);
             extendedSplashImage.SetValue(Canvas.TopProperty, splashImageRect.Y);
             extendedSplashImage.Height = splashImageRect.Height;
             extendedSplashImage.Width = splashImageRect.Width;
-
         }
 
-        void PositionRing()
+        private void PositionRing()
         {
             splashProgressRing.SetValue(Canvas.LeftProperty, splashImageRect.X + (splashImageRect.Width * 0.5) - (splashProgressRing.Width * 0.5));
             splashProgressRing.SetValue(Canvas.TopProperty, (splashImageRect.Y + splashImageRect.Height + splashImageRect.Height * 0.1));
         }
 
-        void PositionTextBlock()
+        private void PositionTextBlock()
         {
             textBlock.SetValue(Canvas.LeftProperty, splashImageRect.X + (splashImageRect.Width * 0.5) - (splashProgressRing.Width * 0.5) - 145d * 0.5);
             textBlock.SetValue(Canvas.TopProperty, (splashImageRect.Y + splashImageRect.Height + splashImageRect.Height * 0.1) + 28);
         }
 
-        void ExtendedSplash_OnResize(object sender, WindowSizeChangedEventArgs e)
+        private void ExtendedSplash_OnResize(object sender, WindowSizeChangedEventArgs e)
         {
             if (splash != null)
             {
@@ -117,7 +110,7 @@ namespace OpenWeen.UWP.View
             }
         }
 
-        async void DismissedEventHandler(SplashScreen sender, object e)
+        private async void DismissedEventHandler(SplashScreen sender, object e)
         {
             dismissed = true;
 
@@ -145,7 +138,7 @@ namespace OpenWeen.UWP.View
             StaticResource.Uid = long.Parse(await Core.Api.User.Account.GetUid());
         }
 
-        void DismissExtendedSplash()
+        private void DismissExtendedSplash()
         {
             Window.Current.SizeChanged -= ExtendedSplash_OnResize;
             if (CheckForLogin())
@@ -181,5 +174,4 @@ namespace OpenWeen.UWP.View
                 SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
         }
     }
-
 }

@@ -210,3 +210,8 @@ FakesAssemblies/
 GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
+/OpenWeen.UWP/Assets
+/OpenWeen.UWP/BundleArtifacts
+/OpenWeen.UWP/Common/XamarinInsightsKey.cs
+/OpenWeen.UWP/ApplicationInsights.config
+/OpenWeen.UWP/_pkginfo.txt

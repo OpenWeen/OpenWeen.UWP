@@ -1,11 +1,6 @@
-﻿using OpenWeen.Core.Helper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using OpenWeen.Core.Helper;
 using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace OpenWeen.UWP.Common.Converter

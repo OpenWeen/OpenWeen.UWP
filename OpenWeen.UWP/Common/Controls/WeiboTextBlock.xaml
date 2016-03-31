@@ -7,6 +7,5 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
     <RichTextBlock Tapped="richTextBlock_Tapped" x:Name="richTextBlock" IsTextSelectionEnabled="False">
-        
     </RichTextBlock>
 </UserControl>

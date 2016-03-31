@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using OpenWeen.UWP.Common.Entities;
-using System.ComponentModel;
 
 namespace OpenWeen.UWP.Model
 {
     public class FollowModel : INotifyPropertyChanged
     {
         public FollowState State { get; private set; } = FollowState.None;
+
         public string Text
         {
             get
@@ -19,14 +15,19 @@ namespace OpenWeen.UWP.Model
                 {
                     case FollowState.None:
                         return "关注";
+
                     case FollowState.Following:
                         return "正在关注";
+
                     case FollowState.Followed:
                         return "被关注";
+
                     case FollowState.FollowBoth:
                         return "互相关注";
+
                     case FollowState.Bloking:
                         return "黑名单中";
+
                     default:
                         return "";
                 }

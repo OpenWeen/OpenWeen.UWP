@@ -22,7 +22,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ContentDialog">
-                        <Border x:Name="BackgroundElement" Background="{TemplateBinding Background}" FlowDirection="{TemplateBinding FlowDirection}" BorderThickness="0" BorderBrush="{ThemeResource SystemControlForegroundAccentBrush}" MaxWidth="{TemplateBinding MaxWidth}" MinWidth="{TemplateBinding MinWidth}" >
+                        <Border x:Name="BackgroundElement" Background="{TemplateBinding Background}" FlowDirection="{TemplateBinding FlowDirection}" BorderThickness="0" BorderBrush="{ThemeResource SystemControlForegroundAccentBrush}" MaxWidth="{TemplateBinding MaxWidth}" MinWidth="{TemplateBinding MinWidth}">
                             <ContentPresenter x:Name="Content" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" FontSize="{ThemeResource ControlContentThemeFontSize}" FontFamily="{ThemeResource ContentControlThemeFontFamily}" Margin="{ThemeResource ContentDialogContentMargin}" Foreground="{TemplateBinding Foreground}" Grid.Row="1" TextWrapping="Wrap" />
                         </Border>
                     </ControlTemplate>
@@ -36,20 +36,18 @@
                 <DataTemplate x:DataType="model:ImageModel">
                     <ScrollViewer PointerExited="ScrollViewer_PointerExited" PointerPressed="ScrollViewer_PointerPressed" PointerReleased="ScrollViewer_PointerReleased" PointerMoved="ScrollViewer_PointerMoved" HorizontalScrollBarVisibility="Auto" HorizontalScrollMode="Auto" ZoomMode="Enabled" HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" VerticalScrollBarVisibility="Auto">
                         <Grid>
-                            <ProgressRing Foreground="White" IsActive="{x:Bind IsLoading,Mode=OneWay}"/>
-                            <imgcontrol:ImageView LoadingFailed="{x:Bind LoadFailed}" Margin="0,0,16,16" UriSource="{x:Bind SourceUri}" LoadingCompleted="{x:Bind Loaded}"/>
+                            <ProgressRing Foreground="White" IsActive="{x:Bind IsLoading,Mode=OneWay}" />
+                            <imgcontrol:ImageView LoadingFailed="{x:Bind LoadFailed}" Margin="0,0,16,16" UriSource="{x:Bind SourceUri}" LoadingCompleted="{x:Bind Loaded}" />
                         </Grid>
                     </ScrollViewer>
                 </DataTemplate>
             </FlipView.ItemTemplate>
         </FlipView>
-        <AppBarButton Background="#7F000000" Icon="Back" IsCompact="True" Click="{x:Bind HideEx}"/>
+        <AppBarButton Background="#7F000000" Icon="Back" IsCompact="True" Click="{x:Bind HideEx}" />
         <StackPanel Background="#7F000000" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-            <AppBarButton Icon="Save" IsCompact="True" Click="{x:Bind Save}"/>
-            <AppBarButton IsCompact="True" Click="{x:Bind ZoomOut}" Icon="ZoomOut"/>
-            <AppBarButton IsCompact="True" Click="{x:Bind ZoomIn}" Icon="ZoomIn"/>
+            <AppBarButton Icon="Save" IsCompact="True" Click="{x:Bind Save}" />
+            <AppBarButton IsCompact="True" Click="{x:Bind ZoomOut}" Icon="ZoomOut" />
+            <AppBarButton IsCompact="True" Click="{x:Bind ZoomIn}" Icon="ZoomIn" />
         </StackPanel>
-
-
     </Grid>
 </ContentDialog>

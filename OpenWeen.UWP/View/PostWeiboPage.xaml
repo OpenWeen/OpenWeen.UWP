@@ -7,45 +7,45 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
     <Page.Resources>
-        <CollectionViewSource x:Name="cvs" IsSourceGrouped="true"/>
+        <CollectionViewSource x:Name="cvs" IsSourceGrouped="true" />
         <MenuFlyout x:Key="PictureFlyout">
-            <MenuFlyoutItem Text="拍照" Click="TakePhoto"/>
-            <MenuFlyoutItem Text="添加图片" Click="AddSingleImage"/>
-            <MenuFlyoutItem Text="添加多图" Click="AddMultipleImage"/>
+            <MenuFlyoutItem Text="拍照" Click="TakePhoto" />
+            <MenuFlyoutItem Text="添加图片" Click="AddSingleImage" />
+            <MenuFlyoutItem Text="添加多图" Click="AddMultipleImage" />
         </MenuFlyout>
     </Page.Resources>
 
     <Grid Padding="8" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <ProgressBar Grid.RowSpan="2" IsIndeterminate="{x:Bind IsSending,Mode=OneWay}" Visibility="{x:Bind IsSending,Mode=OneWay,Converter={StaticResource BoolToVisibilityConverter}}"/>
+        <ProgressBar Grid.RowSpan="2" IsIndeterminate="{x:Bind IsSending,Mode=OneWay}" Visibility="{x:Bind IsSending,Mode=OneWay,Converter={StaticResource BoolToVisibilityConverter}}" />
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
-            <RichEditBox KeyDown="richEditBox_KeyDown" KeyUp="richEditBox_KeyUp" x:Name="richEditBox" DragOver="richEditBox_DragOver" Drop="richEditBox_Drop" TextChanged="RichEditBox_TextChanged" Paste="RichEditBox_Paste" BorderThickness="0" AcceptsReturn="False"/>
+            <RichEditBox KeyDown="richEditBox_KeyDown" KeyUp="richEditBox_KeyUp" x:Name="richEditBox" DragOver="richEditBox_DragOver" Drop="richEditBox_Drop" TextChanged="RichEditBox_TextChanged" Paste="RichEditBox_Paste" BorderThickness="0" AcceptsReturn="False" />
             <Grid Grid.Row="1">
-                <TextBlock HorizontalAlignment="Right" Text="{x:Bind TextCount,Mode=OneWay}"/>
+                <TextBlock HorizontalAlignment="Right" Text="{x:Bind TextCount,Mode=OneWay}" />
             </Grid>
             <ItemsControl Grid.Row="2" ItemsSource="{x:Bind Images,Mode=OneWay}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Image MaxHeight="100" Margin="4" Source="{Binding Image}"/>
+                        <Image MaxHeight="100" Margin="4" Source="{Binding Image}" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <VirtualizingStackPanel Orientation="Horizontal"/>
+                        <VirtualizingStackPanel Orientation="Horizontal" />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.Template>
                     <ControlTemplate TargetType="ItemsControl">
                         <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
-                            <ItemsPresenter/>
+                            <ItemsPresenter />
                         </ScrollViewer>
                     </ControlTemplate>
                 </ItemsControl.Template>
@@ -58,7 +58,7 @@
                     <GridView>
                         <GridView.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Group.Key}"/>
+                                <TextBlock Text="{Binding Group.Key}" />
                             </DataTemplate>
                         </GridView.ItemTemplate>
                     </GridView>
@@ -68,7 +68,7 @@
                     <GridView ItemClick="GridView_ItemClick" SelectionMode="None" ItemsSource="{Binding Source={StaticResource cvs}}" IsItemClickEnabled="True">
                         <GridView.ItemTemplate>
                             <DataTemplate>
-                                <Image Width="30" Height="30" Margin="4" Source="{Binding Url}"/>
+                                <Image Width="30" Height="30" Margin="4" Source="{Binding Url}" />
                             </DataTemplate>
                         </GridView.ItemTemplate>
                         <GridView.GroupStyle>
@@ -82,21 +82,20 @@
                         </GridView.GroupStyle>
                     </GridView>
                 </SemanticZoom.ZoomedInView>
-
             </SemanticZoom>
         </Grid>
     </Grid>
     <Page.BottomAppBar>
         <CommandBar>
-            <AppBarButton Visibility="{x:Bind AllowPicture,Mode=OneWay,Converter={StaticResource BoolToVisibilityConverter}}" Icon="Camera" Label="添加图片" Click="{x:Bind AddImage}"/>
-            <AppBarButton Icon="Emoji" Label="表情" Click="{x:Bind ShowEmoji}"/>
-            <AppBarButton Visibility="Collapsed" Icon="Account" Label="@好友" Click="{x:Bind AddFriend}"/>
+            <AppBarButton Visibility="{x:Bind AllowPicture,Mode=OneWay,Converter={StaticResource BoolToVisibilityConverter}}" Icon="Camera" Label="添加图片" Click="{x:Bind AddImage}" />
+            <AppBarButton Icon="Emoji" Label="表情" Click="{x:Bind ShowEmoji}" />
+            <AppBarButton Visibility="Collapsed" Icon="Account" Label="@好友" Click="{x:Bind AddFriend}" />
             <AppBarButton Click="{x:Bind AddTopic}" Label="添加话题">
                 <AppBarButton.Icon>
-                    <FontIcon FontFamily="Segoe UI" Glyph="#" FontSize="25"/>
+                    <FontIcon FontFamily="Segoe UI" Glyph="#" FontSize="25" />
                 </AppBarButton.Icon>
             </AppBarButton>
-            <AppBarButton Icon="Send" Click="{x:Bind PostWeibo}" Label="发送"/>
+            <AppBarButton Icon="Send" Click="{x:Bind PostWeibo}" Label="发送" />
         </CommandBar>
     </Page.BottomAppBar>
 </Page>

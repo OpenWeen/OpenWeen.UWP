@@ -1,10 +1,7 @@
-﻿using OpenWeen.Core.Model.Status;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Collections.ObjectModel;
+using OpenWeen.Core.Model.Status;
 
 namespace OpenWeen.UWP.ViewModel
 {

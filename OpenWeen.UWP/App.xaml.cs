@@ -1,24 +1,11 @@
-﻿using Microsoft.ApplicationInsights;
-using OpenWeen.UWP.Common;
-using OpenWeen.UWP.Common.Helpers;
+﻿using System;
+using Microsoft.ApplicationInsights;
 using OpenWeen.UWP.View;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI;
-using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace OpenWeen.UWP
@@ -48,14 +35,13 @@ namespace OpenWeen.UWP
         /// <param name="e">有关启动请求和过程的详细信息。</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
             {
                 this.DebugSettings.EnableFrameRateCounter = true;
             }
 #else
-            
+
             Xamarin.Insights.HasPendingCrashReport += (sender, isStartupCrash) =>
             {
                 if (isStartupCrash)
@@ -71,7 +57,7 @@ namespace OpenWeen.UWP
 
             UnhandledException += App_UnhandledException;
             Frame rootFrame = Window.Current.Content as Frame;
-            
+
             if (rootFrame == null)
             {
                 rootFrame = new Frame();
@@ -95,13 +81,13 @@ namespace OpenWeen.UWP
             TelemetryClient telemetry = new TelemetryClient();
             telemetry.TrackException(e.Exception);
         }
-        
+
         /// <summary>
         /// 导航到特定页失败时调用
         /// </summary>
         ///<param name="sender">导航失败的框架</param>
         ///<param name="e">有关导航失败的详细信息</param>
-        void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
+        private void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
         {
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
         }

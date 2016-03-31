@@ -1,22 +1,11 @@
-﻿using OpenWeen.Core.Model;
+﻿using System;
 using OpenWeen.Core.Model.Comment;
 using OpenWeen.Core.Model.Status;
 using OpenWeen.Core.Model.User;
 using OpenWeen.UWP.Common.Controls.Events;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -25,8 +14,11 @@ namespace OpenWeen.UWP.Common.Controls
     public sealed partial class WeiboCommentList : ItemsControl
     {
         public event EventHandler LoadMore;
+
         public event EventHandler<WeiboActionEventArgs> Comment;
+
         public event EventHandler<WeiboItemClickEventArgs> ItemClick;
+
         public event EventHandler<WeiboUserClickEventArgs> UserClick;
 
         public WeiboCommentList()

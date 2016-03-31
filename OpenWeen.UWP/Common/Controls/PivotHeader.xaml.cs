@@ -1,19 +1,9 @@
-﻿using OpenWeen.UWP.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using OpenWeen.UWP.Model;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -22,15 +12,15 @@ namespace OpenWeen.UWP.Common.Controls
     public sealed partial class PivotHeader : UserControl
     {
         public event EventHandler BackToTop;
+
         public event EventHandler Refresh;
 
         public List<HeaderModel> ItemsSource { get; set; }
+
         public PivotHeader()
         {
             this.InitializeComponent();
         }
-
-
 
         public int SelectedIndex
         {
@@ -40,13 +30,14 @@ namespace OpenWeen.UWP.Common.Controls
 
         // Using a DependencyProperty as the backing store for SelectedIndex.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SelectedIndexProperty =
-            DependencyProperty.Register("SelectedIndex", typeof(int), typeof(PivotHeader), new PropertyMetadata(-1,OnSelectedIndexChanged));
+            DependencyProperty.Register("SelectedIndex", typeof(int), typeof(PivotHeader), new PropertyMetadata(-1, OnSelectedIndexChanged));
 
         private static void OnSelectedIndexChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             (d as PivotHeader).ChangeSelectedIndex((int)e.NewValue, (int)e.OldValue);
         }
-        public void ChangeSelectedIndex(int newValue,int oldValue)
+
+        public void ChangeSelectedIndex(int newValue, int oldValue)
         {
             try
             {

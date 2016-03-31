@@ -10,20 +10,20 @@
     <Grid Padding="16" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <StackPanel Orientation="Vertical">
             <TextBlock Style="{ThemeResource TitleTextBlockStyle}">请输入以下内容完成登陆过程</TextBlock>
-            <TextBox x:Name="AppID_TB" Paste="TextBox_Paste" Header="App ID"/>
-            <TextBox x:Name="AppSecret_TB" Paste="TextBox_Paste" Header="App Secret"/>
-            <TextBox x:Name="RedirectUri_TB" Paste="TextBox_Paste" Header="Redirect Uri"/>
-            <TextBox x:Name="Scope_TB" Paste="TextBox_Paste" Header="Scope"/>
-            <TextBox x:Name="PackageName_TB" Paste="TextBox_Paste" Header="Package Name"/>
+            <TextBox x:Name="AppID_TB" Paste="TextBox_Paste" Header="App ID" />
+            <TextBox x:Name="AppSecret_TB" Paste="TextBox_Paste" Header="App Secret" />
+            <TextBox x:Name="RedirectUri_TB" Paste="TextBox_Paste" Header="Redirect Uri" />
+            <TextBox x:Name="Scope_TB" Paste="TextBox_Paste" Header="Scope" />
+            <TextBox x:Name="PackageName_TB" Paste="TextBox_Paste" Header="Package Name" />
             <Grid Padding="0,8">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
-                <Button Content="???" Click="Button_Click_2"/>
-                <Button Grid.Column="1" Content="确定" Click="Button_Click" Margin="0,0,8,0"/>
-                <Button Grid.Column="2" Content="取消" Click="Button_Click_1"/>
+                <Button Content="???" Click="Button_Click_2" />
+                <Button Grid.Column="1" Content="确定" Click="Button_Click" Margin="0,0,8,0" />
+                <Button Grid.Column="2" Content="取消" Click="Button_Click_1" />
             </Grid>
         </StackPanel>
     </Grid>

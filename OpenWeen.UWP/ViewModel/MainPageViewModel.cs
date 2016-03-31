@@ -1,20 +1,13 @@
-﻿using OpenWeen.Core.Model;
-using OpenWeen.Core.Model.Comment;
-using OpenWeen.Core.Model.Status;
-using OpenWeen.Core.Model.User;
-using OpenWeen.UWP.Common;
-using OpenWeen.UWP.Common.Controls.Events;
-using OpenWeen.UWP.Model;
-using OpenWeen.UWP.Shared.Common.Helpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using OpenWeen.Core.Model;
+using OpenWeen.Core.Model.User;
+using OpenWeen.UWP.Common;
+using OpenWeen.UWP.Model;
+using OpenWeen.UWP.Shared.Common.Helpers;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -27,6 +20,7 @@ namespace OpenWeen.UWP.ViewModel
         public CommentViewModel Comment { get; } = new CommentViewModel();
         public CommentMentionViewModel CommentMention { get; } = new CommentMentionViewModel();
         public UserModel User { get; private set; }
+
         public List<HeaderModel> Header { get; } = new List<HeaderModel>()
         {
             new HeaderModel() { Icon = Symbol.Home, Text = "主页" },
@@ -34,8 +28,8 @@ namespace OpenWeen.UWP.ViewModel
             new HeaderModel() { Icon = Symbol.Comment, Text = "评论" },
             new HeaderModel() { Icon = Symbol.Comment, Text = "@的评论" },
         };
-        private UnReadModel _prevUnread;
 
+        private UnReadModel _prevUnread;
 
         public MainPageViewModel()
         {
@@ -105,15 +99,19 @@ namespace OpenWeen.UWP.ViewModel
                 case 0:
                     await Timeline.Refresh();
                     break;
+
                 case 1:
                     await Mention.Refresh();
                     break;
+
                 case 2:
                     await Comment.Refresh();
                     break;
+
                 case 3:
                     await CommentMention.Refresh();
                     break;
+
                 default:
                     break;
             }

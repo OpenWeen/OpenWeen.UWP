@@ -12,21 +12,21 @@
     <ItemsControl ItemsSource="{x:Bind ItemsSource}" Tapped="ItemsControl_Tapped">
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
-                <StackPanel Orientation="Horizontal"/>
+                <StackPanel Orientation="Horizontal" />
             </ItemsPanelTemplate>
         </ItemsControl.ItemsPanel>
         <ItemsControl.ItemTemplate>
             <DataTemplate x:DataType="model:HeaderModel">
                 <Grid Opacity="{x:Bind Opacity,Mode=OneWay}" Margin="8">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
-                    <SymbolIcon Symbol="{x:Bind Icon}"/>
-                    <TextBlock Grid.Row="1" Text="{x:Bind Text}"/>
-                    <Grid Visibility="{x:Bind UnreadCount,Mode=OneWay,Converter={StaticResource UnreadCountToVisibilityConverter}}" Width="10" Height="10" HorizontalAlignment="Right" VerticalAlignment="Top" >
-                        <Ellipse Fill="Red"/>
-                        <TextBlock FontSize="8" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{x:Bind UnreadCount,Mode=OneWay}"/>
+                    <SymbolIcon Symbol="{x:Bind Icon}" />
+                    <TextBlock Grid.Row="1" Text="{x:Bind Text}" />
+                    <Grid Visibility="{x:Bind UnreadCount,Mode=OneWay,Converter={StaticResource UnreadCountToVisibilityConverter}}" Width="10" Height="10" HorizontalAlignment="Right" VerticalAlignment="Top">
+                        <Ellipse Fill="Red" />
+                        <TextBlock FontSize="8" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{x:Bind UnreadCount,Mode=OneWay}" />
                     </Grid>
                 </Grid>
             </DataTemplate>

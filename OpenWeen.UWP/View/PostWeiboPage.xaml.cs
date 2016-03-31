@@ -1,17 +1,14 @@
-﻿using OpenWeen.Core.Model;
-using OpenWeen.Core.Model.Status;
-using OpenWeen.UWP.Common;
-using OpenWeen.UWP.Common.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using OpenWeen.Core.Model;
+using OpenWeen.Core.Model.Status;
+using OpenWeen.UWP.Common;
+using OpenWeen.UWP.Common.Entities;
 using Windows.Graphics.Imaging;
 using Windows.Media.Capture;
 using Windows.Storage;
@@ -20,10 +17,7 @@ using Windows.Storage.Streams;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
@@ -34,12 +28,13 @@ namespace OpenWeen.UWP.View
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class PostWeiboPage : Page ,INotifyPropertyChanged
+    public sealed partial class PostWeiboPage : Page, INotifyPropertyChanged
     {
         public ObservableCollection<ImageData> Images { get; private set; }
         public bool IsSending { get; private set; }
         private IPostWeibo _data;
         public bool AllowPicture { get; set; } = true;
+
         public int TextCount
         {
             get
@@ -49,6 +44,7 @@ namespace OpenWeen.UWP.View
                 return 140 - value.Length;
             }
         }
+
         public string Text
         {
             get
@@ -62,6 +58,7 @@ namespace OpenWeen.UWP.View
                 richEditBox.Document.SetText(Windows.UI.Text.TextSetOptions.None, value);
             }
         }
+
         public List<IGrouping<string, EmotionModel>> Emojis => StaticResource.Emotions.GroupBy(item => string.IsNullOrEmpty(item.Category) ? "表情" : item.Category).ToList();
 
         public PostWeiboPage()
@@ -121,7 +118,6 @@ namespace OpenWeen.UWP.View
                     await AddImageDataFromFile(files[i] as StorageFile);
                 }
             }
-
         }
 
         private static async Task<StorageFile> GetFileFromBitmap(RandomAccessStreamReference bitmap)
@@ -166,7 +162,7 @@ namespace OpenWeen.UWP.View
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TextCount)));
         }
-        
+
         public async void PostWeibo()
         {
             if (IsSending || Text?.Length < 0)
@@ -187,12 +183,15 @@ namespace OpenWeen.UWP.View
                 case PostWeiboType.NewPost:
                     isSuccess = await NewPost();
                     break;
+
                 case PostWeiboType.RePost:
                     isSuccess = await RePost();
                     break;
+
                 case PostWeiboType.Comment:
                     isSuccess = await Comment();
                     break;
+
                 default:
                     break;
             }
@@ -324,7 +323,6 @@ namespace OpenWeen.UWP.View
             {
                 Windows.UI.ViewManagement.InputPane.GetForCurrentView().TryShow();
             }
-            
         }
 
         public void AddImage(object sender, object e)
@@ -332,15 +330,16 @@ namespace OpenWeen.UWP.View
             var menu = Resources["PictureFlyout"] as MenuFlyout;
             menu.ShowAt(sender as FrameworkElement);
         }
+
         public void AddTopic()
         {
             var index = richEditBox.Document.Selection.StartPosition;
             Text = Text.Insert(index, "##");
             richEditBox.Document.Selection.StartPosition = index + 1;
         }
+
         public void AddFriend()
         {
-
         }
 
         private void GridView_ItemClick(object sender, ItemClickEventArgs e)

@@ -11,18 +11,18 @@
     d:DesignWidth="400">
     <ItemsControl.ItemTemplate>
         <DataTemplate x:DataType="statusmodel:PictureModel">
-            <Image Tapped="Image_Tapped" MaxHeight="100" MaxWidth="100" Margin="4" Source="{x:Bind ThumbnailPic}"/>
+            <Image Tapped="Image_Tapped" MaxHeight="100" MaxWidth="100" Margin="4" Source="{x:Bind ThumbnailPic}" />
         </DataTemplate>
     </ItemsControl.ItemTemplate>
     <ItemsControl.ItemsPanel>
         <ItemsPanelTemplate>
-            <ItemsWrapGrid Orientation="Horizontal"/>
+            <ItemsWrapGrid Orientation="Horizontal" />
         </ItemsPanelTemplate>
     </ItemsControl.ItemsPanel>
     <ItemsControl.Template>
         <ControlTemplate TargetType="ItemsControl">
             <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
-                <ItemsPresenter/>
+                <ItemsPresenter />
             </ScrollViewer>
         </ControlTemplate>
     </ItemsControl.Template>

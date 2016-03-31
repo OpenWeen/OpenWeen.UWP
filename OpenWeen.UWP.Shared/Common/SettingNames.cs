@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OpenWeen.UWP.Shared.Common
+﻿namespace OpenWeen.UWP.Shared.Common
 {
     internal static class SettingNames
     {

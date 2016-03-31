@@ -1,13 +1,11 @@
-﻿using OpenWeen.UWP.Shared.Common;
-using OpenWeen.UWP.Shared.Common.Helpers;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenWeen.UWP.Shared.Common;
+using OpenWeen.UWP.Shared.Common.Helpers;
 using Windows.ApplicationModel.Background;
-using Windows.UI.Notifications;
 
 namespace OpenWeen.UWP.BackgroundTask
 {
@@ -35,8 +33,8 @@ namespace OpenWeen.UWP.BackgroundTask
             {
                 deferral.Complete();
             }
-
         }
+
         private async Task UpdateUnreadCount()
         {
             if (!CheckForLogin())
@@ -62,7 +60,6 @@ namespace OpenWeen.UWP.BackgroundTask
             {
                 ToastNotificationHelper.SendToast(builder.ToString());
             }
-
         }
 
         private bool CheckForLogin()
