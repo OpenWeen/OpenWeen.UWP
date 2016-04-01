@@ -19,6 +19,7 @@ namespace OpenWeen.UWP.ViewModel
         public MentionViewModel Mention { get; } = new MentionViewModel();
         public CommentViewModel Comment { get; } = new CommentViewModel();
         public CommentMentionViewModel CommentMention { get; } = new CommentMentionViewModel();
+        public FavorViewModel Favor { get; } = new FavorViewModel();
         public UserModel User { get; private set; }
 
         public List<HeaderModel> Header { get; } = new List<HeaderModel>()
@@ -27,6 +28,7 @@ namespace OpenWeen.UWP.ViewModel
             new HeaderModel() { Icon = Symbol.Account, Text = "提及" },
             new HeaderModel() { Icon = Symbol.Comment, Text = "评论" },
             new HeaderModel() { Icon = Symbol.Comment, Text = "@的评论" },
+            new HeaderModel() { Icon = Symbol.Favorite, Text = "收藏夹" },
         };
 
         private UnReadModel _prevUnread;
@@ -48,6 +50,7 @@ namespace OpenWeen.UWP.ViewModel
             await Mention.Refresh();
             await Comment.Refresh();
             await CommentMention.Refresh();
+            await Favor.Refresh();
         }
 
         private async void Timer_Tick(object sender, object e)
@@ -111,7 +114,9 @@ namespace OpenWeen.UWP.ViewModel
                 case 3:
                     await CommentMention.Refresh();
                     break;
-
+                case 4:
+                    await Favor.Refresh();
+                    break;
                 default:
                     break;
             }

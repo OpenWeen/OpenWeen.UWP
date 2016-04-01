@@ -9,5 +9,7 @@ namespace OpenWeen.UWP.Common
         public static string EmotionPattern { get; set; }
         public static long Uid { get; set; }
         //public static event EventHandler UpdateUnreadCountTaskComplete;
+        public static bool IsPhone => Windows.Foundation.Metadata.ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar");
+
     }
 }

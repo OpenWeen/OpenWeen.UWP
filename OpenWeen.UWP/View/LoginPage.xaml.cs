@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using OpenWeen.Core.Helper;
 using OpenWeen.UWP.Common;
+using OpenWeen.UWP.Common.Controls;
 using OpenWeen.UWP.Shared.Common;
 using OpenWeen.UWP.Shared.Common.Helpers;
 using Windows.Security.Authentication.Web;
@@ -36,7 +37,7 @@ namespace OpenWeen.UWP.View
                 {
                     //SSMjExMTYwNjc5OjoxZTZlMzNkYjA4ZjkxOTIzMDZjNGFmYTBhNjFhZDU2Yzo6aHR0cDovL29hdXRoLndlaWNvLmNjOjplbWFpbCxkaXJlY3RfbWVzc2FnZXNfcmVhZCxkaXJlY3RfbWVzc2FnZXNfd3JpdGUsZnJpZW5kc2hpcHNfZ3JvdXBzX3JlYWQsZnJpZW5kc2hpcHNfZ3JvdXBzX3dyaXRlLHN0YXR1c2VzX3RvX21lX3JlYWQsZm9sbG93X2FwcF9vZmZpY2lhbF9taWNyb2Jsb2csaW52aXRhdGlvbl93cml0ZTo6Y29tLmVpY28ud2VpY286OkVFEE
                     var text = await dataPackageView.GetTextAsync();
-                    var data = LoginDataHelper.Decode(text);
+                    var data = LoginDataHelper.Decode(text.Trim());
                     AppID_TB.Text = data[0];
                     AppSecret_TB.Text = data[1];
                     RedirectUri_TB.Text = data[2];
@@ -64,7 +65,6 @@ namespace OpenWeen.UWP.View
                     Core.Api.Entity.AccessToken = token;
                     await InitEmotion();
                     await InitUid();
-
                     Frame.Navigate(typeof(MainPage));
                     while (Frame.BackStack.Count > 0)
                     {

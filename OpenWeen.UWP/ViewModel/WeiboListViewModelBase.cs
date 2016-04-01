@@ -11,7 +11,7 @@ using Windows.UI.Popups;
 
 namespace OpenWeen.UWP.ViewModel
 {
-    public abstract class WeiboListViewModelBase<T> : INotifyPropertyChanged where T : BaseModel
+    public abstract class WeiboListViewModelBase<T> : INotifyPropertyChanged 
     {
         public ObservableCollection<T> WeiboList { get; private set; } = new ObservableCollection<T>();
         protected int _pageCount = 1;

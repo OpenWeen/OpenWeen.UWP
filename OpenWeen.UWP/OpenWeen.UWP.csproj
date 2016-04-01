@@ -120,6 +120,9 @@
     <Compile Include="Common\Controls\SplitViewPaneList.xaml.cs">
       <DependentUpon>SplitViewPaneList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\Controls\UserList.xaml.cs">
+      <DependentUpon>UserList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Common\Controls\WeiboCommentList.xaml.cs">
       <DependentUpon>WeiboCommentList.xaml</DependentUpon>
     </Compile>
@@ -155,9 +158,13 @@
     <Compile Include="Model\WeiboActionModel.cs" />
     <Compile Include="ViewModel\CommentMentionViewModel.cs" />
     <Compile Include="ViewModel\CommentViewModel.cs" />
+    <Compile Include="ViewModel\FavorViewModel.cs" />
+    <Compile Include="ViewModel\FollowerListViewModel.cs" />
+    <Compile Include="ViewModel\FriendListViewModel.cs" />
     <Compile Include="ViewModel\MentionViewModel.cs" />
     <Compile Include="ViewModel\TimelineViewModel.cs" />
     <Compile Include="ViewModel\UserImageTimelineViewModel.cs" />
+    <Compile Include="ViewModel\UserListViewModelBase.cs" />
     <Compile Include="ViewModel\UserPageViewModel.cs" />
     <Compile Include="ViewModel\UserTimelineViewModel.cs" />
     <Compile Include="ViewModel\UserViewModelBase.cs" />
@@ -185,6 +192,9 @@
     </Compile>
     <Compile Include="View\SettingPage.xaml.cs">
       <DependentUpon>SettingPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserListPage.xaml.cs">
+      <DependentUpon>UserListPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\UserPage.xaml.cs">
       <DependentUpon>UserPage.xaml</DependentUpon>
@@ -223,6 +233,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Common\Controls\SplitViewPaneList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Common\Controls\UserList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -270,6 +284,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\UserListPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\UserPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -284,6 +302,11 @@
       <Project>{62fc5331-972f-4599-b405-aabd3b4512ad}</Project>
       <Name>OpenWeen.UWP.BackgroundTask</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <SDKReference Include="WindowsMobile, Version=10.0.10586.0">
+      <Name>Windows Mobile Extensions for the UWP</Name>
+    </SDKReference>
   </ItemGroup>
   <Import Project="..\OpenWeen.UWP.Shared\OpenWeen.UWP.Shared.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

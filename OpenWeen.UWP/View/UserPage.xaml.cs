@@ -33,8 +33,17 @@ namespace OpenWeen.UWP.View
             menu.ShowAt(sender as FrameworkElement);
         }
 
-        private void MenuFlyoutItem_Click(object sender, RoutedEventArgs e)
+        public void Follower()
         {
+            if (UserPageVM.User == null)
+                return;
+            Frame.Navigate(typeof(UserListPage), new FollowerListViewModel(UserPageVM.User.ID));
+        }
+        public void Friend()
+        {
+            if (UserPageVM.User == null)
+                return;
+            Frame.Navigate(typeof(UserListPage), new FriendListViewModel(UserPageVM.User.ID));
         }
     }
 }

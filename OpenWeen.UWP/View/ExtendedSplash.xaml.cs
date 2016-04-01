@@ -162,6 +162,7 @@ namespace OpenWeen.UWP.View
         {
             if (rootFrame.CanGoBack)
             {
+                e.Handled = true;
                 rootFrame.GoBack();
             }
         }

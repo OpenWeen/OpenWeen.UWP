@@ -5,8 +5,8 @@
     "Microsoft.ApplicationInsights.PersistenceChannel": "1.2.3",
     "Microsoft.ApplicationInsights.WindowsApps": "1.1.1",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.0.0",
-    "OpenWeen.Core": "1.0.10",
-    "Xamarin.Insights": "1.11.4"
+    "OpenWeen.Core": "1.0.11",
+    "Xamarin.Insights": "1.12.0"
   },
   "frameworks": {
     "uap10.0": {}

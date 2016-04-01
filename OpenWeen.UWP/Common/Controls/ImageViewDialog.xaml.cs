@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
+using ImageLib.Controls;
 using OpenWeen.UWP.Common.Helpers;
 using OpenWeen.UWP.Model;
 using Windows.Foundation;
@@ -22,8 +23,7 @@ namespace OpenWeen.UWP.Common.Controls
         private ImageViewDialog()
         {
             this.InitializeComponent();
-            MinHeight = (Window.Current.Content as Frame).ActualHeight;
-            MinWidth = (Window.Current.Content as Frame).ActualWidth;
+            InitSize();
             (Window.Current.Content as Frame).SizeChanged += ImageViewDialog_SizeChanged;
         }
 
@@ -35,8 +35,18 @@ namespace OpenWeen.UWP.Common.Controls
 
         private void ImageViewDialog_SizeChanged(object sender, SizeChangedEventArgs e)
         {
+            InitSize();
+        }
+
+        private void InitSize()
+        {
             MinHeight = (Window.Current.Content as Frame).ActualHeight;
             MinWidth = (Window.Current.Content as Frame).ActualWidth;
+            //foreach (var item in flipView.Items)
+            //{
+            //    var imgView = MoreVisualTreeHelper.GetObject<ImageView>(flipView.ItemContainerGenerator.ContainerFromItem(item));
+            //    imgView.MaxWidth = (Window.Current.Content as Frame).ActualWidth;
+            //}
         }
 
         public ImageViewDialog(List<ImageModel> items) : this()

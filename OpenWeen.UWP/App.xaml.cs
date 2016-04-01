@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.ApplicationInsights;
+using OpenWeen.UWP.Common;
 using OpenWeen.UWP.View;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -51,9 +52,17 @@ namespace OpenWeen.UWP
             };
             Xamarin.Insights.Initialize(XamarinInsightsKey.Key);
 #endif
-
-            Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar.BackgroundColor = Color.FromArgb(255, 35, 85, 178);
-            Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar.ButtonBackgroundColor = Color.FromArgb(255, 35, 85, 178);
+            if (StaticResource.IsPhone)
+            {
+                Windows.UI.ViewManagement.StatusBar.GetForCurrentView().BackgroundColor = Color.FromArgb(255, 35, 85, 178); ;
+                Windows.UI.ViewManagement.StatusBar.GetForCurrentView().BackgroundOpacity = 1d;
+                Windows.UI.ViewManagement.StatusBar.GetForCurrentView().ForegroundColor = Colors.White;
+            }
+            else
+            {
+                Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar.BackgroundColor = Color.FromArgb(255, 35, 85, 178);
+                Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar.ButtonBackgroundColor = Color.FromArgb(255, 35, 85, 178);
+            }
 
             UnhandledException += App_UnhandledException;
             Frame rootFrame = Window.Current.Content as Frame;

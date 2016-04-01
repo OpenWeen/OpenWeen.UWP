@@ -44,12 +44,16 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
-            <TextBlock Padding="0,0,8,0">
+            <StackPanel Padding="0,0,8,0" Orientation="Vertical">
+                <TextBlock Tapped="{x:Bind Friend}">
                 关注:
                 <Run Text="{x:Bind UserPageVM.User.FriendsCount,Mode=OneWay}" />
-                <LineBreak />粉丝:
+                </TextBlock>
+                <TextBlock Tapped="{x:Bind Follower}">
+                    粉丝:
                 <Run Text="{x:Bind UserPageVM.User.FollowersCount,Mode=OneWay}" />
-            </TextBlock>
+                </TextBlock>
+            </StackPanel>
             <Grid Grid.Column="1" BorderBrush="#3FFFFFFF" BorderThickness="2,0">
                 <TextBlock TextWrapping="WrapWholeWords" MaxLines="2"  Padding="8,0" Text="{x:Bind UserPageVM.User.Description,Mode=OneWay}" TextTrimming="CharacterEllipsis" />
             </Grid>
