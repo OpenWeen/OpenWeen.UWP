@@ -7,11 +7,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     xmlns:statusmodel="using:OpenWeen.Core.Model.Status"
+    xmlns:Extensions="using:WinRTXamlToolkit.Controls.Extensions"
     d:DesignHeight="300"
     d:DesignWidth="400">
     <ItemsControl.ItemTemplate>
         <DataTemplate x:DataType="statusmodel:PictureModel">
-            <Image Tapped="Image_Tapped" MaxHeight="100" MaxWidth="100" Margin="4" Source="{x:Bind ThumbnailPic}" />
+            <Image Extensions:ImageExtensions.FadeInOnLoaded="True" Extensions:ImageExtensions.ImageLoadedTransitionType="FadeIn" Tapped="Image_Tapped" MaxHeight="100" MaxWidth="100" Margin="4" Source="{x:Bind ThumbnailPic}" />
         </DataTemplate>
     </ItemsControl.ItemTemplate>
     <ItemsControl.ItemsPanel>

@@ -30,7 +30,7 @@ namespace OpenWeen.UWP.View
     /// </summary>
     public sealed partial class PostWeiboPage : Page, INotifyPropertyChanged
     {
-        public ObservableCollection<ImageData> Images { get; private set; }
+        public ObservableCollection<ImageData> Images { get; } = new ObservableCollection<ImageData>();
         public bool IsSending { get; private set; }
         private IPostWeibo _data;
         public bool AllowPicture { get; set; } = true;
@@ -64,7 +64,6 @@ namespace OpenWeen.UWP.View
         public PostWeiboPage()
         {
             this.InitializeComponent();
-            Images = new ObservableCollection<ImageData>();
             cvs.Source = Emojis;
             (semanticZoom.ZoomedOutView as ListViewBase).ItemsSource = cvs.View.CollectionGroups;
         }
@@ -410,6 +409,19 @@ namespace OpenWeen.UWP.View
             {
                 _isCtrlDown = false;
             }
+        }
+
+        private ImageData _clickData;
+        private void Image_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            _clickData = (sender as Image).DataContext as ImageData;
+            var menu = Resources["ImageTapFlyout"] as MenuFlyout;
+            menu.ShowAt(sender as FrameworkElement);
+        }
+
+        private void DeletePicture(object sender, RoutedEventArgs e)
+        {
+            Images.Remove(_clickData);
         }
     }
 }

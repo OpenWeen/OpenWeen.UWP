@@ -8,13 +8,10 @@ namespace OpenWeen.UWP.Common.Helpers
 {
     public static class BackgroundHelper
     {
-        public static IBackgroundTaskRegistration FindRegistration<T>() where T : class
-        {
-            return BackgroundTaskRegistration.AllTasks
-                .Where(x => x.Value.Name.Equals(nameof(T)))
-                .Select(x => x.Value)
-                .FirstOrDefault();
-        }
+        public static IBackgroundTaskRegistration FindRegistration<T>() where T : class 
+            => BackgroundTaskRegistration.AllTasks.Where(x => x.Value.Name.Equals(nameof(T)))
+                                                  .Select(x => x.Value)
+                                                  .FirstOrDefault();
 
         public async static Task<BackgroundTaskRegistration> Register<T>(IBackgroundTrigger trigger, IEnumerable<IBackgroundCondition> conditions = null) where T : class
         {

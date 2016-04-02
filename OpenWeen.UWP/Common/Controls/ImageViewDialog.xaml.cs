@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
-using ImageLib.Controls;
 using OpenWeen.UWP.Common.Helpers;
 using OpenWeen.UWP.Model;
 using Windows.Foundation;
@@ -10,6 +9,7 @@ using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
+using WinRTXamlToolkit.Controls.Extensions;
 
 // “内容对话框”项模板在 http://go.microsoft.com/fwlink/?LinkId=234238 上进行了说明
 
@@ -24,18 +24,18 @@ namespace OpenWeen.UWP.Common.Controls
         {
             this.InitializeComponent();
             InitSize();
-            (Window.Current.Content as Frame).SizeChanged += ImageViewDialog_SizeChanged;
+            Window.Current.SizeChanged += Current_SizeChanged;
+        }
+
+        private void Current_SizeChanged(object sender, Windows.UI.Core.WindowSizeChangedEventArgs e)
+        {
+            InitSize();
         }
 
         public void HideEx()
         {
-            (Window.Current.Content as Frame).SizeChanged -= ImageViewDialog_SizeChanged;
+            Window.Current.SizeChanged -= Current_SizeChanged;
             Hide();
-        }
-
-        private void ImageViewDialog_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            InitSize();
         }
 
         private void InitSize()
@@ -44,14 +44,18 @@ namespace OpenWeen.UWP.Common.Controls
             MinWidth = (Window.Current.Content as Frame).ActualWidth;
             //foreach (var item in flipView.Items)
             //{
-            //    var imgView = MoreVisualTreeHelper.GetObject<ImageView>(flipView.ItemContainerGenerator.ContainerFromItem(item));
-            //    imgView.MaxWidth = (Window.Current.Content as Frame).ActualWidth;
+            //    var img = MoreVisualTreeHelper.GetObject<ScrollViewer>(flipView.ItemContainerGenerator.ContainerFromItem(item));
+            //    img.Width = (Window.Current.Content as Frame).ActualWidth;
             //}
         }
 
-        public ImageViewDialog(List<ImageModel> items) : this()
+        private ImageViewDialog(List<ImageModel> items) : this()
         {
             Items = items;
+        }
+        public ImageViewDialog(List<ImageModel> items, int index) : this(items)
+        {
+            _index = index;
         }
 
         private void ContentDialog_RightTapped(object sender, RightTappedRoutedEventArgs e)
@@ -61,11 +65,11 @@ namespace OpenWeen.UWP.Common.Controls
 
         public void ZoomOut()
         {
-            if (flipView?.SelectedItem == null && !(flipView.SelectedItem as ImageModel).IsLoading)
+            if (flipView?.SelectedItem == null && (flipView.SelectedItem as ImageModel).IsLoading)
                 return;
             var scrollViewer = MoreVisualTreeHelper.GetObject<ScrollViewer>(flipView.ItemContainerGenerator.ContainerFromItem(flipView.SelectedItem));
             if (scrollViewer.ZoomFactor - 0.1f > scrollViewer.MinZoomFactor)
-                scrollViewer.ZoomToFactor(scrollViewer.ZoomFactor - 0.1f);
+                scrollViewer.ZoomToFactorWithAnimationAsync(scrollViewer.ZoomFactor - 0.1f, 0.5);
         }
 
         public async void Save()
@@ -80,14 +84,15 @@ namespace OpenWeen.UWP.Common.Controls
 
         public void ZoomIn()
         {
-            if (flipView?.SelectedItem == null && !(flipView.SelectedItem as ImageModel).IsLoading)
+            if (flipView?.SelectedItem == null && (flipView.SelectedItem as ImageModel).IsLoading)
                 return;
             var scrollViewer = MoreVisualTreeHelper.GetObject<ScrollViewer>(flipView.ItemContainerGenerator.ContainerFromItem(flipView.SelectedItem));
             if (scrollViewer.ZoomFactor + 0.1f < scrollViewer.MaxZoomFactor)
-                scrollViewer.ZoomToFactor(scrollViewer.ZoomFactor + 0.1f);
+                scrollViewer.ZoomToFactorWithAnimationAsync(scrollViewer.ZoomFactor + 0.1f, 0.5);
         }
 
         private Point _prevPoint;
+        private int _index;
 
         private void ScrollViewer_PointerMoved(object sender, PointerRoutedEventArgs e)
         {
@@ -116,6 +121,11 @@ namespace OpenWeen.UWP.Common.Controls
         {
             _isPointerPressed = false;
             _prevPoint = default(Point);
+        }
+
+        private void flipView_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+        {
+            flipView.SelectedIndex = _index;
         }
     }
 }

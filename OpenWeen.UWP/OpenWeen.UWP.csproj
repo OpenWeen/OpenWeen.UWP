@@ -21,6 +21,7 @@
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
     <PackageCertificateThumbprint>126559E006A14707084A7D13B935653CAA541F12</PackageCertificateThumbprint>
     <AppxBundle>Always</AppxBundle>
+    <HockeyAppResourceId>8a7dc2f1a734405b948a1e3f79f3646d</HockeyAppResourceId>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -142,7 +143,6 @@
     <Compile Include="Common\Converter\BoolToVisibilityConverter.cs" />
     <Compile Include="Common\Converter\FavorToColorConverter.cs" />
     <Compile Include="Common\Converter\NullToVisibilityConverter.cs" />
-    <Compile Include="Common\Converter\PicIDToThumbnailConverter.cs" />
     <Compile Include="Common\Converter\TimeConverter.cs" />
     <Compile Include="Common\Converter\UnreadCountToVisibilityConverter.cs" />
     <Compile Include="Common\Entities\FollowState.cs" />

@@ -9,6 +9,20 @@
     d:DesignHeight="300"
     xmlns:model="using:OpenWeen.Core.Model.User"
     d:DesignWidth="400">
+    <ItemsControl.Style>
+        <Style TargetType="ItemsControl">
+            <Setter Property="ItemContainerTransitions">
+                <Setter.Value>
+                    <TransitionCollection>
+                        <AddDeleteThemeTransition />
+                        <ContentThemeTransition />
+                        <ReorderThemeTransition />
+                        <EntranceThemeTransition IsStaggeringEnabled="False" />
+                    </TransitionCollection>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </ItemsControl.Style>
     <ItemsControl.ItemTemplate>
         <DataTemplate x:DataType="model:UserModel">
             <Grid Width="320" Padding="8" Tapped="Grid_Tapped" DataContext="{Binding}">

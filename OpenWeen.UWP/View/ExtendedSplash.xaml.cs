@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using ImageLib;
-using ImageLib.Cache.Memory;
-using ImageLib.Cache.Storage;
-using ImageLib.Cache.Storage.CacheImpl;
-using ImageLib.Gif;
+//using ImageLib;
+//using ImageLib.Cache.Memory;
+//using ImageLib.Cache.Storage;
+//using ImageLib.Cache.Storage.CacheImpl;
+//using ImageLib.Gif;
 using OpenWeen.UWP.BackgroundTask;
 using OpenWeen.UWP.Common;
 using OpenWeen.UWP.Common.Helpers;
@@ -19,6 +19,7 @@ using Windows.Storage.Streams;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 
 // “空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=234238 上提供
@@ -33,7 +34,7 @@ namespace OpenWeen.UWP.View
         internal Rect splashImageRect;
         private SplashScreen splash;
         internal bool dismissed = false;
-        internal Frame rootFrame;
+        internal Frame rootFrame = new Frame();
 
         public ExtendedSplash(SplashScreen splashscreen, bool loadState)
         {
@@ -48,8 +49,19 @@ namespace OpenWeen.UWP.View
                 PositionRing();
                 PositionTextBlock();
             }
-            rootFrame = new Frame();
+            InitTransitions();
             RestoreStateAsync(loadState);
+        }
+        private void InitTransitions()
+        {
+            TransitionCollection collection = new TransitionCollection();
+            NavigationThemeTransition theme = new NavigationThemeTransition();
+
+            var info = new DrillInNavigationTransitionInfo();
+
+            theme.DefaultNavigationTransitionInfo = info;
+            collection.Add(theme);
+            rootFrame.ContentTransitions = collection;
         }
 
         private async Task InitEmotion()
@@ -114,13 +126,13 @@ namespace OpenWeen.UWP.View
         {
             dismissed = true;
 
-            ImageLoader.Initialize(new ImageConfig.Builder()
-            {
-                CacheMode = ImageLib.Cache.CacheMode.MemoryAndStorageCache,
-                MemoryCacheImpl = new LRUCache<string, IRandomAccessStream>(),
-                StorageCacheImpl = new LimitedStorageCache(ApplicationData.Current.LocalCacheFolder,
-              "cache", new SHA1CacheGenerator(), 1024 * 1024 * 1024)
-            }.AddDecoder<GifDecoder>().Build(), false);
+            //ImageLoader.Initialize(new ImageConfig.Builder()
+            //{
+            //    CacheMode = ImageLib.Cache.CacheMode.MemoryAndStorageCache,
+            //    MemoryCacheImpl = new LRUCache<string, IRandomAccessStream>(),
+            //    StorageCacheImpl = new LimitedStorageCache(ApplicationData.Current.LocalCacheFolder,
+            //  "cache", new SHA1CacheGenerator(), 1024 * 1024 * 1024)
+            //}.AddDecoder<GifDecoder>().Build(), false);
             await BackgroundHelper.Register<UpdateUnreadCountTask>(new TimeTrigger(15, false));
             if (CheckForLogin())
             {
@@ -148,10 +160,6 @@ namespace OpenWeen.UWP.View
             else
             {
                 rootFrame.Navigate(typeof(LoginPage));
-            }
-            while (rootFrame.BackStack.Count > 0)
-            {
-                rootFrame.BackStack.RemoveAt(0);
             }
             SystemNavigationManager.GetForCurrentView().BackRequested += ExtendedSplash_BackRequested;
             rootFrame.Navigated += RootFrame_Navigated;

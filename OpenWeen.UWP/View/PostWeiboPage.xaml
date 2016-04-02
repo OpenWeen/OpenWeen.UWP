@@ -5,6 +5,7 @@
     xmlns:local="using:OpenWeen.UWP.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Extensions="using:WinRTXamlToolkit.Controls.Extensions"
     mc:Ignorable="d">
     <Page.Resources>
         <CollectionViewSource x:Name="cvs" IsSourceGrouped="true" />
@@ -12,6 +13,9 @@
             <MenuFlyoutItem Text="拍照" Click="TakePhoto" />
             <MenuFlyoutItem Text="添加图片" Click="AddSingleImage" />
             <MenuFlyoutItem Text="添加多图" Click="AddMultipleImage" />
+        </MenuFlyout>
+        <MenuFlyout x:Key="ImageTapFlyout">
+            <MenuFlyoutItem Text="删除" Click="DeletePicture" />
         </MenuFlyout>
     </Page.Resources>
 
@@ -32,14 +36,28 @@
                 <TextBlock HorizontalAlignment="Right" Text="{x:Bind TextCount,Mode=OneWay}" />
             </Grid>
             <ItemsControl Grid.Row="2" ItemsSource="{x:Bind Images,Mode=OneWay}">
+                <ItemsControl.Style>
+                    <Style TargetType="ItemsControl">
+                        <Setter Property="ItemContainerTransitions">
+                            <Setter.Value>
+                                <TransitionCollection>
+                                    <AddDeleteThemeTransition />
+                                    <ContentThemeTransition />
+                                    <ReorderThemeTransition />
+                                    <EntranceThemeTransition IsStaggeringEnabled="False" />
+                                </TransitionCollection>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ItemsControl.Style>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Image MaxHeight="100" Margin="4" Source="{Binding Image}" />
+                        <Image Tapped="Image_Tapped" Extensions:ImageExtensions.FadeInOnLoaded="True" Extensions:ImageExtensions.ImageLoadedTransitionType="FadeIn" MaxHeight="100" Margin="4" Source="{Binding Image}" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <VirtualizingStackPanel Orientation="Horizontal" />
+                        <ItemsWrapGrid Orientation="Horizontal" />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.Template>
@@ -68,7 +86,7 @@
                     <GridView ItemClick="GridView_ItemClick" SelectionMode="None" ItemsSource="{Binding Source={StaticResource cvs}}" IsItemClickEnabled="True">
                         <GridView.ItemTemplate>
                             <DataTemplate>
-                                <Image Width="30" Height="30" Margin="4" Source="{Binding Url}" />
+                                <Image Extensions:ImageExtensions.FadeInOnLoaded="True" Extensions:ImageExtensions.ImageLoadedTransitionType="FadeIn" Width="30" Height="30" Margin="4" Source="{Binding Url}" />
                             </DataTemplate>
                         </GridView.ItemTemplate>
                         <GridView.GroupStyle>

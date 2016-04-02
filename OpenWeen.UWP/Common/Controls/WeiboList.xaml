@@ -9,6 +9,20 @@
     VirtualizingStackPanel.VirtualizationMode="Recycling"
     xmlns:statusmodel="using:OpenWeen.Core.Model.Status"
     xmlns:controls="using:OpenWeen.UWP.Common.Controls">
+    <ItemsControl.Style>
+        <Style TargetType="ItemsControl">
+            <Setter Property="ItemContainerTransitions">
+                <Setter.Value>
+                    <TransitionCollection>
+                        <AddDeleteThemeTransition />
+                        <ContentThemeTransition />
+                        <ReorderThemeTransition />
+                        <EntranceThemeTransition IsStaggeringEnabled="False" />
+                    </TransitionCollection>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </ItemsControl.Style>
     <ItemsControl.ItemTemplate>
         <DataTemplate x:DataType="statusmodel:MessageModel">
             <Grid BorderBrush="LightGray" Visibility="{x:Bind Converter={StaticResource BlockToVisibilityConverter}}" Tapped="Grid_Tapped" Margin="8" BorderThickness="0,0,0,1">

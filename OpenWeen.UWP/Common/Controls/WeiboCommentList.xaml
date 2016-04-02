@@ -8,6 +8,20 @@
     xmlns:commentModel="using:OpenWeen.Core.Model.Comment"
     mc:Ignorable="d">
 
+    <ItemsControl.Style>
+        <Style TargetType="ItemsControl">
+            <Setter Property="ItemContainerTransitions">
+                <Setter.Value>
+                    <TransitionCollection>
+                        <AddDeleteThemeTransition />
+                        <ContentThemeTransition />
+                        <ReorderThemeTransition />
+                        <EntranceThemeTransition IsStaggeringEnabled="False" />
+                    </TransitionCollection>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </ItemsControl.Style>
     <ItemsControl.ItemTemplate>
         <DataTemplate x:DataType="commentModel:CommentModel">
             <Grid BorderBrush="LightGray" BorderThickness="0,0,0,1" Tapped="Grid_Tapped" Margin="8">

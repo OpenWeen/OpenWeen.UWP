@@ -10,6 +10,20 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
+    <ItemsControl.Style>
+        <Style TargetType="ItemsControl">
+            <Setter Property="ItemContainerTransitions">
+                <Setter.Value>
+                    <TransitionCollection>
+                        <AddDeleteThemeTransition />
+                        <ContentThemeTransition />
+                        <ReorderThemeTransition />
+                        <EntranceThemeTransition IsStaggeringEnabled="False" />
+                    </TransitionCollection>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </ItemsControl.Style>
     <ItemsControl.ItemTemplate>
         <DataTemplate x:DataType="statusmodel:BaseModel">
             <Grid BorderBrush="LightGray" BorderThickness="0,0,0,1" Visibility="{x:Bind Converter={StaticResource BlockToVisibilityConverter}}" Tapped="Grid_Tapped" Margin="8">

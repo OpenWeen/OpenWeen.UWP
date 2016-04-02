@@ -8,8 +8,10 @@ using OpenWeen.Core.Model.User;
 using OpenWeen.UWP.Common;
 using OpenWeen.UWP.Model;
 using OpenWeen.UWP.Shared.Common.Helpers;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using WinRTXamlToolkit.Tools;
 
 namespace OpenWeen.UWP.ViewModel
 {
@@ -35,45 +37,55 @@ namespace OpenWeen.UWP.ViewModel
 
         public MainPageViewModel()
         {
-            //StaticResource.UpdateUnreadCountTaskComplete += StaticResource_UpdateUnreadCountTaskComplete;
-            var timer = new DispatcherTimer() { Interval = TimeSpan.FromMinutes(1d) };
+            var timer = new BackgroundTimer() { Interval = TimeSpan.FromMinutes(1d) };
             timer.Tick += Timer_Tick;
             timer.Start();
             InitUser();
             InitAllList();
         }
 
-        private async void InitAllList()
+        private void InitAllList()
         {
-            await GetUnreadCount();
-            await Timeline.Refresh();
-            await Mention.Refresh();
-            await Comment.Refresh();
-            await CommentMention.Refresh();
-            await Favor.Refresh();
+#pragma warning disable CS4014 // 由于此调用不会等待，因此在调用完成前将继续执行当前方法
+            GetUnreadCount();
+            Timeline.Refresh();
+            Mention.Refresh();
+            Comment.Refresh();
+            CommentMention.Refresh();
+            Favor.Refresh();
+#pragma warning restore CS4014 // 由于此调用不会等待，因此在调用完成前将继续执行当前方法
         }
 
-        private async void Timer_Tick(object sender, object e)
+        private void Timer_Tick(object sender, object e)
         {
-            var unread = await GetUnreadCount();
-            var builder = new StringBuilder();
-            if (unread.MentionStatus > 0 && unread.MentionStatus != _prevUnread?.MentionStatus)
+#pragma warning disable CS4014 // 由于此调用不会等待，因此在调用完成前将继续执行当前方法
+            Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
             {
-                builder.Append($"{unread.MentionStatus} 条新@");
-            }
-            if (unread.Cmt > 0 && unread.Cmt != _prevUnread?.Cmt)
-            {
-                builder.Append($"{unread.Cmt} 条新评论");
-            }
-            if (unread.MentionCmt > 0 && unread.MentionCmt != _prevUnread?.MentionCmt)
-            {
-                builder.Append($"{unread.MentionCmt} 条新提及的评论");
-            }
-            if (builder.Length > 0)
-            {
-                ToastNotificationHelper.SendToast(builder.ToString());
-            }
-            _prevUnread = unread;
+                var unread = await GetUnreadCount();
+                var builder = new StringBuilder();
+                if (unread.MentionStatus > 0 && unread.MentionStatus != _prevUnread?.MentionStatus)
+                {
+                    builder.Append($"{unread.MentionStatus} 条新@");
+                }
+                if (unread.Cmt > 0 && unread.Cmt != _prevUnread?.Cmt)
+                {
+                    builder.Append($"{unread.Cmt} 条新评论");
+                }
+                if (unread.MentionCmt > 0 && unread.MentionCmt != _prevUnread?.MentionCmt)
+                {
+                    builder.Append($"{unread.MentionCmt} 条新提及的评论");
+                }
+                if (unread.Follower > 0 && unread.Follower != _prevUnread?.Follower)
+                {
+                    builder.Append($"{unread.MentionCmt} 个新粉丝");
+                }
+                if (builder.Length > 0)
+                {
+                    ToastNotificationHelper.SendToast(builder.ToString());
+                }
+                _prevUnread = unread;
+            });
+#pragma warning restore CS4014 // 由于此调用不会等待，因此在调用完成前将继续执行当前方法
         }
 
         //private void StaticResource_UpdateUnreadCountTaskComplete(object sender, EventArgs e)
@@ -102,15 +114,12 @@ namespace OpenWeen.UWP.ViewModel
                 case 0:
                     await Timeline.Refresh();
                     break;
-
                 case 1:
                     await Mention.Refresh();
                     break;
-
                 case 2:
                     await Comment.Refresh();
                     break;
-
                 case 3:
                     await CommentMention.Refresh();
                     break;

@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:OpenWeen.UWP.Common.Controls"
+    xmlns:Extensions="using:WinRTXamlToolkit.Controls.Extensions"
     mc:Ignorable="d">
     <Page.Resources>
         <MenuFlyout x:Key="SettingFlyout">
@@ -24,7 +25,7 @@
             <TextBlock Margin="125,0,0,0" Style="{ThemeResource FlyoutPickerTitleTextBlockStyle}" Text="{x:Bind UserPageVM.User.ScreenName,Mode=OneWay}" />
         </Grid>
         <Grid DataContext="{x:Bind UserPageVM.User,Mode=OneWay}" Background="{StaticResource AppTheme}">
-            <Image Height="150" Source="{Binding Coverimage}" Stretch="UniformToFill" />
+            <Image Extensions:ImageExtensions.FadeInOnLoaded="True" Extensions:ImageExtensions.ImageLoadedTransitionType="FadeIn" Height="150" Source="{Binding Coverimage}" Stretch="UniformToFill" />
             <Ellipse Width="75" Height="75" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="25,-25" Stroke="White">
                 <Ellipse.Fill>
                     <ImageBrush ImageSource="{Binding AvatarLarge}" />

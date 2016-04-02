@@ -5,6 +5,7 @@ using OpenWeen.UWP.View;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -85,10 +86,14 @@ namespace OpenWeen.UWP
             Window.Current.Activate();
         }
 
-        private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        private async void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             TelemetryClient telemetry = new TelemetryClient();
             telemetry.TrackException(e.Exception);
+#if DEBUG
+            var dialog = new MessageDialog(e.Message + e.Exception.StackTrace);
+            await dialog.ShowAsync();
+#endif
         }
 
         /// <summary>

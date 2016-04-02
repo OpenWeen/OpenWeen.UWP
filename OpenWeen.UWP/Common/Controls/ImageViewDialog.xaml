@@ -5,9 +5,10 @@
     xmlns:local="using:OpenWeen.UWP.Common.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:imgcontrol="using:ImageLib.Controls"
     xmlns:model="using:OpenWeen.UWP.Model"
     BorderThickness="0"
+    xmlns:gif="using:XamlAnimatedGif"
+    xmlns:Extensions="using:WinRTXamlToolkit.Controls.Extensions"
     RequestedTheme="Dark"
     SecondaryButtonText="关闭"
     RightTapped="ContentDialog_RightTapped"
@@ -31,13 +32,14 @@
         </Style>
     </ContentDialog.Style>
     <Grid>
-        <FlipView x:Name="flipView" Background="Transparent" ItemsSource="{x:Bind Items}">
+        <FlipView x:Name="flipView" Background="Transparent" ItemsSource="{x:Bind Items}" DataContextChanged="flipView_DataContextChanged">
             <FlipView.ItemTemplate>
                 <DataTemplate x:DataType="model:ImageModel">
                     <ScrollViewer PointerExited="ScrollViewer_PointerExited" PointerPressed="ScrollViewer_PointerPressed" PointerReleased="ScrollViewer_PointerReleased" PointerMoved="ScrollViewer_PointerMoved" HorizontalScrollBarVisibility="Auto" HorizontalScrollMode="Auto" ZoomMode="Enabled" HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" VerticalScrollBarVisibility="Auto">
                         <Grid>
                             <ProgressRing Foreground="White" IsActive="{x:Bind IsLoading,Mode=OneWay}" />
-                            <imgcontrol:ImageView LoadingFailed="{x:Bind LoadFailed}" Margin="0,0,16,16" UriSource="{x:Bind SourceUri}" LoadingCompleted="{x:Bind Loaded}" />
+                            <Image Extensions:ImageExtensions.FadeInOnLoaded="True" Extensions:ImageExtensions.ImageLoadedTransitionType="FadeIn" ImageFailed="{x:Bind LoadFailed}" ImageOpened="{x:Bind Loaded}" gif:AnimationBehavior.SourceUri="{Binding SourceUri}"/>
+                            <!--<imgcontrol:ImageView LoadingFailed="{x:Bind LoadFailed}" Margin="0,0,16,16" UriSource="{x:Bind SourceUri}" LoadingCompleted="{x:Bind Loaded}" />-->
                         </Grid>
                     </ScrollViewer>
                 </DataTemplate>

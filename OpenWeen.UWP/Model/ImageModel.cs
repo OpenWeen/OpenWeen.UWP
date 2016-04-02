@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using ImageLib.Controls;
 
 namespace OpenWeen.UWP.Model
 {
@@ -25,7 +24,7 @@ namespace OpenWeen.UWP.Model
         {
             IsLoading = false;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsLoading)));
-            var imageView = sender as ImageView;
+            //var imageView = sender as ImageView;
             //TODO: Draw an image
             //imageView.UriSource = new Uri()
         }
