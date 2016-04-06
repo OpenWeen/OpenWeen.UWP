@@ -9,7 +9,7 @@ using OpenWeen.UWP.Shared.Common;
 using OpenWeen.UWP.Shared.Common.Helpers;
 using Windows.UI.Popups;
 
-namespace OpenWeen.UWP.ViewModel
+namespace OpenWeen.UWP.ViewModel.UserPage
 {
     public class UserPageViewModel : INotifyPropertyChanged
     {

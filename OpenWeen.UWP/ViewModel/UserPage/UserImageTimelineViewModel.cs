@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using OpenWeen.Core.Model.Status;
 
-namespace OpenWeen.UWP.ViewModel
+namespace OpenWeen.UWP.ViewModel.UserPage
 {
     public class UserImageTimelineViewModel : UserViewModelBase<MessageModel>
     {

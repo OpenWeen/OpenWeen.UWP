@@ -4,25 +4,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OpenWeen.Core.Model.User;
+using OpenWeen.UWP.Common;
 
-namespace OpenWeen.UWP.ViewModel
+namespace OpenWeen.UWP.ViewModel.UserPage
 {
-    public class FriendListViewModel : UserListViewModelBase
+    public class FollowerListViewModel : UserListViewModelBase
     {
-        public FriendListViewModel(long uid) : base(uid, "关注")
+        public FollowerListViewModel(long uid) : base(uid, "粉丝")
         {
         }
 
         protected override async Task<IEnumerable<UserModel>> LoadMoreOverride()
         {
-            var item = await Core.Api.Friendships.Friends.GetFriends(UID, cursor: _pageCount);
+            var item = await Core.Api.Friendships.Friends.GetFollowers(UID, cursor: _pageCount);
             _pageCount = int.Parse(item.NextCursor);
             return item.Users;
         }
 
         protected override async Task<Tuple<int, List<UserModel>>> RefreshOverride()
         {
-            var item = await Core.Api.Friendships.Friends.GetFriends(UID, cursor: _pageCount);
+            if (UID == StaticResource.Uid)
+                await Core.Api.Remind.ClearUnRead(Core.Api.RemindType.Follower);
+            _pageCount = 0;
+            var item = await Core.Api.Friendships.Friends.GetFollowers(UID, cursor: _pageCount);
             _pageCount = int.Parse(item.NextCursor);
             return Tuple.Create(item.TotalNumber, item.Users);
         }

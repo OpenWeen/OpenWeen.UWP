@@ -5,21 +5,22 @@ using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using OpenWeen.Core.Model;
 using Windows.UI.Popups;
-
 namespace OpenWeen.UWP.ViewModel
 {
     public abstract class WeiboListViewModelBase<T> : INotifyPropertyChanged 
     {
         public ObservableCollection<T> WeiboList { get; private set; } = new ObservableCollection<T>();
         protected int _pageCount = 1;
-        private bool _isLoading;
-        private bool _hasMore => WeiboList.Count < _totalNumber;
-        private int _totalNumber = 0;
+        protected bool _isLoading;
+        protected bool _hasMore => WeiboList.Count < _totalNumber;
+        protected int _totalNumber = 0;
 
         public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName]string name = "") => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 
         public async Task Refresh()
         {
@@ -64,7 +65,7 @@ namespace OpenWeen.UWP.ViewModel
             _isLoading = false;
         }
 
-        private async void OnWebException()
+        protected virtual async void OnWebException()
         {
             await new MessageDialog("网络错误").ShowAsync();
         }

@@ -1,0 +1,74 @@
+﻿<Page
+    x:Class="OpenWeen.UWP.View.MessagePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:OpenWeen.UWP.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:OpenWeen.UWP.Common.Controls"
+    xmlns:Extensions="using:WinRTXamlToolkit.Controls.Extensions"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <CollectionViewSource x:Name="cvs" IsSourceGrouped="true" />
+    </Page.Resources>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Padding="16" Background="{StaticResource AppTheme}" RequestedTheme="Dark">
+            <TextBlock Text="{x:Bind ViewModel.UserName}" HorizontalAlignment="Center" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+        </Grid>
+        <controls:MessageList Grid.Row="1" x:Name="messageList" LoadMore="{x:Bind ViewModel.LoadMoreNew}" ItemsSource="{x:Bind ViewModel.WeiboList,Mode=OneWay}"/>
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBox BorderThickness="1" x:Name="textBox"  Text="{x:Bind ViewModel.EnterText,Mode=TwoWay}"/>
+                <Button Grid.Column="1" Click="{x:Bind ViewModel.Send}" Style="{ThemeResource DateTimePickerFlyoutButtonStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Button.Content>
+                        <SymbolIcon Symbol="Send"/>
+                    </Button.Content>
+                </Button>
+            </Grid>
+            <SemanticZoom Grid.Row="1" x:Name="semanticZoom">
+                <SemanticZoom.ZoomedOutView>
+                    <GridView>
+                        <GridView.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Group.Key}" />
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+                    </GridView>
+                </SemanticZoom.ZoomedOutView>
+                <SemanticZoom.ZoomedInView>
+                    <GridView ItemClick="GridView_ItemClick" SelectionMode="None" ItemsSource="{Binding Source={StaticResource cvs}}" IsItemClickEnabled="True">
+                        <GridView.ItemTemplate>
+                            <DataTemplate>
+                                <Image Extensions:ImageExtensions.FadeInOnLoaded="True" Extensions:ImageExtensions.ImageLoadedTransitionType="FadeIn" Width="30" Height="30" Margin="4" Source="{Binding Url}" />
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+                        <GridView.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text='{Binding Key}' />
+                                    </DataTemplate>
+                                </GroupStyle.HeaderTemplate>
+                            </GroupStyle>
+                        </GridView.GroupStyle>
+                    </GridView>
+                </SemanticZoom.ZoomedInView>
+            </SemanticZoom>
+
+        </Grid>
+    </Grid>
+</Page>

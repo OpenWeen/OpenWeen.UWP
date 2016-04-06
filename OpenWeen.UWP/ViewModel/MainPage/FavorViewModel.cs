@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using OpenWeen.Core.Model.Favor;
 using OpenWeen.Core.Model.Status;
 
-namespace OpenWeen.UWP.ViewModel
+namespace OpenWeen.UWP.ViewModel.MainPage
 {
     public class FavorViewModel : WeiboListViewModelBase<MessageModel>
     {

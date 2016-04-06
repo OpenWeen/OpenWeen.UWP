@@ -88,12 +88,14 @@ namespace OpenWeen.UWP
 
         private async void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
+            e.Handled = true;
             TelemetryClient telemetry = new TelemetryClient();
             telemetry.TrackException(e.Exception);
 #if DEBUG
             var dialog = new MessageDialog(e.Message + e.Exception.StackTrace);
             await dialog.ShowAsync();
 #endif
+            Exit();
         }
 
         /// <summary>

@@ -117,6 +117,9 @@
                     <PivotItem>
                         <controls:WeiboList LoadMore="{x:Bind MainVM.Favor.LoadMore}" Repost="{x:Bind ActionModel.Repost}" Comment="{x:Bind ActionModel.Comment}" ItemClick="{x:Bind ActionModel.ItemClick}" UserClick="{x:Bind ActionModel.UserClick}" PictureClick="{x:Bind ActionModel.PictureClick}" TopicClick="{x:Bind ActionModel.TopicClick}" Favor="{x:Bind ActionModel.Favor}" ItemsSource="{x:Bind MainVM.Favor.WeiboList,Mode=OneWay}" />
                     </PivotItem>
+                    <PivotItem>
+                        <controls:MessageUserList LoadMore="{x:Bind MainVM.Message.LoadMore}" ItemClick="{x:Bind ActionModel.MessageClick}" ItemsSource="{x:Bind MainVM.Message.WeiboList,Mode=OneWay}" />
+                    </PivotItem>
                 </Pivot>
             </SplitView.Content>
         </SplitView>

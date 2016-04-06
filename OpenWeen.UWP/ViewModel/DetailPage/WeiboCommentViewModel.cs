@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using OpenWeen.Core.Model.Comment;
 
-namespace OpenWeen.UWP.ViewModel
+namespace OpenWeen.UWP.ViewModel.DetailPage
 {
     public class WeiboCommentViewModel : WeiboDetailListBase<CommentModel>
     {
@@ -11,11 +11,16 @@ namespace OpenWeen.UWP.ViewModel
         {
         }
 
-        protected override async Task<IEnumerable<CommentModel>> LoadMoreOverride() => (await Core.Api.Comments.GetCommentStatus(ID, page: _pageCount++)).Comments;
+        protected override async Task<IEnumerable<CommentModel>> LoadMoreOverride()
+        {
+            var list = (await Core.Api.Comments.GetCommentStatus(ID, max_id: WeiboList[WeiboList.Count - 1].ID)).Comments;
+            list.RemoveAt(0);
+            return list;
+        }
 
         protected override async Task<Tuple<int, List<CommentModel>>> RefreshOverride()
         {
-            var item = await Core.Api.Comments.GetCommentStatus(ID, page: _pageCount++);
+            var item = await Core.Api.Comments.GetCommentStatus(ID);
             return Tuple.Create(item.TotalNumber, item.Comments);
         }
     }

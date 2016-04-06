@@ -12,6 +12,9 @@ using OpenWeen.UWP.Common.Entities;
 using OpenWeen.UWP.Common.Helpers;
 using OpenWeen.UWP.View;
 using OpenWeen.UWP.ViewModel;
+using OpenWeen.UWP.ViewModel.DetailPage;
+using OpenWeen.UWP.ViewModel.MessagePage;
+using OpenWeen.UWP.ViewModel.UserPage;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -91,6 +94,11 @@ namespace OpenWeen.UWP.Model
 
         public void TopicClick(object sender, WeiboTopicClickEventArgs e)
         {
+        }
+
+        public void MessageClick(object sender, WeiboMessageItemClickEventArgs e)
+        {
+            (Window.Current.Content as Frame).Navigate(typeof(MessagePage), new MessagePageViewModel(e.ClickedItem.User.ID, e.ClickedItem.User.ScreenName));
         }
     }
 }

@@ -4,6 +4,7 @@ using OpenWeen.UWP.Common.Helpers;
 using OpenWeen.UWP.Model;
 using OpenWeen.UWP.View;
 using OpenWeen.UWP.ViewModel;
+using OpenWeen.UWP.ViewModel.MainPage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -27,11 +28,6 @@ namespace OpenWeen.UWP
             NavigationCacheMode = NavigationCacheMode.Enabled;
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
-        }
-
         private void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(PostWeiboPage), new PostWeibo());
@@ -41,14 +37,6 @@ namespace OpenWeen.UWP
         {
             var scrollViewer = MoreVisualTreeHelper.GetObject<ScrollViewer>(pivot.SelectedItem as PivotItem);
             scrollViewer.ChangeView(0, 0, 1f, false);
-        }
-
-        private void WeiboList_ItemClick(object sender, Common.Controls.Events.WeiboItemClickEventArgs e)
-        {
-        }
-
-        private void WeiboList_TopicClick(object sender, Common.Controls.Events.WeiboTopicClickEventArgs e)
-        {
         }
 
         private void Ellipse_Tapped(object sender, TappedRoutedEventArgs e)

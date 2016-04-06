@@ -3,6 +3,7 @@ using OpenWeen.Core.Model.User;
 using OpenWeen.UWP.Common.Controls.Events;
 using OpenWeen.UWP.Model;
 using OpenWeen.UWP.ViewModel;
+using OpenWeen.UWP.ViewModel.DetailPage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;

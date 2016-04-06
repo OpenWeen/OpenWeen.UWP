@@ -7,6 +7,11 @@ namespace OpenWeen.UWP.Common.Helpers
     {
         public static T GetObject<T>(DependencyObject o) where T : DependencyObject
         {
+            if (o == null)
+            {
+                return null;
+            }
+
             if (o is T)
             {
                 return o as T;
@@ -31,6 +36,11 @@ namespace OpenWeen.UWP.Common.Helpers
 
         public static T GetObjectByName<T>(DependencyObject o, string name) where T : DependencyObject
         {
+            if (o == null)
+            {
+                return null;
+            }
+
             if (o is T && o.GetValue(FrameworkElement.NameProperty) as string == name)
             {
                 return o as T;

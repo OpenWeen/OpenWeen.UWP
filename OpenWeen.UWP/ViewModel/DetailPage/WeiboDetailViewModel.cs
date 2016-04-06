@@ -1,6 +1,6 @@
 ﻿using OpenWeen.Core.Model.Status;
 
-namespace OpenWeen.UWP.ViewModel
+namespace OpenWeen.UWP.ViewModel.DetailPage
 {
     public class WeiboDetailViewModel
     {

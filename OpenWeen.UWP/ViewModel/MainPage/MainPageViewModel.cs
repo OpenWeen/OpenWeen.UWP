@@ -8,12 +8,13 @@ using OpenWeen.Core.Model.User;
 using OpenWeen.UWP.Common;
 using OpenWeen.UWP.Model;
 using OpenWeen.UWP.Shared.Common.Helpers;
+using OpenWeen.UWP.ViewModel.MessagePage;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using WinRTXamlToolkit.Tools;
 
-namespace OpenWeen.UWP.ViewModel
+namespace OpenWeen.UWP.ViewModel.MainPage
 {
     public class MainPageViewModel : INotifyPropertyChanged
     {
@@ -22,6 +23,7 @@ namespace OpenWeen.UWP.ViewModel
         public CommentViewModel Comment { get; } = new CommentViewModel();
         public CommentMentionViewModel CommentMention { get; } = new CommentMentionViewModel();
         public FavorViewModel Favor { get; } = new FavorViewModel();
+        public MessageUserListViewModel Message { get; } = new MessageUserListViewModel();
         public UserModel User { get; private set; }
 
         public List<HeaderModel> Header { get; } = new List<HeaderModel>()
@@ -31,6 +33,7 @@ namespace OpenWeen.UWP.ViewModel
             new HeaderModel() { Icon = Symbol.Comment, Text = "评论" },
             new HeaderModel() { Icon = Symbol.Comment, Text = "@的评论" },
             new HeaderModel() { Icon = Symbol.Favorite, Text = "收藏夹" },
+            new HeaderModel() { Icon = Symbol.Mail, Text = "私信" },
         };
 
         private UnReadModel _prevUnread;
@@ -53,6 +56,7 @@ namespace OpenWeen.UWP.ViewModel
             Comment.Refresh();
             CommentMention.Refresh();
             Favor.Refresh();
+            Message.Refresh();
 #pragma warning restore CS4014 // 由于此调用不会等待，因此在调用完成前将继续执行当前方法
         }
 
@@ -77,7 +81,11 @@ namespace OpenWeen.UWP.ViewModel
                 }
                 if (unread.Follower > 0 && unread.Follower != _prevUnread?.Follower)
                 {
-                    builder.Append($"{unread.MentionCmt} 个新粉丝");
+                    builder.Append($"{unread.Follower} 个新粉丝");
+                }
+                if (unread.Dm > 0 && unread.Dm != _prevUnread.Dm)
+                {
+                    builder.Append($"{unread.Dm} 条新私信");
                 }
                 if (builder.Length > 0)
                 {
@@ -125,6 +133,9 @@ namespace OpenWeen.UWP.ViewModel
                     break;
                 case 4:
                     await Favor.Refresh();
+                    break;
+                case 5:
+                    await Message.Refresh();
                     break;
                 default:
                     break;

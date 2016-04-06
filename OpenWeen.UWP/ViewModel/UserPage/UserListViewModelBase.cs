@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using OpenWeen.Core.Model.User;
 
-namespace OpenWeen.UWP.ViewModel
+namespace OpenWeen.UWP.ViewModel.UserPage
 {
     public abstract class UserListViewModelBase : WeiboListViewModelBase<UserModel>
     {

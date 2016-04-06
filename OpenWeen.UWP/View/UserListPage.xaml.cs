@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using OpenWeen.UWP.Model;
 using OpenWeen.UWP.ViewModel;
+using OpenWeen.UWP.ViewModel.UserPage;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;

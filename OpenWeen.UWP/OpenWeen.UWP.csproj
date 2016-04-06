@@ -109,11 +109,18 @@
     </Compile>
     <Compile Include="Common\Controls\Events\WeiboActionEventArgs.cs" />
     <Compile Include="Common\Controls\Events\WeiboItemClickEventArgs.cs" />
+    <Compile Include="Common\Controls\Events\WeiboMessageItemClickEventArgs.cs" />
     <Compile Include="Common\Controls\Events\WeiboPictureClickEventArgs.cs" />
     <Compile Include="Common\Controls\Events\WeiboTopicClickEventArgs.cs" />
     <Compile Include="Common\Controls\Events\WeiboUserClickEventArgs.cs" />
     <Compile Include="Common\Controls\ImageViewDialog.xaml.cs">
       <DependentUpon>ImageViewDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Common\Controls\MessageList.xaml.cs">
+      <DependentUpon>MessageList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Common\Controls\MessageUserList.xaml.cs">
+      <DependentUpon>MessageUserList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\Controls\PivotHeader.xaml.cs">
       <DependentUpon>PivotHeader.xaml</DependentUpon>
@@ -150,30 +157,33 @@
     <Compile Include="Common\Extension\IEnumerableExtension.cs" />
     <Compile Include="Common\Helpers\BackgroundHelper.cs" />
     <Compile Include="Common\Helpers\MoreVisualTreeHelper.cs" />
+    <Compile Include="Common\MessageDataTemplateSelector.cs" />
     <Compile Include="Common\StaticResource.cs" />
     <Compile Include="Common\XamarinInsightsKey.cs" />
     <Compile Include="Model\FollowModel.cs" />
     <Compile Include="Model\HeaderModel.cs" />
     <Compile Include="Model\ImageModel.cs" />
     <Compile Include="Model\WeiboActionModel.cs" />
-    <Compile Include="ViewModel\CommentMentionViewModel.cs" />
-    <Compile Include="ViewModel\CommentViewModel.cs" />
-    <Compile Include="ViewModel\FavorViewModel.cs" />
-    <Compile Include="ViewModel\FollowerListViewModel.cs" />
-    <Compile Include="ViewModel\FriendListViewModel.cs" />
-    <Compile Include="ViewModel\MentionViewModel.cs" />
-    <Compile Include="ViewModel\TimelineViewModel.cs" />
-    <Compile Include="ViewModel\UserImageTimelineViewModel.cs" />
-    <Compile Include="ViewModel\UserListViewModelBase.cs" />
-    <Compile Include="ViewModel\UserPageViewModel.cs" />
-    <Compile Include="ViewModel\UserTimelineViewModel.cs" />
-    <Compile Include="ViewModel\UserViewModelBase.cs" />
-    <Compile Include="ViewModel\MainPageViewModel.cs" />
-    <Compile Include="ViewModel\WeiboCommentViewModel.cs" />
-    <Compile Include="ViewModel\WeiboDetailListBase.cs" />
-    <Compile Include="ViewModel\WeiboDetailViewModel.cs" />
+    <Compile Include="ViewModel\MainPage\CommentMentionViewModel.cs" />
+    <Compile Include="ViewModel\MainPage\CommentViewModel.cs" />
+    <Compile Include="ViewModel\MainPage\FavorViewModel.cs" />
+    <Compile Include="ViewModel\UserPage\FollowerListViewModel.cs" />
+    <Compile Include="ViewModel\UserPage\FriendListViewModel.cs" />
+    <Compile Include="ViewModel\MainPage\MentionViewModel.cs" />
+    <Compile Include="ViewModel\MessagePage\MessagePageViewModel.cs" />
+    <Compile Include="ViewModel\MainPage\MessageUserListViewModel.cs" />
+    <Compile Include="ViewModel\MainPage\TimelineViewModel.cs" />
+    <Compile Include="ViewModel\UserPage\UserImageTimelineViewModel.cs" />
+    <Compile Include="ViewModel\UserPage\UserListViewModelBase.cs" />
+    <Compile Include="ViewModel\UserPage\UserPageViewModel.cs" />
+    <Compile Include="ViewModel\UserPage\UserTimelineViewModel.cs" />
+    <Compile Include="ViewModel\UserPage\UserViewModelBase.cs" />
+    <Compile Include="ViewModel\MainPage\MainPageViewModel.cs" />
+    <Compile Include="ViewModel\DetailPage\WeiboCommentViewModel.cs" />
+    <Compile Include="ViewModel\DetailPage\WeiboDetailListBase.cs" />
+    <Compile Include="ViewModel\DetailPage\WeiboDetailViewModel.cs" />
     <Compile Include="ViewModel\WeiboListViewModelBase.cs" />
-    <Compile Include="ViewModel\WeiboRepostViewModel.cs" />
+    <Compile Include="ViewModel\DetailPage\WeiboRepostViewModel.cs" />
     <Compile Include="View\AboutPage.xaml.cs">
       <DependentUpon>AboutPage.xaml</DependentUpon>
     </Compile>
@@ -187,6 +197,9 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="View\MessagePage.xaml.cs">
+      <DependentUpon>MessagePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\PostWeiboPage.xaml.cs">
       <DependentUpon>PostWeiboPage.xaml</DependentUpon>
     </Compile>
@@ -225,6 +238,14 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="Common\Controls\ImageViewDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Common\Controls\MessageList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Common\Controls\MessageUserList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -275,6 +296,10 @@
     <Page Include="View\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\MessagePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\PostWeiboPage.xaml">
       <SubType>Designer</SubType>

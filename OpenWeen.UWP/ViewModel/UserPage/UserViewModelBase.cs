@@ -1,6 +1,6 @@
 ﻿using OpenWeen.Core.Model;
 
-namespace OpenWeen.UWP.ViewModel
+namespace OpenWeen.UWP.ViewModel.UserPage
 {
     public abstract class UserViewModelBase<T> : WeiboListViewModelBase<T> where T : BaseModel
     {

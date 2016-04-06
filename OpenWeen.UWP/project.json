@@ -4,9 +4,9 @@
     "Microsoft.ApplicationInsights.PersistenceChannel": "1.2.3",
     "Microsoft.ApplicationInsights.WindowsApps": "1.1.1",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.0.0",
-    "OpenWeen.Core": "1.0.14",
+    "OpenWeen.Core": "1.1.0",
     "WinRTXamlToolkit.Controls.DataVisualization": "2.0.0",
-    "Xamarin.Insights": "1.12.2",
+    "Xamarin.Insights": "1.12.3",
     "XamlAnimatedGif": "1.1.1"
   },
   "frameworks": {

@@ -1,5 +1,6 @@
 ﻿using OpenWeen.UWP.Model;
 using OpenWeen.UWP.ViewModel;
+using OpenWeen.UWP.ViewModel.UserPage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;

@@ -1,6 +1,6 @@
 ﻿using OpenWeen.Core.Model;
 
-namespace OpenWeen.UWP.ViewModel
+namespace OpenWeen.UWP.ViewModel.DetailPage
 {
     public abstract class WeiboDetailListBase<T> : WeiboListViewModelBase<T> where T : BaseModel
     {
