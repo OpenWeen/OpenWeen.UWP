@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using NotificationsExtensions.Tiles;
 using OpenWeen.Core.Model;
 using OpenWeen.Core.Model.User;
 using OpenWeen.UWP.Common;
@@ -90,37 +92,14 @@ namespace OpenWeen.UWP.ViewModel.MainPage
             Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
             {
                 var unread = await GetUnreadCount();
+                UpdateUnreadHelper.Count = Header.Sum(item => item.UnreadCount);
                 if (unread == null)
                     return;
-                var builder = new StringBuilder();
-                if (unread.MentionStatus > 0 && unread.MentionStatus != _prevUnread?.MentionStatus && Settings.IsMentionNotify)
-                {
-                    builder.Append($"{unread.MentionStatus} 条新@");
-                }
-                if (unread.Cmt > 0 && unread.Cmt != _prevUnread?.Cmt && Settings.IsCommentNotify)
-                {
-                    builder.Append($"{unread.Cmt} 条新评论");
-                }
-                if (unread.MentionCmt > 0 && unread.MentionCmt != _prevUnread?.MentionCmt && Settings.IsMentionNotify)
-                {
-                    builder.Append($"{unread.MentionCmt} 条新提及的评论");
-                }
-                if (unread.Follower > 0 && unread.Follower != _prevUnread?.Follower && Settings.IsFollowerNotify)
-                {
-                    builder.Append($"{unread.Follower} 个新粉丝");
-                }
-                if (unread.Dm > 0 && unread.Dm != _prevUnread.Dm && Settings.IsMessageNotify)
-                {
-                    builder.Append($"{unread.Dm} 条新私信");
-                }
-                if (builder.Length > 0)
-                {
-                    ToastNotificationHelper.SendToast(builder.ToString());
-                }
-                _prevUnread = unread;
+                UpdateUnreadHelper.UpdateUnread(unread);
             });
 #pragma warning restore CS4014 // 由于此调用不会等待，因此在调用完成前将继续执行当前方法
         }
+
 
         //private void StaticResource_UpdateUnreadCountTaskComplete(object sender, EventArgs e)
         //{
@@ -166,6 +145,7 @@ namespace OpenWeen.UWP.ViewModel.MainPage
                 default:
                     break;
             }
+            UpdateUnreadHelper.Count = Header.Sum(item => item.UnreadCount);
         }
 
         private async Task<UnReadModel> GetUnreadCount()
@@ -173,10 +153,19 @@ namespace OpenWeen.UWP.ViewModel.MainPage
             try
             {
                 var unread = await Core.Api.Remind.GetUnRead(StaticResource.Uid.ToString());
-                Header[1].UnreadCount = unread.MentionStatus;
-                Header[2].UnreadCount = unread.Cmt;
-                Header[3].UnreadCount = unread.MentionCmt;
-                Header[5].UnreadCount = unread.Dm;
+                if (Settings.IsMentionNotify)
+                {
+                    Header[1].UnreadCount = unread.MentionStatus;
+                    Header[3].UnreadCount = unread.MentionCmt;
+                }
+                if (Settings.IsCommentNotify)
+                {
+                    Header[2].UnreadCount = unread.Cmt;
+                }
+                if (Settings.IsMessageNotify)
+                {
+                    Header[5].UnreadCount = unread.Dm;
+                }
                 return unread;
             }
             catch (Exception e) when (e is WebException || e is HttpRequestException)

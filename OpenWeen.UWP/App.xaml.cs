@@ -67,11 +67,15 @@ namespace OpenWeen.UWP
 
             UnhandledException += App_UnhandledException;
 
-            if (e.PreviousExecutionState != ApplicationExecutionState.Running)
+            Frame rootFrame = Window.Current.Content as Frame;
+            if (rootFrame == null)
             {
-                bool loadState = (e.PreviousExecutionState == ApplicationExecutionState.Terminated);
-                ExtendedSplash extendedSplash = new ExtendedSplash(e.SplashScreen, loadState);
-                Window.Current.Content = extendedSplash;
+                if (e.PreviousExecutionState != ApplicationExecutionState.Running)
+                {
+                    bool loadState = (e.PreviousExecutionState == ApplicationExecutionState.Terminated);
+                    ExtendedSplash extendedSplash = new ExtendedSplash(e.SplashScreen, loadState);
+                    Window.Current.Content = extendedSplash;
+                }
             }
             Window.Current.Activate();
         }

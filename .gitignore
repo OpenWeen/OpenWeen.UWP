@@ -215,3 +215,7 @@ ModelManifest.xml
 /OpenWeen.UWP/Common/XamarinInsightsKey.cs
 /OpenWeen.UWP/ApplicationInsights.config
 /OpenWeen.UWP/_pkginfo.txt
+/OpenWeen.UWP/_scale-400.appx
+/OpenWeen.UWP/_scale-150.appx
+/OpenWeen.UWP/_scale-125.appx
+/OpenWeen.UWP/_scale-100.appx

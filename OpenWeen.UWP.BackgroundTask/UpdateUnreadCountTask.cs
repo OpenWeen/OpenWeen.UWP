@@ -41,25 +41,9 @@ namespace OpenWeen.UWP.BackgroundTask
                 return;
             var uid = await Core.Api.User.Account.GetUid();
             var unread = await Core.Api.Remind.GetUnRead(uid);
-            if (!(unread.MentionStatus > 0 || unread.Cmt > 0 || unread.MentionCmt > 0))
+            if (unread == null)
                 return;
-            var builder = new StringBuilder();
-            if (unread.MentionStatus > 0)
-            {
-                builder.Append($"{unread.MentionStatus} 条新@");
-            }
-            if (unread.Cmt > 0)
-            {
-                builder.Append($"{unread.Cmt} 条新评论");
-            }
-            if (unread.MentionCmt > 0)
-            {
-                builder.Append($"{unread.MentionCmt} 条新提及的评论");
-            }
-            if (builder.Length > 0)
-            {
-                ToastNotificationHelper.SendToast(builder.ToString());
-            }
+            UpdateUnreadHelper.UpdateUnread(unread);
         }
 
         private bool CheckForLogin()
