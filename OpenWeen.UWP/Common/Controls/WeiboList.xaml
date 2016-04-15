@@ -15,7 +15,7 @@
                 <Setter.Value>
                     <TransitionCollection>
                         <AddDeleteThemeTransition />
-                        <ContentThemeTransition />
+                        <!--<ContentThemeTransition />-->
                         <ReorderThemeTransition />
                         <EntranceThemeTransition IsStaggeringEnabled="False" />
                     </TransitionCollection>
@@ -53,8 +53,8 @@
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <TextBlock DataContext="{x:Bind User}" Style="{ThemeResource BodyTextBlockStyle}" Padding="8,4" Text="{x:Bind User.ScreenName}" FontWeight="Bold" />
-                        <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Foreground="LightGray" Grid.Row="1" Padding="8,4" Text="{x:Bind CreateTime,Converter={StaticResource TimeConverter}}" />
+                        <TextBlock FontFamily="Microsoft Yahei UI" Foreground="#525C65" FontSize="18" DataContext="{x:Bind User}" Style="{ThemeResource BodyTextBlockStyle}" Padding="8,4,0,0" Text="{x:Bind User.ScreenName}" FontWeight="Bold" />
+                        <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" FontFamily="Microsoft Yahei UI" Foreground="#CCCCCC" FontSize="15"  Grid.Row="1" Padding="8,4,0,0" Text="{x:Bind CreateTime,Converter={StaticResource TimeConverter}}" />
                     </Grid>
                 </Grid>
                 <Grid Grid.Column="2" Grid.Row="1" Padding="8,4,8,4">
@@ -65,17 +65,17 @@
                     <controls:WeiboImageList PictureClick="WeiboImageList_PictureClick" Visibility="{x:Bind PicUrls,Converter={StaticResource NullToVisibilityConverter}}" ItemsSource="{x:Bind PicUrls}" />
                     <controls:WeiboTextBlock UserClick="WeiboTextBlock_UserClick" TopicClick="WeiboTextBlock_TopicClick" Grid.Row="1" Text="{x:Bind Text}" />
                 </Grid>
-                <Grid DataContext="{x:Bind RetweetedStatus}" Margin="8,4" Padding="8,4" Grid.Column="2" BorderBrush="LightGray" Grid.Row="2" Visibility="{x:Bind RetweetedStatus,Converter={StaticResource NullToVisibilityConverter}}" BorderThickness="1">
+                <Grid DataContext="{x:Bind RetweetedStatus}" Margin="8,4" Padding="8,4" Grid.Column="2" BorderBrush="#CCCCCC" Grid.Row="2" Visibility="{x:Bind RetweetedStatus,Converter={StaticResource NullToVisibilityConverter}}" BorderThickness="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
-                    <TextBlock DataContext="{x:Bind RetweetedStatus.User}" Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind RetweetedStatus.User.ScreenName}" FontWeight="Bold" />
+                    <TextBlock FontFamily="Microsoft Yahei UI"  DataContext="{x:Bind RetweetedStatus.User}" Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind RetweetedStatus.User.ScreenName}" FontWeight="Bold" />
                     <controls:WeiboImageList PictureClick="WeiboImageList_PictureClick" Grid.Row="1" Visibility="{x:Bind RetweetedStatus.PicUrls,Converter={StaticResource NullToVisibilityConverter}}" ItemsSource="{x:Bind RetweetedStatus.PicUrls}" />
-                    <controls:WeiboTextBlock UserClick="WeiboTextBlock_UserClick" TopicClick="WeiboTextBlock_TopicClick"  Grid.Row="2" Text="{x:Bind RetweetedStatus.Text}" />
+                    <controls:WeiboTextBlock FontFamily="Microsoft Yahei UI"  UserClick="WeiboTextBlock_UserClick" TopicClick="WeiboTextBlock_TopicClick"  Grid.Row="2" Text="{x:Bind RetweetedStatus.Text}" />
                 </Grid>
-                <Grid Padding="8,4" Grid.Column="2" Grid.Row="3">
+                <Grid Padding="8,5,0,12" Grid.Column="2" Grid.Row="3">
                     <StackPanel Orientation="Horizontal">
                         <SymbolIcon Symbol="Like" Foreground="LightGray"/>
                         <TextBlock Foreground="Gray" Padding="8,0,12,0" Text="{x:Bind AttitudesCount}"/>
