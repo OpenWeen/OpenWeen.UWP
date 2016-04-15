@@ -7,6 +7,7 @@ using OpenWeen.Core.Model;
 using OpenWeen.Core.Model.User;
 using OpenWeen.UWP.Common;
 using OpenWeen.UWP.Model;
+using OpenWeen.UWP.Shared.Common;
 using OpenWeen.UWP.Shared.Common.Helpers;
 using OpenWeen.UWP.ViewModel.MessagePage;
 using Windows.UI.Core;
@@ -40,9 +41,30 @@ namespace OpenWeen.UWP.ViewModel.MainPage
 
         public MainPageViewModel()
         {
-            var timer = new BackgroundTimer() { Interval = TimeSpan.FromMinutes(1d) };
-            timer.Tick += Timer_Tick;
-            timer.Start();
+            if (Settings.NotifyDuration !=  NotifyDuration.Never)
+            {
+                var time = 1;
+                switch (Settings.NotifyDuration)
+                {
+                    case NotifyDuration.ThreeMin:
+                        time = 3;
+                        break;
+                    case NotifyDuration.FiveMin:
+                        time = 5;
+                        break;
+                    case NotifyDuration.TenMin:
+                        time = 10;
+                        break;
+                    case NotifyDuration.HalfHour:
+                        time = 30;
+                        break;
+                    default:
+                        break;
+                }
+                var timer = new BackgroundTimer() { Interval = TimeSpan.FromMinutes(time) };
+                timer.Tick += Timer_Tick;
+                timer.Start();
+            }
             InitUser();
             InitAllList();
         }
@@ -67,23 +89,23 @@ namespace OpenWeen.UWP.ViewModel.MainPage
             {
                 var unread = await GetUnreadCount();
                 var builder = new StringBuilder();
-                if (unread.MentionStatus > 0 && unread.MentionStatus != _prevUnread?.MentionStatus)
+                if (unread.MentionStatus > 0 && unread.MentionStatus != _prevUnread?.MentionStatus && Settings.IsMentionNotify)
                 {
                     builder.Append($"{unread.MentionStatus} 条新@");
                 }
-                if (unread.Cmt > 0 && unread.Cmt != _prevUnread?.Cmt)
+                if (unread.Cmt > 0 && unread.Cmt != _prevUnread?.Cmt && Settings.IsCommentNotify)
                 {
                     builder.Append($"{unread.Cmt} 条新评论");
                 }
-                if (unread.MentionCmt > 0 && unread.MentionCmt != _prevUnread?.MentionCmt)
+                if (unread.MentionCmt > 0 && unread.MentionCmt != _prevUnread?.MentionCmt && Settings.IsMentionNotify)
                 {
                     builder.Append($"{unread.MentionCmt} 条新提及的评论");
                 }
-                if (unread.Follower > 0 && unread.Follower != _prevUnread?.Follower)
+                if (unread.Follower > 0 && unread.Follower != _prevUnread?.Follower && Settings.IsFollowerNotify)
                 {
                     builder.Append($"{unread.Follower} 个新粉丝");
                 }
-                if (unread.Dm > 0 && unread.Dm != _prevUnread.Dm)
+                if (unread.Dm > 0 && unread.Dm != _prevUnread.Dm && Settings.IsMessageNotify)
                 {
                     builder.Append($"{unread.Dm} 条新私信");
                 }
@@ -148,6 +170,7 @@ namespace OpenWeen.UWP.ViewModel.MainPage
             Header[1].UnreadCount = unread.MentionStatus;
             Header[2].UnreadCount = unread.Cmt;
             Header[3].UnreadCount = unread.MentionCmt;
+            Header[5].UnreadCount = unread.Dm;
             return unread;
         }
     }

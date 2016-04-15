@@ -18,7 +18,7 @@ namespace OpenWeen.UWP.View
     /// </summary>
     public sealed partial class WeiboDetailPage : Page
     {
-        public WeiboActionModel ActionModel { get; } = new WeiboActionModel();
+        public WeiboActionModel ActionModel { get; } = WeiboActionModel.Instance;
         public WeiboDetailViewModel WeiboDetailVM { get; private set; }
 
         public WeiboDetailPage()

@@ -46,15 +46,18 @@ namespace OpenWeen.UWP.Common.Controls
         private void Grid_Tapped(object sender, TappedRoutedEventArgs e)
         {
             var context = (e.OriginalSource as FrameworkElement).DataContext;
+            e.Handled = true;
             if (context is UserModel)
             {
-                e.Handled = true;
                 UserClick?.Invoke(this, new WeiboUserClickEventArgs((context as UserModel).ID));
             }
             else if (context is MessageModel)
             {
-                e.Handled = true;
                 ItemClick?.Invoke(this, new WeiboItemClickEventArgs(context as MessageModel));
+            }
+            else
+            {
+                Comment?.Invoke(this, new WeiboActionEventArgs((e.OriginalSource as FrameworkElement).DataContext as CommentModel));
             }
         }
     }

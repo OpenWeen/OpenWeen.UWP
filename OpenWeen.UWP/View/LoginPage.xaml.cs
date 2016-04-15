@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using OpenWeen.Core.Helper;
+using OpenWeen.Core.Model;
 using OpenWeen.UWP.Common;
 using OpenWeen.UWP.Common.Controls;
 using OpenWeen.UWP.Shared.Common;
@@ -29,7 +32,6 @@ namespace OpenWeen.UWP.View
 
         private async void TextBox_Paste(object sender, TextControlPasteEventArgs e)
         {
-            e.Handled = true;
             var dataPackageView = Windows.ApplicationModel.DataTransfer.Clipboard.GetContent();
             if (dataPackageView.Contains(Windows.ApplicationModel.DataTransfer.StandardDataFormats.Text))
             {
@@ -43,6 +45,7 @@ namespace OpenWeen.UWP.View
                     RedirectUri_TB.Text = data[2];
                     Scope_TB.Text = data[3];
                     PackageName_TB.Text = data[4];
+                    e.Handled = true;
                 }
                 catch
                 {
@@ -61,15 +64,12 @@ namespace OpenWeen.UWP.View
                 {
                     var regex = Regex.Match(result.ResponseData, "access_token=(.*)\\&remind_in=([0-9]*)");
                     var token = regex.Groups[1].Value;
+                    if (string.IsNullOrEmpty(token))
+                    {
+                        throw new UnauthorizedAccessException();
+                    }
                     SettingHelper.SetListSetting(SettingNames.AccessToken, new[] { token }, SetListSettingOption.AddIfExists);
                     Core.Api.Entity.AccessToken = token;
-                    await InitEmotion();
-                    await InitUid();
-                    Frame.Navigate(typeof(MainPage));
-                    while (Frame.BackStack.Count > 0)
-                    {
-                        Frame.BackStack.RemoveAt(0);
-                    }
                 }
             }
             catch (UriFormatException)
@@ -80,17 +80,25 @@ namespace OpenWeen.UWP.View
             {
                 //user can not connect to the auth page and close the auth page
             }
+            catch (UnauthorizedAccessException)
+            {
+                await new MessageDialog("登陆失败").ShowAsync();
+            }
+            var sit = new SitbackAndRelaxDialog();
+            var sitTask = sit.ShowAsync();
+            await InitUid();
+            sitTask.Cancel();
+            sit.Hide();
+            Frame.Navigate(typeof(MainPage));
+            while (Frame.BackStack.Count > 0)
+            {
+                Frame.BackStack.RemoveAt(0);
+            }
         }
 
         private async Task InitUid()
         {
             StaticResource.Uid = long.Parse(await Core.Api.User.Account.GetUid());
-        }
-
-        private static async Task InitEmotion()
-        {
-            StaticResource.Emotions = (await Core.Api.Statuses.Emotions.GetEmotions()).ToList();
-            StaticResource.EmotionPattern = string.Join("|", StaticResource.Emotions.Select(item => item.Value)).Replace("[", @"\[").Replace("]", @"\]");
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)

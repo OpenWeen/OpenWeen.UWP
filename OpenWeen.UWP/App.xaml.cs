@@ -6,6 +6,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI;
 using Windows.UI.Popups;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -42,8 +43,7 @@ namespace OpenWeen.UWP
             {
                 this.DebugSettings.EnableFrameRateCounter = true;
             }
-#else
-
+#endif
             Xamarin.Insights.HasPendingCrashReport += (sender, isStartupCrash) =>
             {
                 if (isStartupCrash)
@@ -52,17 +52,17 @@ namespace OpenWeen.UWP
                 }
             };
             Xamarin.Insights.Initialize(XamarinInsightsKey.Key);
-#endif
             if (StaticResource.IsPhone)
             {
-                Windows.UI.ViewManagement.StatusBar.GetForCurrentView().BackgroundColor = Color.FromArgb(255, 35, 85, 178); ;
-                Windows.UI.ViewManagement.StatusBar.GetForCurrentView().BackgroundOpacity = 1d;
-                Windows.UI.ViewManagement.StatusBar.GetForCurrentView().ForegroundColor = Colors.White;
+                StatusBar.GetForCurrentView().BackgroundColor = Color.FromArgb(255, 35, 85, 178); ;
+                StatusBar.GetForCurrentView().BackgroundOpacity = 1d;
+                StatusBar.GetForCurrentView().ForegroundColor = Colors.White;
             }
             else
             {
-                Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar.BackgroundColor = Color.FromArgb(255, 35, 85, 178);
-                Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar.ButtonBackgroundColor = Color.FromArgb(255, 35, 85, 178);
+                ApplicationView.GetForCurrentView().TitleBar.BackgroundColor = Color.FromArgb(255, 35, 85, 178);
+                ApplicationView.GetForCurrentView().TitleBar.ButtonBackgroundColor = Color.FromArgb(255, 35, 85, 178);
+                ApplicationView.GetForCurrentView().SetDesiredBoundsMode(ApplicationViewBoundsMode.UseCoreWindow);
             }
 
             UnhandledException += App_UnhandledException;

@@ -1,5 +1,6 @@
 ﻿using OpenWeen.UWP.Model;
 using OpenWeen.UWP.ViewModel;
+using OpenWeen.UWP.ViewModel.MessagePage;
 using OpenWeen.UWP.ViewModel.UserPage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -15,7 +16,7 @@ namespace OpenWeen.UWP.View
     public sealed partial class UserPage : Page
     {
         public UserPageViewModel UserPageVM { get; private set; }
-        public WeiboActionModel ActionModel { get; } = new WeiboActionModel();
+        public WeiboActionModel ActionModel { get; } = WeiboActionModel.Instance;
 
         public UserPage()
         {
@@ -45,6 +46,12 @@ namespace OpenWeen.UWP.View
             if (UserPageVM.User == null)
                 return;
             Frame.Navigate(typeof(UserListPage), new FriendListViewModel(UserPageVM.User.ID));
+        }
+        public void SendMessage()
+        {
+            if (UserPageVM.User == null)
+                return;
+            Frame.Navigate(typeof(MessagePage), new MessagePageViewModel(UserPageVM.User.ID, UserPageVM.User.ScreenName));
         }
     }
 }

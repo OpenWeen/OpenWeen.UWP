@@ -49,7 +49,6 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
@@ -89,9 +88,9 @@
                     </Grid>
                     <controls:SplitViewPaneList Refresh="{x:Bind MainVM.RefreshWithoutGetUnreadCount}" Grid.Row="1" BackToTop="{x:Bind BackTop}" SelectedIndex="{Binding ElementName=pivot,Path=SelectedIndex,Mode=TwoWay}" ItemsSource="{x:Bind MainVM.Header}" />
                     <StackPanel Orientation="Vertical" Grid.Row="2">
-                        <AppBarButton Click="{x:Bind MainVM.Refresh}" Icon="Refresh" Label="刷新" Style="{StaticResource AppBarButtonHorizonLabelStyle}" />
-                        <AppBarButton Click="AppBarButton_Click" Icon="Edit" Style="{StaticResource AppBarButtonHorizonLabelStyle}" Label="发微博" />
-                        <AppBarButton Click="AppBarButton_Click_1" Icon="Setting" Style="{StaticResource AppBarButtonHorizonLabelStyle}" Label="设置" />
+                        <controls:SplitViewButton Tapped="{x:Bind MainVM.Refresh}" Icon="Refresh" Label="刷新" />
+                        <controls:SplitViewButton Tapped="{x:Bind PostWeibo}" Icon="Edit" Label="发微博" />
+                        <controls:SplitViewButton Tapped="{x:Bind Setting}" Icon="Setting" Label="设置" />
                     </StackPanel>
                 </Grid>
             </SplitView.Pane>
@@ -125,12 +124,11 @@
         </SplitView>
     </Grid>
     <Page.BottomAppBar>
-        <CommandBar x:Name="BottomCommandBar">
+        <CommandBar  x:Name="BottomCommandBar" Background="{StaticResource AppBarColor}">
             <AppBarButton Click="{x:Bind MainVM.Refresh}" Icon="Refresh" Label="刷新" />
-            <AppBarButton Click="AppBarButton_Click" Icon="Edit" Label="发微博" />
+            <AppBarButton Click="{x:Bind PostWeibo}" Icon="Edit" Label="发微博" />
             <CommandBar.SecondaryCommands>
-                <AppBarButton Label="设置" Click="AppBarButton_Click_1" />
-                <AppBarButton Label="关于" Click="AppBarButton_Click_2" />
+                <AppBarButton Label="设置" Click="{x:Bind Setting}" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>

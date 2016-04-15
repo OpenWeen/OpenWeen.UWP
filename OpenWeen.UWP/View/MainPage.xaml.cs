@@ -20,19 +20,13 @@ namespace OpenWeen.UWP
     public sealed partial class MainPage : Page
     {
         public MainPageViewModel MainVM { get; } = new MainPageViewModel();
-        public WeiboActionModel ActionModel { get; } = new WeiboActionModel();
+        public WeiboActionModel ActionModel { get; } = WeiboActionModel.Instance;
 
         public MainPage()
         {
             InitializeComponent();
             NavigationCacheMode = NavigationCacheMode.Enabled;
         }
-
-        private void AppBarButton_Click(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(PostWeiboPage), new PostWeibo());
-        }
-
         public void BackTop()
         {
             var scrollViewer = MoreVisualTreeHelper.GetObject<ScrollViewer>(pivot.SelectedItem as PivotItem);
@@ -43,15 +37,13 @@ namespace OpenWeen.UWP
         {
             ActionModel.UserClick(null, new Common.Controls.Events.WeiboUserClickEventArgs(StaticResource.Uid));
         }
-
-        private void AppBarButton_Click_1(object sender, RoutedEventArgs e)
+        public void PostWeibo()
+        {
+            Frame.Navigate(typeof(PostWeiboPage), new PostWeibo());
+        }
+        public void Setting()
         {
             Frame.Navigate(typeof(SettingPage));
-        }
-
-        private void AppBarButton_Click_2(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(AboutPage));
         }
     }
 }

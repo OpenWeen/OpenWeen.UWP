@@ -66,7 +66,7 @@ namespace OpenWeen.UWP.BackgroundTask
         {
             try
             {
-                Core.Api.Entity.AccessToken = SettingHelper.GetListSetting<string>(SettingNames.AccessToken, isThrowException: true).ToList()[0];
+                Core.Api.Entity.AccessToken = SettingHelper.GetListSetting<string>(SettingNames.AccessToken, isThrowException: true).FirstOrDefault();
                 return true;
             }
             catch (SettingException)

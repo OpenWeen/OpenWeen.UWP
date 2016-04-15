@@ -1,6 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using OpenWeen.UWP.Shared.Common;
 using OpenWeen.UWP.Shared.Common.Helpers;
+using Windows.System;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 // “空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=234238 上提供
@@ -16,12 +19,12 @@ namespace OpenWeen.UWP.View
         {
             get
             {
-                var list = SettingHelper.GetListSetting<string>(SettingNames.BlockText);
+                var list = Settings.BlockText;
                 return list == null ? "" : string.Join(",", list);
             }
             set
             {
-                SettingHelper.SetListSetting(SettingNames.BlockText, value.Split(','));
+                Settings.BlockText = value.Split(',');
             }
         }
 
@@ -29,18 +32,95 @@ namespace OpenWeen.UWP.View
         {
             get
             {
-                var list = SettingHelper.GetListSetting<long>(SettingNames.BlockUser);
+                var list = Settings.BlockUser;
                 return list == null ? "" : string.Join(",", list);
             }
             set
             {
-                SettingHelper.SetListSetting(SettingNames.BlockUser, value.Split(',').OfType<long>().Select(item => item));
+                Settings.BlockUser = value.Split(',').OfType<long>().Select(item => item);
+            }
+        }
+        public int NotifyDurationIndex
+        {
+            get
+            {
+                return (int)Settings.NotifyDuration;
+            }
+            set
+            {
+                Settings.NotifyDuration = (NotifyDuration)value;
+            }
+        }
+        public double ImageSize
+        {
+            get
+            {
+                return Settings.ImageSize;
+            }
+            set
+            {
+                Settings.ImageSize = value;
+            }
+        }
+
+        public bool IsMentionNotify
+        {
+            get
+            {
+                return Settings.IsMentionNotify;
+            }
+            set
+            {
+                Settings.IsMentionNotify = value;
+            }
+        }
+        public bool IsCommentNotify
+        {
+            get
+            {
+                return Settings.IsCommentNotify;
+            }
+            set
+            {
+                Settings.IsCommentNotify = value;
+            }
+        }
+        public bool IsMessageNotify
+        {
+            get
+            {
+                return Settings.IsMessageNotify;
+            }
+            set
+            {
+                Settings.IsMessageNotify = value;
+            }
+        }
+        public bool IsFollowerNotify
+        {
+            get
+            {
+                return Settings.IsFollowerNotify;
+            }
+            set
+            {
+                Settings.IsFollowerNotify = value;
             }
         }
 
         public SettingPage()
         {
             this.InitializeComponent();
+        }
+
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            await Launcher.LaunchUriAsync(new Uri("https://github.com/OpenWeen/OpenWeen.UWP"));
+        }
+
+        private async void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            await Launcher.LaunchUriAsync(new Uri(@"mailto:CosImg@outlook.com?subject=OpenWeen反馈"));
         }
     }
 }

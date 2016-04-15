@@ -20,7 +20,7 @@ namespace OpenWeen.UWP.ViewModel.UserPage
         public object UidOrUserName { get; }
         public bool IsBlocked { get; private set; }
         public bool IsMe => StaticResource.Uid == User?.ID;
-        public string BlockState => SettingHelper.GetListSetting<long>(SettingNames.BlockUser)?.Contains(User?.ID ?? -1) == true ? "已屏蔽" : "屏蔽";
+        public string BlockState => Settings.BlockUser?.Contains(User?.ID ?? -1) == true ? "已屏蔽" : "屏蔽";
         public bool IsLoading { get; private set; }
 
         public UserPageViewModel(long uid)
@@ -85,11 +85,11 @@ namespace OpenWeen.UWP.ViewModel.UserPage
             if (User == null)
                 return;
 
-            if (SettingHelper.GetListSetting<long>(SettingNames.BlockUser)?.Contains(User.ID) == true)
+            if (Settings.BlockUser?.Contains(User.ID) == true)
             {
-                var list = SettingHelper.GetListSetting<long>(SettingNames.BlockUser).ToList();
+                var list = Settings.BlockUser.ToList();
                 list.Remove(User.ID);
-                SettingHelper.SetListSetting(SettingNames.BlockUser, list);
+                Settings.BlockUser = list;
             }
             else
             {

@@ -42,6 +42,10 @@ namespace OpenWeen.UWP.ViewModel
 #endif
                 OnWebException();
             }
+            catch(Newtonsoft.Json.JsonException)
+            {
+                WeiboList = new ObservableCollection<T>();
+            }
             _isLoading = false;
         }
 
@@ -62,12 +66,16 @@ namespace OpenWeen.UWP.ViewModel
 #endif
                 OnWebException();
             }
+            catch (Newtonsoft.Json.JsonException)
+            {
+                WeiboList = new ObservableCollection<T>();
+            }
             _isLoading = false;
         }
 
         protected virtual async void OnWebException()
         {
-            await new MessageDialog("网络错误").ShowAsync();
+            WeiboList = new ObservableCollection<T>();
         }
 
         protected abstract Task<IEnumerable<T>> LoadMoreOverride();

@@ -1,6 +1,11 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using OpenWeen.Core.Model;
 //using ImageLib;
 //using ImageLib.Cache.Memory;
 //using ImageLib.Cache.Storage;
@@ -66,7 +71,9 @@ namespace OpenWeen.UWP.View
 
         private async Task InitEmotion()
         {
-            StaticResource.Emotions = (await Core.Api.Statuses.Emotions.GetEmotions()).ToList();
+            var file = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFileAsync("assets\\emotion.json");
+            var text = File.ReadAllText(file.Path);
+            StaticResource.Emotions = JsonConvert.DeserializeObject<IEnumerable<EmotionModel>>(text).ToList();
             StaticResource.EmotionPattern = string.Join("|", StaticResource.Emotions.Select(item => item.Value)).Replace("[", @"\[").Replace("]", @"\]");
         }
 
@@ -74,13 +81,18 @@ namespace OpenWeen.UWP.View
         {
             try
             {
-                Core.Api.Entity.AccessToken = SettingHelper.GetListSetting<string>(SettingNames.AccessToken, isThrowException: true).ToList()[0];
+                Core.Api.Entity.AccessToken = SettingHelper.GetListSetting<string>(SettingNames.AccessToken, isThrowException: true).FirstOrDefault();
+                if (string.IsNullOrEmpty(Core.Api.Entity.AccessToken))
+                {
+                    throw new Core.Exception.InvalidAccessTokenException();
+                }
                 return true;
             }
-            catch (SettingException)
+            catch (Exception e) when (e is Core.Exception.InvalidAccessTokenException || e is SettingException)
             {
                 return false;
             }
+
         }
 
         private void RestoreStateAsync(bool loadState)
@@ -125,18 +137,10 @@ namespace OpenWeen.UWP.View
         private async void DismissedEventHandler(SplashScreen sender, object e)
         {
             dismissed = true;
-
-            //ImageLoader.Initialize(new ImageConfig.Builder()
-            //{
-            //    CacheMode = ImageLib.Cache.CacheMode.MemoryAndStorageCache,
-            //    MemoryCacheImpl = new LRUCache<string, IRandomAccessStream>(),
-            //    StorageCacheImpl = new LimitedStorageCache(ApplicationData.Current.LocalCacheFolder,
-            //  "cache", new SHA1CacheGenerator(), 1024 * 1024 * 1024)
-            //}.AddDecoder<GifDecoder>().Build(), false);
             await BackgroundHelper.Register<UpdateUnreadCountTask>(new TimeTrigger(15, false));
+            await InitEmotion();
             if (CheckForLogin())
             {
-                await InitEmotion();
                 await InitUid();
             }
             await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>

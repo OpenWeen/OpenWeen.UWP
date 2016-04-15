@@ -24,6 +24,11 @@ namespace OpenWeen.UWP.Model
 {
     public class WeiboActionModel
     {
+        public static WeiboActionModel Instance { get; } = new WeiboActionModel();
+        private WeiboActionModel()
+        {
+
+        }
         public void UserClick(object sender, WeiboUserClickEventArgs e)
         {
             (Window.Current.Content as Frame).Navigate(typeof(UserPage), new UserPageViewModel(e.UidOrUserName));
@@ -99,6 +104,10 @@ namespace OpenWeen.UWP.Model
         public void MessageClick(object sender, WeiboMessageItemClickEventArgs e)
         {
             (Window.Current.Content as Frame).Navigate(typeof(MessagePage), new MessagePageViewModel(e.ClickedItem.User.ID, e.ClickedItem.User.ScreenName));
+        }
+        public void Delete(object sender, WeiboMessageItemClickEventArgs e)
+        {
+            
         }
     }
 }

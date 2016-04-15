@@ -26,7 +26,7 @@ namespace OpenWeen.UWP.View
     public sealed partial class UserListPage : Page
     {
         public UserListViewModelBase UserListVM { get; private set; }
-        public WeiboActionModel ActionModel { get; } = new WeiboActionModel();
+        public WeiboActionModel ActionModel { get; } = WeiboActionModel.Instance;
         public UserListPage()
         {
             this.InitializeComponent();

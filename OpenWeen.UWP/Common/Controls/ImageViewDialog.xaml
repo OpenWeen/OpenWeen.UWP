@@ -32,13 +32,13 @@
         </Style>
     </ContentDialog.Style>
     <Grid>
-        <FlipView x:Name="flipView" Background="Transparent" ItemsSource="{x:Bind Items}" DataContextChanged="flipView_DataContextChanged">
+        <FlipView x:Name="flipView" SelectionChanged="flipView_SelectionChanged" Background="Transparent" ItemsSource="{x:Bind Items}" DataContextChanged="flipView_DataContextChanged">
             <FlipView.ItemTemplate>
                 <DataTemplate x:DataType="model:ImageModel">
                     <ScrollViewer PointerExited="ScrollViewer_PointerExited" PointerPressed="ScrollViewer_PointerPressed" PointerReleased="ScrollViewer_PointerReleased" PointerMoved="ScrollViewer_PointerMoved" HorizontalScrollBarVisibility="Auto" HorizontalScrollMode="Auto" ZoomMode="Enabled" HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" VerticalScrollBarVisibility="Auto">
                         <Grid>
                             <ProgressRing Foreground="White" IsActive="{x:Bind IsLoading,Mode=OneWay}" />
-                            <Image Extensions:ImageExtensions.FadeInOnLoaded="True" Extensions:ImageExtensions.ImageLoadedTransitionType="FadeIn" ImageFailed="{x:Bind LoadFailed}" ImageOpened="{x:Bind Loaded}" gif:AnimationBehavior.SourceUri="{Binding SourceUri}"/>
+                            <Image Tapped="Image_Tapped" Extensions:ImageExtensions.FadeInOnLoaded="True" Extensions:ImageExtensions.ImageLoadedTransitionType="FadeIn" ImageFailed="{x:Bind LoadFailed}" ImageOpened="{x:Bind Loaded}" gif:AnimationBehavior.SourceUri="{Binding SourceUri}"/>
                             <!--<imgcontrol:ImageView LoadingFailed="{x:Bind LoadFailed}" Margin="0,0,16,16" UriSource="{x:Bind SourceUri}" LoadingCompleted="{x:Bind Loaded}" />-->
                         </Grid>
                     </ScrollViewer>

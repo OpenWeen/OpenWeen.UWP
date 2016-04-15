@@ -16,19 +16,19 @@ namespace OpenWeen.UWP.Common.Converter
             if (value is MessageModel)
             {
                 var data = value as MessageModel;
-                return SettingHelper.GetListSetting<long>(SettingNames.BlockUser)?.Contains(data.User.ID) == true ||
-                    (data.RetweetedStatus?.User?.ID != null && SettingHelper.GetListSetting<long>(SettingNames.BlockUser)?.Contains(data.RetweetedStatus.User.ID) == true) ||
-                    (SettingHelper.GetListSetting<string>(SettingNames.BlockText)?.Any(item => string.IsNullOrEmpty(item) ? false : data.Text.Contains(item)) == true) ||
-                    (data.RetweetedStatus?.Text != null && SettingHelper.GetListSetting<string>(SettingNames.BlockText)?.Any(item => string.IsNullOrEmpty(item) ? false : data.RetweetedStatus.Text.Contains(item)) == true) ?
+                return Settings.BlockUser?.Contains(data.User.ID) == true ||
+                    (data.RetweetedStatus?.User?.ID != null && Settings.BlockUser?.Contains(data.RetweetedStatus.User.ID) == true) ||
+                    (Settings.BlockText?.Any(item => string.IsNullOrEmpty(item) ? false : data.Text.Contains(item)) == true) ||
+                    (data.RetweetedStatus?.Text != null && Settings.BlockText?.Any(item => string.IsNullOrEmpty(item) ? false : data.RetweetedStatus.Text.Contains(item)) == true) ?
                     Visibility.Collapsed : Visibility.Visible;
             }
             else if (value is CommentModel)
             {
                 var data = value as CommentModel;
-                return SettingHelper.GetListSetting<long>(SettingNames.BlockUser)?.Contains(data.User.ID) == true ||
-                    (data.ReplyComment?.User?.ID != null && SettingHelper.GetListSetting<long>(SettingNames.BlockUser)?.Contains(data.ReplyComment.User.ID) == true) ||
-                    (SettingHelper.GetListSetting<string>(SettingNames.BlockText)?.Any(item => string.IsNullOrEmpty(item) ? false : data.Text.Contains(item)) == true) ||
-                    (data.ReplyComment?.Text != null && SettingHelper.GetListSetting<string>(SettingNames.BlockText)?.Any(item => string.IsNullOrEmpty(item) ? false : data.ReplyComment.Text.Contains(item)) == true) ?
+                return Settings.BlockUser?.Contains(data.User.ID) == true ||
+                    (data.ReplyComment?.User?.ID != null && Settings.BlockUser?.Contains(data.ReplyComment.User.ID) == true) ||
+                    (Settings.BlockText?.Any(item => string.IsNullOrEmpty(item) ? false : data.Text.Contains(item)) == true) ||
+                    (data.ReplyComment?.Text != null && Settings.BlockText?.Any(item => string.IsNullOrEmpty(item) ? false : data.ReplyComment.Text.Contains(item)) == true) ?
                     Visibility.Collapsed : Visibility.Visible;
             }
             return Visibility.Visible;

@@ -37,11 +37,20 @@ namespace OpenWeen.UWP.Common.Controls
             Window.Current.SizeChanged -= Current_SizeChanged;
             Hide();
         }
-
-        private void InitSize()
+        
+        private async void InitSize()
         {
             MinHeight = (Window.Current.Content as Frame).ActualHeight;
             MinWidth = (Window.Current.Content as Frame).ActualWidth;
+            await Window.Current.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                var img = MoreVisualTreeHelper.GetObject<Image>(flipView.ItemContainerGenerator.ContainerFromItem(flipView.SelectedItem));
+                if (img != null)
+                    img.Width = (Window.Current.Content as Frame).ActualWidth;
+            });
+
+            //var img = MoreVisualTreeHelper.GetObject<ScrollViewer>(flipView.ItemContainerGenerator.ContainerFromItem(flipView.SelectedItem));
+            //img.Width = (Window.Current.Content as Frame).ActualWidth;
             //foreach (var item in flipView.Items)
             //{
             //    var img = MoreVisualTreeHelper.GetObject<ScrollViewer>(flipView.ItemContainerGenerator.ContainerFromItem(item));
@@ -126,6 +135,21 @@ namespace OpenWeen.UWP.Common.Controls
         private void flipView_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
         {
             flipView.SelectedIndex = _index;
+        }
+
+        private async void flipView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            await Window.Current.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                var img = MoreVisualTreeHelper.GetObject<Image>(flipView.ItemContainerGenerator.ContainerFromItem(flipView.SelectedItem));
+                if (img != null)
+                    img.Width = (Window.Current.Content as Frame).ActualWidth;
+            });
+        }
+
+        private void Image_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            HideEx();
         }
     }
 }
