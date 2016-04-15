@@ -62,26 +62,16 @@ namespace OpenWeen.UWP
             {
                 ApplicationView.GetForCurrentView().TitleBar.BackgroundColor = Color.FromArgb(255, 35, 85, 178);
                 ApplicationView.GetForCurrentView().TitleBar.ButtonBackgroundColor = Color.FromArgb(255, 35, 85, 178);
-                ApplicationView.GetForCurrentView().SetDesiredBoundsMode(ApplicationViewBoundsMode.UseCoreWindow);
             }
+            ApplicationView.GetForCurrentView().SetDesiredBoundsMode(ApplicationViewBoundsMode.UseCoreWindow);
 
             UnhandledException += App_UnhandledException;
-            Frame rootFrame = Window.Current.Content as Frame;
 
-            if (rootFrame == null)
+            if (e.PreviousExecutionState != ApplicationExecutionState.Running)
             {
-                rootFrame = new Frame();
-                rootFrame.Language = Windows.Globalization.ApplicationLanguages.Languages[0];
-
-                rootFrame.NavigationFailed += OnNavigationFailed;
-
-                if (e.PreviousExecutionState != ApplicationExecutionState.Running)
-                {
-                    bool loadState = (e.PreviousExecutionState == ApplicationExecutionState.Terminated);
-                    ExtendedSplash extendedSplash = new ExtendedSplash(e.SplashScreen, loadState);
-                    rootFrame.Content = extendedSplash;
-                    Window.Current.Content = rootFrame;
-                }
+                bool loadState = (e.PreviousExecutionState == ApplicationExecutionState.Terminated);
+                ExtendedSplash extendedSplash = new ExtendedSplash(e.SplashScreen, loadState);
+                Window.Current.Content = extendedSplash;
             }
             Window.Current.Activate();
         }

@@ -19,9 +19,11 @@ using OpenWeen.UWP.Shared.Common.Helpers;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Background;
 using Windows.Foundation;
+using Windows.Graphics.Display;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.UI.Core;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
@@ -34,28 +36,34 @@ namespace OpenWeen.UWP.View
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
-    partial class ExtendedSplash : Page
+    partial class ExtendedSplash
     {
         internal Rect splashImageRect;
         private SplashScreen splash;
         internal bool dismissed = false;
         internal Frame rootFrame = new Frame();
+        private double ScaleFactor;
 
         public ExtendedSplash(SplashScreen splashscreen, bool loadState)
         {
             InitializeComponent();
             Window.Current.SizeChanged += ExtendedSplash_OnResize;
             splash = splashscreen;
+
+            ScaleFactor = DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel;
             if (splash != null)
             {
                 splash.Dismissed += DismissedEventHandler;
                 splashImageRect = splash.ImageLocation;
                 PositionImage();
-                PositionRing();
-                PositionTextBlock();
             }
             InitTransitions();
             RestoreStateAsync(loadState);
+            if (StaticResource.IsPhone)
+            {
+                var diff = StatusBar.GetForCurrentView().OccludedRect.Height;
+                rootFrame.Margin = new Thickness(0, diff, 0, 0);
+            }
         }
         private void InitTransitions()
         {
@@ -105,23 +113,21 @@ namespace OpenWeen.UWP.View
 
         private void PositionImage()
         {
-            extendedSplashImage.SetValue(Canvas.LeftProperty, splashImageRect.X);
-            extendedSplashImage.SetValue(Canvas.TopProperty, splashImageRect.Y);
-            extendedSplashImage.Height = splashImageRect.Height;
-            extendedSplashImage.Width = splashImageRect.Width;
-        }
 
-        private void PositionRing()
-        {
-            splashProgressRing.SetValue(Canvas.LeftProperty, splashImageRect.X + (splashImageRect.Width * 0.5) - (splashProgressRing.Width * 0.5));
-            splashProgressRing.SetValue(Canvas.TopProperty, (splashImageRect.Y + splashImageRect.Height + splashImageRect.Height * 0.1));
+            extendedSplashImage.SetValue(Canvas.LeftProperty, splashImageRect.Left);
+            extendedSplashImage.SetValue(Canvas.TopProperty, splashImageRect.Top);
+            if (StaticResource.IsPhone)
+            {
+                extendedSplashImage.Height = splashImageRect.Height / ScaleFactor;
+                extendedSplashImage.Width = splashImageRect.Width / ScaleFactor;
+            }
+            else
+            {
+                extendedSplashImage.Height = splashImageRect.Height;
+                extendedSplashImage.Width = splashImageRect.Width;
+            }
         }
-
-        private void PositionTextBlock()
-        {
-            textBlock.SetValue(Canvas.LeftProperty, splashImageRect.X + (splashImageRect.Width * 0.5) - (splashProgressRing.Width * 0.5) - 145d * 0.5);
-            textBlock.SetValue(Canvas.TopProperty, (splashImageRect.Y + splashImageRect.Height + splashImageRect.Height * 0.1) + 28);
-        }
+        
 
         private void ExtendedSplash_OnResize(object sender, WindowSizeChangedEventArgs e)
         {
@@ -129,8 +135,6 @@ namespace OpenWeen.UWP.View
             {
                 splashImageRect = splash.ImageLocation;
                 PositionImage();
-                PositionRing();
-                PositionTextBlock();
             }
         }
 

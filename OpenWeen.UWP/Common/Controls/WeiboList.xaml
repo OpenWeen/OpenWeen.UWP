@@ -95,10 +95,10 @@
         </ItemsPanelTemplate>
     </ItemsControl.ItemsPanel>
     <ItemsControl.Template>
-        <ControlTemplate TargetType="ItemsControl">
+        <ControlTemplate TargetType="local:WeiboList">
             <Border>
                 <ScrollViewer ViewChanged="ScrollViewer_ViewChanged" x:Name="ScrollViewer" AutomationProperties.AccessibilityView="Raw" BringIntoViewOnFocusChange="True" IsDeferredScrollingEnabled="True">
-                    <ItemsPresenter />
+                    <ItemsPresenter Header="{TemplateBinding Header}" />
                 </ScrollViewer>
             </Border>
         </ControlTemplate>

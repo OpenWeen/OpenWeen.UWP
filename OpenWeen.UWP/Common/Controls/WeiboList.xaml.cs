@@ -28,6 +28,20 @@ namespace OpenWeen.UWP.Common.Controls
 
         public event EventHandler LoadMore;
 
+        public event EventHandler<ScrollViewerViewChangedEventArgs> ViewChanged;
+
+        public object Header
+        {
+            get { return GetValue(HeaderProperty); }
+            set { SetValue(HeaderProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Header.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty HeaderProperty =
+            DependencyProperty.Register("Header", typeof(object), typeof(WeiboList), new PropertyMetadata(null));
+
+
+
         public WeiboList()
         {
             this.InitializeComponent();
@@ -85,6 +99,7 @@ namespace OpenWeen.UWP.Common.Controls
         private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
             var scrollViewer = sender as ScrollViewer;
+            ViewChanged?.Invoke(sender, e);
             var verticalOffsetValue = scrollViewer.VerticalOffset;
             var maxVerticalOffsetValue = scrollViewer.ExtentHeight - scrollViewer.ViewportHeight;
             if (maxVerticalOffsetValue < 0 || verticalOffsetValue == maxVerticalOffsetValue)

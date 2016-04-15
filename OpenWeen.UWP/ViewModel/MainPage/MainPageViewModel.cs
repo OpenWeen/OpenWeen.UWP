@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using OpenWeen.Core.Model;
@@ -88,6 +90,8 @@ namespace OpenWeen.UWP.ViewModel.MainPage
             Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
             {
                 var unread = await GetUnreadCount();
+                if (unread == null)
+                    return;
                 var builder = new StringBuilder();
                 if (unread.MentionStatus > 0 && unread.MentionStatus != _prevUnread?.MentionStatus && Settings.IsMentionNotify)
                 {
@@ -166,12 +170,19 @@ namespace OpenWeen.UWP.ViewModel.MainPage
 
         private async Task<UnReadModel> GetUnreadCount()
         {
-            var unread = await Core.Api.Remind.GetUnRead(StaticResource.Uid.ToString());
-            Header[1].UnreadCount = unread.MentionStatus;
-            Header[2].UnreadCount = unread.Cmt;
-            Header[3].UnreadCount = unread.MentionCmt;
-            Header[5].UnreadCount = unread.Dm;
-            return unread;
+            try
+            {
+                var unread = await Core.Api.Remind.GetUnRead(StaticResource.Uid.ToString());
+                Header[1].UnreadCount = unread.MentionStatus;
+                Header[2].UnreadCount = unread.Cmt;
+                Header[3].UnreadCount = unread.MentionCmt;
+                Header[5].UnreadCount = unread.Dm;
+                return unread;
+            }
+            catch (Exception e) when (e is WebException || e is HttpRequestException)
+            {
+                return null;
+            }
         }
     }
 }

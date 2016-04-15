@@ -2118,6 +2118,10 @@
     <Content Include="Assets\Emotion\阿狸\ali飘过.gif" />
     <Content Include="Assets\Emotion\阿狸\ali飞.gif" />
     <Content Include="Assets\Emotion\阿狸\ali鲜花.gif" />
+    <Content Include="Assets\SplashScreen.scale-100.png" />
+    <Content Include="Assets\SplashScreen.scale-125.png" />
+    <Content Include="Assets\SplashScreen.scale-150.png" />
+    <Content Include="Assets\SplashScreen.scale-400.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
     <Content Include="Assets\Square150x150Logo.scale-200.png" />

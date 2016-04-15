@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.IO;
 
 namespace OpenWeen.UWP.Model
 {
@@ -13,7 +14,7 @@ namespace OpenWeen.UWP.Model
         {
             SourceUri = source;
         }
-
+        
         public void Loaded()
         {
             IsLoading = false;

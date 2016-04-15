@@ -42,20 +42,20 @@ namespace OpenWeen.UWP.Common.Controls
         {
             MinHeight = (Window.Current.Content as Frame).ActualHeight;
             MinWidth = (Window.Current.Content as Frame).ActualWidth;
+            await InitImageSize();
+        }
+
+        private async System.Threading.Tasks.Task InitImageSize()
+        {
             await Window.Current.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
                 var img = MoreVisualTreeHelper.GetObject<Image>(flipView.ItemContainerGenerator.ContainerFromItem(flipView.SelectedItem));
                 if (img != null)
+                {
                     img.Width = (Window.Current.Content as Frame).ActualWidth;
+                    img.Height = (Window.Current.Content as Frame).ActualHeight;
+                }
             });
-
-            //var img = MoreVisualTreeHelper.GetObject<ScrollViewer>(flipView.ItemContainerGenerator.ContainerFromItem(flipView.SelectedItem));
-            //img.Width = (Window.Current.Content as Frame).ActualWidth;
-            //foreach (var item in flipView.Items)
-            //{
-            //    var img = MoreVisualTreeHelper.GetObject<ScrollViewer>(flipView.ItemContainerGenerator.ContainerFromItem(item));
-            //    img.Width = (Window.Current.Content as Frame).ActualWidth;
-            //}
         }
 
         private ImageViewDialog(List<ImageModel> items) : this()
@@ -139,12 +139,7 @@ namespace OpenWeen.UWP.Common.Controls
 
         private async void flipView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            await Window.Current.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-            {
-                var img = MoreVisualTreeHelper.GetObject<Image>(flipView.ItemContainerGenerator.ContainerFromItem(flipView.SelectedItem));
-                if (img != null)
-                    img.Width = (Window.Current.Content as Frame).ActualWidth;
-            });
+            await InitImageSize();
         }
 
         private void Image_Tapped(object sender, TappedRoutedEventArgs e)
