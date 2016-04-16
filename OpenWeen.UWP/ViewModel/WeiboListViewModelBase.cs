@@ -15,18 +15,28 @@ namespace OpenWeen.UWP.ViewModel
     {
         public ObservableCollection<T> WeiboList { get; private set; } = new ObservableCollection<T>();
         protected int _pageCount = 1;
-        protected bool _isLoading;
         protected bool _hasMore => WeiboList.Count < _totalNumber;
         protected int _totalNumber = 0;
+
+        protected bool _isLoading;
+        public bool IsLoading
+        {
+            get { return _isLoading; }
+            private set
+            {
+                _isLoading = value;
+                OnPropertyChanged();
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName]string name = "") => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 
         public async Task Refresh()
         {
-            if (_isLoading)
+            if (IsLoading)
                 return;
-            _isLoading = true;
+            IsLoading = true;
             try
             {
                 _pageCount = 1;
@@ -46,14 +56,14 @@ namespace OpenWeen.UWP.ViewModel
             {
                 WeiboList = new ObservableCollection<T>();
             }
-            _isLoading = false;
+            IsLoading = false;
         }
 
         public async Task LoadMore()
         {
-            if (_isLoading || !_hasMore)
+            if (IsLoading || !_hasMore)
                 return;
-            _isLoading = true;
+            IsLoading = true;
             try
             {
                 (await LoadMoreOverride()).ToList().ForEach(item => WeiboList.Add(item));
@@ -70,7 +80,7 @@ namespace OpenWeen.UWP.ViewModel
             {
                 WeiboList = new ObservableCollection<T>();
             }
-            _isLoading = false;
+            IsLoading = false;
         }
 
         protected virtual async void OnWebException()

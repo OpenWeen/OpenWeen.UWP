@@ -122,5 +122,9 @@ namespace OpenWeen.UWP.View
         {
             await Launcher.LaunchUriAsync(new Uri(@"mailto:CosImg@outlook.com?subject=OpenWeen反馈"));
         }
+        public void Crash()
+        {
+            throw new Exception("爆炸了！");
+        }
     }
 }

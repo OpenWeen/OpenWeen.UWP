@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.ApplicationInsights;
 using OpenWeen.UWP.Common;
 using OpenWeen.UWP.View;
 using Windows.ApplicationModel;
@@ -24,9 +23,6 @@ namespace OpenWeen.UWP
         /// </summary>
         public App()
         {
-            WindowsAppInitializer.InitializeAsync(
-                WindowsCollectors.Metadata |
-                WindowsCollectors.Session);
             this.InitializeComponent();
             this.Suspending += OnSuspending;
         }
@@ -44,14 +40,8 @@ namespace OpenWeen.UWP
                 this.DebugSettings.EnableFrameRateCounter = true;
             }
 #endif
-            Xamarin.Insights.HasPendingCrashReport += (sender, isStartupCrash) =>
-            {
-                if (isStartupCrash)
-                {
-                    Xamarin.Insights.PurgePendingCrashReports().Wait();
-                }
-            };
-            Xamarin.Insights.Initialize(XamarinInsightsKey.Key);
+            Microsoft.HockeyApp.HockeyClient.Current.Configure(HockeyAppKey.ApiKey);
+
             if (StaticResource.IsPhone)
             {
                 StatusBar.GetForCurrentView().BackgroundColor = Color.FromArgb(255, 35, 85, 178); ;
@@ -65,8 +55,6 @@ namespace OpenWeen.UWP
             }
             ApplicationView.GetForCurrentView().SetDesiredBoundsMode(ApplicationViewBoundsMode.UseCoreWindow);
 
-            UnhandledException += App_UnhandledException;
-
             Frame rootFrame = Window.Current.Content as Frame;
             if (rootFrame == null)
             {
@@ -78,18 +66,6 @@ namespace OpenWeen.UWP
                 }
             }
             Window.Current.Activate();
-        }
-
-        private async void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
-        {
-            e.Handled = true;
-            TelemetryClient telemetry = new TelemetryClient();
-            telemetry.TrackException(e.Exception);
-#if DEBUG
-            var dialog = new MessageDialog(e.Message + e.Exception.StackTrace);
-            await dialog.ShowAsync();
-#endif
-            Exit();
         }
 
         /// <summary>

@@ -21,7 +21,6 @@
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
     <PackageCertificateThumbprint>126559E006A14707084A7D13B935653CAA541F12</PackageCertificateThumbprint>
     <AppxBundle>Always</AppxBundle>
-    <HockeyAppResourceId>8a7dc2f1a734405b948a1e3f79f3646d</HockeyAppResourceId>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -97,9 +96,6 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <Content Include="ApplicationInsights.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Assets\BadgeLogo.scale-200.png" />
     <Content Include="Assets\emotion.json" />
     <None Include="OpenWeen.UWP_StoreKey.pfx" />
@@ -166,9 +162,9 @@
     <Compile Include="Common\Extension\IEnumerableExtension.cs" />
     <Compile Include="Common\Helpers\BackgroundHelper.cs" />
     <Compile Include="Common\Helpers\MoreVisualTreeHelper.cs" />
+    <Compile Include="Common\HockeyAppKey.cs" />
     <Compile Include="Common\MessageDataTemplateSelector.cs" />
     <Compile Include="Common\StaticResource.cs" />
-    <Compile Include="Common\XamarinInsightsKey.cs" />
     <Compile Include="Model\FollowModel.cs" />
     <Compile Include="Model\HeaderModel.cs" />
     <Compile Include="Model\ImageModel.cs" />
@@ -176,6 +172,9 @@
     <Compile Include="ViewModel\MainPage\CommentMentionViewModel.cs" />
     <Compile Include="ViewModel\MainPage\CommentViewModel.cs" />
     <Compile Include="ViewModel\MainPage\FavorViewModel.cs" />
+    <Compile Include="ViewModel\SearchPage\SearchPageViewModel.cs" />
+    <Compile Include="ViewModel\SearchPage\SearchUserList.cs" />
+    <Compile Include="ViewModel\SearchPage\SearchWeiboList.cs" />
     <Compile Include="ViewModel\UserPage\FollowerListViewModel.cs" />
     <Compile Include="ViewModel\UserPage\FriendListViewModel.cs" />
     <Compile Include="ViewModel\MainPage\MentionViewModel.cs" />
@@ -208,6 +207,9 @@
     </Compile>
     <Compile Include="View\PostWeiboPage.xaml.cs">
       <DependentUpon>PostWeiboPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SearchPage.xaml.cs">
+      <DependentUpon>SearchPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\SettingPage.xaml.cs">
       <DependentUpon>SettingPage.xaml</DependentUpon>
@@ -2205,6 +2207,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\PostWeiboPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SearchPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

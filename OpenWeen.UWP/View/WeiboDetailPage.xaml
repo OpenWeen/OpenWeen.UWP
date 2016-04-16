@@ -82,10 +82,10 @@
                 </ScrollViewer>
             </PivotItem>
             <PivotItem Header="转发">
-                <controls:WeiboDetailRepostList LoadMore="{x:Bind WeiboDetailVM.Repost.LoadMore}" UserClick="{x:Bind ActionModel.UserClick}" ItemsSource="{x:Bind WeiboDetailVM.Repost.WeiboList,Mode=OneWay}" />
+                <controls:WeiboDetailRepostList IsLoading="{x:Bind WeiboDetailVM.Repost.IsLoading,Mode=OneWay}" LoadMore="{x:Bind WeiboDetailVM.Repost.LoadMore}" UserClick="{x:Bind ActionModel.UserClick}" ItemsSource="{x:Bind WeiboDetailVM.Repost.WeiboList,Mode=OneWay}" />
             </PivotItem>
             <PivotItem Header="评论">
-                <controls:WeiboDetailRepostList LoadMore="{x:Bind WeiboDetailVM.Comment.LoadMore}" UserClick="{x:Bind ActionModel.UserClick}" ItemsSource="{x:Bind WeiboDetailVM.Comment.WeiboList,Mode=OneWay}" />
+                <controls:WeiboDetailRepostList IsLoading="{x:Bind WeiboDetailVM.Comment.IsLoading,Mode=OneWay}" LoadMore="{x:Bind WeiboDetailVM.Comment.LoadMore}" UserClick="{x:Bind ActionModel.UserClick}" ItemsSource="{x:Bind WeiboDetailVM.Comment.WeiboList,Mode=OneWay}" />
             </PivotItem>
         </Pivot>
     </Grid>

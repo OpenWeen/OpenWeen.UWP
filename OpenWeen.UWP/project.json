@@ -1,13 +1,10 @@
 ﻿{
   "dependencies": {
-    "Microsoft.ApplicationInsights": "2.0.1",
-    "Microsoft.ApplicationInsights.PersistenceChannel": "1.2.3",
-    "Microsoft.ApplicationInsights.WindowsApps": "1.1.1",
+    "HockeySDK.UWP": "3.2.1-build53339",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.1.0",
     "NotificationsExtensions.Win10": "14295.0.1",
-    "OpenWeen.Core": "1.1.2",
+    "OpenWeen.Core": "1.1.3",
     "WinRTXamlToolkit.Controls.DataVisualization": "2.0.0",
-    "Xamarin.Insights": "1.12.3",
     "XamlAnimatedGif": "1.1.1"
   },
   "frameworks": {

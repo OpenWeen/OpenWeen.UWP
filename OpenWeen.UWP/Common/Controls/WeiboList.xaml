@@ -98,7 +98,11 @@
         <ControlTemplate TargetType="local:WeiboList">
             <Border>
                 <ScrollViewer ViewChanged="ScrollViewer_ViewChanged" x:Name="ScrollViewer" AutomationProperties.AccessibilityView="Raw" BringIntoViewOnFocusChange="True" IsDeferredScrollingEnabled="True">
-                    <ItemsPresenter Header="{TemplateBinding Header}" />
+                    <ItemsPresenter VerticalAlignment="Top" Header="{TemplateBinding Header}">
+                        <ItemsPresenter.Footer>
+                            <ProgressBar Margin="16" Visibility="{Binding RelativeSource={RelativeSource TemplatedParent},Path=IsLoading, Mode=OneWay,Converter={StaticResource BoolToVisibilityConverter}}" IsIndeterminate="{Binding RelativeSource={RelativeSource TemplatedParent},Path=IsLoading, Mode=OneWay}"/>
+                        </ItemsPresenter.Footer>
+                    </ItemsPresenter>
                 </ScrollViewer>
             </Border>
         </ControlTemplate>

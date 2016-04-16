@@ -32,5 +32,14 @@
                 </Grid>
             </DataTemplate>
         </ItemsControl.ItemTemplate>
+        <ItemsControl.Template>
+            <ControlTemplate TargetType="ItemsControl">
+                <Border>
+                    <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                        <ItemsPresenter/>
+                    </ScrollViewer>
+                </Border>
+            </ControlTemplate>
+        </ItemsControl.Template>
     </ItemsControl>
 </UserControl>

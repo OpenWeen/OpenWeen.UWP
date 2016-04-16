@@ -16,7 +16,7 @@
         </MenuFlyout>
     </Page.Resources>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <controls:WeiboList ItemClick="{x:Bind ActionModel.ItemClick}" TopicClick="{x:Bind ActionModel.TopicClick}" Favor="{x:Bind ActionModel.Favor}" PictureClick="{x:Bind ActionModel.PictureClick}" UserClick="{x:Bind ActionModel.UserClick}" Comment="{x:Bind ActionModel.Comment}" Repost="{x:Bind ActionModel.Repost}" ItemsSource="{x:Bind UserPageVM.UserTimeline.WeiboList,Mode=OneWay}">
+        <controls:WeiboList IsLoading="{x:Bind UserPageVM.IsLoading,Mode=OneWay}" ItemClick="{x:Bind ActionModel.ItemClick}" TopicClick="{x:Bind ActionModel.TopicClick}" Favor="{x:Bind ActionModel.Favor}" PictureClick="{x:Bind ActionModel.PictureClick}" UserClick="{x:Bind ActionModel.UserClick}" Comment="{x:Bind ActionModel.Comment}" Repost="{x:Bind ActionModel.Repost}" ItemsSource="{x:Bind UserPageVM.UserTimeline.WeiboList,Mode=OneWay}">
             <controls:WeiboList.Header>
                 <Grid>
                     <Grid.RowDefinitions>

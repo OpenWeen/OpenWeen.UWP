@@ -63,8 +63,33 @@ namespace OpenWeen.UWP.View
             {
                 var diff = StatusBar.GetForCurrentView().OccludedRect.Height;
                 rootFrame.Margin = new Thickness(0, diff, 0, 0);
+                DisplayInformation.GetForCurrentView().OrientationChanged += ExtendedSplash_OrientationChanged;
             }
         }
+
+        private void ExtendedSplash_OrientationChanged(DisplayInformation sender, object args)
+        {
+            var height = StatusBar.GetForCurrentView().OccludedRect.Height;
+            var width = StatusBar.GetForCurrentView().OccludedRect.Width;
+            switch (sender.CurrentOrientation)
+            {
+                case DisplayOrientations.None:
+                case DisplayOrientations.Portrait:
+                case DisplayOrientations.PortraitFlipped:
+                    (Window.Current.Content as Frame).Margin = new Thickness(0, height, 0, 0);
+                    break;
+                case DisplayOrientations.Landscape:
+                    (Window.Current.Content as Frame).Margin = new Thickness(width, 0, 0, 0);
+                    break;
+                case DisplayOrientations.LandscapeFlipped:
+                    (Window.Current.Content as Frame).Margin = new Thickness(0, 0, width, 0);
+                    break;
+                default:
+                    break;
+            }
+        }
+        
+
         private void InitTransitions()
         {
             TransitionCollection collection = new TransitionCollection();

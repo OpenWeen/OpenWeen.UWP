@@ -49,7 +49,7 @@ namespace OpenWeen.UWP.View
         }
         public void SendMessage()
         {
-            if (UserPageVM.User == null)
+            if (UserPageVM.User == null || UserPageVM.IsMe)
                 return;
             Frame.Navigate(typeof(MessagePage), new MessagePageViewModel(UserPageVM.User.ID, UserPageVM.User.ScreenName));
         }

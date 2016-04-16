@@ -5,6 +5,7 @@ using System.Net.Http;
 using OpenWeen.UWP.Common.Helpers;
 using OpenWeen.UWP.Model;
 using Windows.Foundation;
+using Windows.Graphics.Display;
 using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -25,7 +26,14 @@ namespace OpenWeen.UWP.Common.Controls
             this.InitializeComponent();
             InitSize();
             Window.Current.SizeChanged += Current_SizeChanged;
+            DisplayInformation.GetForCurrentView().OrientationChanged += ExtendedSplash_OrientationChanged;
         }
+
+        private void ExtendedSplash_OrientationChanged(DisplayInformation sender, object args)
+        {
+            InitSize();
+        }
+
 
         private void Current_SizeChanged(object sender, Windows.UI.Core.WindowSizeChangedEventArgs e)
         {
@@ -34,6 +42,7 @@ namespace OpenWeen.UWP.Common.Controls
 
         public void HideEx()
         {
+            DisplayInformation.GetForCurrentView().OrientationChanged -= ExtendedSplash_OrientationChanged;
             Window.Current.SizeChanged -= Current_SizeChanged;
             Hide();
         }

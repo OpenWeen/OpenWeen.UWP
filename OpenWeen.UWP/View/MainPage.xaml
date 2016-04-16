@@ -88,6 +88,7 @@
                     </Grid>
                     <controls:SplitViewPaneList Refresh="{x:Bind MainVM.RefreshWithoutGetUnreadCount}" Grid.Row="1" BackToTop="{x:Bind BackTop}" SelectedIndex="{Binding ElementName=pivot,Path=SelectedIndex,Mode=TwoWay}" ItemsSource="{x:Bind MainVM.Header}" />
                     <StackPanel Orientation="Vertical" Grid.Row="2">
+                        <controls:SplitViewButton Visibility="Collapsed" Tapped="{x:Bind Search}" Icon="Find" Label="搜索" />
                         <controls:SplitViewButton Tapped="{x:Bind MainVM.Refresh}" Icon="Refresh" Label="刷新" />
                         <controls:SplitViewButton Tapped="{x:Bind PostWeibo}" Icon="Edit" Label="发微博" />
                         <controls:SplitViewButton Tapped="{x:Bind Setting}" Icon="Setting" Label="设置" />
@@ -102,19 +103,19 @@
                         </Style>
                     </Pivot.ItemContainerStyle>
                     <PivotItem>
-                        <controls:WeiboList LoadMore="{x:Bind MainVM.Timeline.LoadMore}" Repost="{x:Bind ActionModel.Repost}" Comment="{x:Bind ActionModel.Comment}" ItemClick="{x:Bind ActionModel.ItemClick}" UserClick="{x:Bind ActionModel.UserClick}" PictureClick="{x:Bind ActionModel.PictureClick}" TopicClick="{x:Bind ActionModel.TopicClick}" Favor="{x:Bind ActionModel.Favor}" ItemsSource="{x:Bind MainVM.Timeline.WeiboList,Mode=OneWay}" />
+                        <controls:WeiboList IsLoading="{x:Bind MainVM.Timeline.IsLoading,Mode=OneWay}" LoadMore="{x:Bind MainVM.Timeline.LoadMore}" Repost="{x:Bind ActionModel.Repost}" Comment="{x:Bind ActionModel.Comment}" ItemClick="{x:Bind ActionModel.ItemClick}" UserClick="{x:Bind ActionModel.UserClick}" PictureClick="{x:Bind ActionModel.PictureClick}" TopicClick="{x:Bind ActionModel.TopicClick}" Favor="{x:Bind ActionModel.Favor}" ItemsSource="{x:Bind MainVM.Timeline.WeiboList,Mode=OneWay}" />
                     </PivotItem>
                     <PivotItem>
-                        <controls:WeiboList LoadMore="{x:Bind MainVM.Mention.LoadMore}" Repost="{x:Bind ActionModel.Repost}" Comment="{x:Bind ActionModel.Comment}" ItemClick="{x:Bind ActionModel.ItemClick}" UserClick="{x:Bind ActionModel.UserClick}" PictureClick="{x:Bind ActionModel.PictureClick}" TopicClick="{x:Bind ActionModel.TopicClick}" Favor="{x:Bind ActionModel.Favor}" ItemsSource="{x:Bind MainVM.Mention.WeiboList,Mode=OneWay}" />
+                        <controls:WeiboList IsLoading="{x:Bind MainVM.Mention.IsLoading,Mode=OneWay}" LoadMore="{x:Bind MainVM.Mention.LoadMore}" Repost="{x:Bind ActionModel.Repost}" Comment="{x:Bind ActionModel.Comment}" ItemClick="{x:Bind ActionModel.ItemClick}" UserClick="{x:Bind ActionModel.UserClick}" PictureClick="{x:Bind ActionModel.PictureClick}" TopicClick="{x:Bind ActionModel.TopicClick}" Favor="{x:Bind ActionModel.Favor}" ItemsSource="{x:Bind MainVM.Mention.WeiboList,Mode=OneWay}" />
                     </PivotItem>
                     <PivotItem>
-                        <controls:WeiboCommentList LoadMore="{x:Bind MainVM.Comment.LoadMore}" UserClick="{x:Bind ActionModel.UserClick}" ItemClick="{x:Bind ActionModel.ItemClick}" Comment="{x:Bind ActionModel.Comment}" ItemsSource="{x:Bind MainVM.Comment.WeiboList,Mode=OneWay}" />
+                        <controls:WeiboCommentList IsLoading="{x:Bind MainVM.Comment.IsLoading,Mode=OneWay}" LoadMore="{x:Bind MainVM.Comment.LoadMore}" UserClick="{x:Bind ActionModel.UserClick}" ItemClick="{x:Bind ActionModel.ItemClick}" Comment="{x:Bind ActionModel.Comment}" ItemsSource="{x:Bind MainVM.Comment.WeiboList,Mode=OneWay}" />
                     </PivotItem>
                     <PivotItem>
-                        <controls:WeiboCommentList LoadMore="{x:Bind MainVM.CommentMention.LoadMore}" UserClick="{x:Bind ActionModel.UserClick}" ItemClick="{x:Bind ActionModel.ItemClick}" Comment="{x:Bind ActionModel.Comment}" ItemsSource="{x:Bind MainVM.CommentMention.WeiboList,Mode=OneWay}" />
+                        <controls:WeiboCommentList IsLoading="{x:Bind MainVM.CommentMention.IsLoading,Mode=OneWay}" LoadMore="{x:Bind MainVM.CommentMention.LoadMore}" UserClick="{x:Bind ActionModel.UserClick}" ItemClick="{x:Bind ActionModel.ItemClick}" Comment="{x:Bind ActionModel.Comment}" ItemsSource="{x:Bind MainVM.CommentMention.WeiboList,Mode=OneWay}" />
                     </PivotItem>
                     <PivotItem>
-                        <controls:WeiboList LoadMore="{x:Bind MainVM.Favor.LoadMore}" Repost="{x:Bind ActionModel.Repost}" Comment="{x:Bind ActionModel.Comment}" ItemClick="{x:Bind ActionModel.ItemClick}" UserClick="{x:Bind ActionModel.UserClick}" PictureClick="{x:Bind ActionModel.PictureClick}" TopicClick="{x:Bind ActionModel.TopicClick}" Favor="{x:Bind ActionModel.Favor}" ItemsSource="{x:Bind MainVM.Favor.WeiboList,Mode=OneWay}" />
+                        <controls:WeiboList IsLoading="{x:Bind MainVM.Favor.IsLoading,Mode=OneWay}" LoadMore="{x:Bind MainVM.Favor.LoadMore}" Repost="{x:Bind ActionModel.Repost}" Comment="{x:Bind ActionModel.Comment}" ItemClick="{x:Bind ActionModel.ItemClick}" UserClick="{x:Bind ActionModel.UserClick}" PictureClick="{x:Bind ActionModel.PictureClick}" TopicClick="{x:Bind ActionModel.TopicClick}" Favor="{x:Bind ActionModel.Favor}" ItemsSource="{x:Bind MainVM.Favor.WeiboList,Mode=OneWay}" />
                     </PivotItem>
                     <PivotItem>
                         <controls:MessageUserList LoadMore="{x:Bind MainVM.Message.LoadMore}" ItemClick="{x:Bind ActionModel.MessageClick}" ItemsSource="{x:Bind MainVM.Message.WeiboList,Mode=OneWay}" />
@@ -125,6 +126,7 @@
     </Grid>
     <Page.BottomAppBar>
         <CommandBar  x:Name="BottomCommandBar" Background="{StaticResource AppBarColor}">
+            <AppBarButton Visibility="Collapsed" Click="{x:Bind Search}" Icon="Find" Label="搜索"/>
             <AppBarButton Click="{x:Bind MainVM.Refresh}" Icon="Refresh" Label="刷新" />
             <AppBarButton Click="{x:Bind PostWeibo}" Icon="Edit" Label="发微博" />
             <CommandBar.SecondaryCommands>

@@ -87,7 +87,11 @@
     <ItemsControl.Template>
         <ControlTemplate TargetType="ItemsControl">
             <ScrollViewer ViewChanging="ScrollViewer_ViewChanging">
-                <ItemsPresenter />
+                <ItemsPresenter VerticalAlignment="Top">
+                    <ItemsPresenter.Footer>
+                        <ProgressBar Margin="16" Visibility="{Binding RelativeSource={RelativeSource TemplatedParent},Path=IsLoading, Mode=OneWay,Converter={StaticResource BoolToVisibilityConverter}}" IsIndeterminate="{Binding RelativeSource={RelativeSource TemplatedParent},Path=IsLoading, Mode=OneWay}"/>
+                    </ItemsPresenter.Footer>
+                </ItemsPresenter>
             </ScrollViewer>
         </ControlTemplate>
     </ItemsControl.Template>

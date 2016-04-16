@@ -45,5 +45,9 @@ namespace OpenWeen.UWP
         {
             Frame.Navigate(typeof(SettingPage));
         }
+        public void Search()
+        {
+            Frame.Navigate(typeof(SearchPage));
+        }
     }
 }
