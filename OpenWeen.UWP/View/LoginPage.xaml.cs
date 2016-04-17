@@ -108,6 +108,9 @@ namespace OpenWeen.UWP.View
 
         private async void Button_Click_2(object sender, RoutedEventArgs e)
         {
+            var content = new Windows.ApplicationModel.DataTransfer.DataPackage();
+            content.SetText("SSMjExMTYwNjc5OjoxZTZlMzNkYjA4ZjkxOTIzMDZjNGFmYTBhNjFhZDU2Yzo6aHR0cDovL29hdXRoLndlaWNvLmNjOjplbWFpbCxkaXJlY3RfbWVzc2FnZXNfcmVhZCxkaXJlY3RfbWVzc2FnZXNfd3JpdGUsZnJpZW5kc2hpcHNfZ3JvdXBzX3JlYWQsZnJpZW5kc2hpcHNfZ3JvdXBzX3dyaXRlLHN0YXR1c2VzX3RvX21lX3JlYWQsZm9sbG93X2FwcF9vZmZpY2lhbF9taWNyb2Jsb2csaW52aXRhdGlvbl93cml0ZTo6Y29tLmVpY28ud2VpY286OkVFEE");
+            Windows.ApplicationModel.DataTransfer.Clipboard.SetContent(content);
             await Windows.System.Launcher.LaunchUriAsync(new Uri("https://gist.github.com/PeterCxy/3085799055f63c63c911"));
         }
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using OpenWeen.UWP.Model;
 using OpenWeen.UWP.ViewModel.SearchPage;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -23,10 +24,16 @@ namespace OpenWeen.UWP.View
     /// </summary>
     public sealed partial class SearchPage : Page
     {
-        public SearchPageViewModel ViewModel { get; } = new SearchPageViewModel();
+        public SearchPageViewModel ViewModel { get; private set; } 
+        public WeiboActionModel ActionModel { get; } = WeiboActionModel.Instance;
         public SearchPage()
         {
             this.InitializeComponent();
+        }
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            ViewModel = e.Parameter as SearchPageViewModel;
         }
     }
 }

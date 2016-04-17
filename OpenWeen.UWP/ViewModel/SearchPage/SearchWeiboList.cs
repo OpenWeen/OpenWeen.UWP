@@ -21,8 +21,7 @@ namespace OpenWeen.UWP.ViewModel.SearchPage
         {
             if (string.IsNullOrEmpty(_text))
                 return null;
-            var item = await Core.Api.Search.Search.SearchStatus(_text, page: _pageCount++);
-            return Tuple.Create(item.TotalNumber, item.Statuses);//TODO:TotalNumber is wrong
+            return Tuple.Create(int.MaxValue, (await Core.Api.Search.Search.SearchStatus(_text, page: _pageCount++)).Statuses);//TODO:TotalNumber is wrong
         }
     }
 }

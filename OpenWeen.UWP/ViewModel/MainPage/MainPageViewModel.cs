@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NotificationsExtensions.Tiles;
 using OpenWeen.Core.Model;
+using OpenWeen.Core.Model.Status;
 using OpenWeen.Core.Model.User;
 using OpenWeen.UWP.Common;
 using OpenWeen.UWP.Model;
@@ -30,18 +31,32 @@ namespace OpenWeen.UWP.ViewModel.MainPage
         public FavorViewModel Favor { get; } = new FavorViewModel();
         public MessageUserListViewModel Message { get; } = new MessageUserListViewModel();
         public UserModel User { get; private set; }
+        public List<GroupModel> Groups { get; } = new List<GroupModel>()
+        {
+            new GroupModel() { ID = -1, Name = "全部分组" }
+        };
+        private int _groupSelectedIndex;
+
+        public int GroupSelectedIndex
+        {
+            get { return _groupSelectedIndex; }
+            set
+            {
+                _groupSelectedIndex = value;
+                Timeline.SetGroupAndRefresh(Groups[value]);
+            }
+        }
+
 
         public List<HeaderModel> Header { get; } = new List<HeaderModel>()
         {
             new HeaderModel() { Icon = Symbol.Home, Text = "主页" },
             new HeaderModel() { Icon = Symbol.Account, Text = "提及" },
             new HeaderModel() { Icon = Symbol.Comment, Text = "评论" },
-            new HeaderModel() { Icon = Symbol.Comment, Text = "@的评论" },
-            new HeaderModel() { Icon = Symbol.Favorite, Text = "收藏夹" },
+            new HeaderModel() { Icon = Symbol.Comment, Text = "@评论" },
+            new HeaderModel() { Icon = Symbol.Favorite, Text = "收藏" },
             new HeaderModel() { Icon = Symbol.Mail, Text = "私信" },
         };
-
-        private UnReadModel _prevUnread;
 
         public MainPageViewModel()
         {
@@ -73,7 +88,7 @@ namespace OpenWeen.UWP.ViewModel.MainPage
             InitAllList();
         }
 
-        private void InitAllList()
+        private async void InitAllList()
         {
 #pragma warning disable CS4014 // 由于此调用不会等待，因此在调用完成前将继续执行当前方法
             GetUnreadCount();
@@ -84,6 +99,10 @@ namespace OpenWeen.UWP.ViewModel.MainPage
             Favor.Refresh();
             Message.Refresh();
 #pragma warning restore CS4014 // 由于此调用不会等待，因此在调用完成前将继续执行当前方法
+            (await Core.Api.Friendships.Groups.GetGroups()).Lists.ForEach(item => Groups.Add(item));
+            PropertyChanged?.Invoke(this,new PropertyChangedEventArgs(nameof(Groups)));
+            GroupSelectedIndex = 0;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(GroupSelectedIndex)));
         }
 
         private void Timer_Tick(object sender, object e)
@@ -106,12 +125,6 @@ namespace OpenWeen.UWP.ViewModel.MainPage
             });
 #pragma warning restore CS4014 // 由于此调用不会等待，因此在调用完成前将继续执行当前方法
         }
-
-
-        //private void StaticResource_UpdateUnreadCountTaskComplete(object sender, EventArgs e)
-        //{
-        //    throw new NotImplementedException();
-        //}
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -136,18 +149,22 @@ namespace OpenWeen.UWP.ViewModel.MainPage
                     break;
                 case 1:
                     await Mention.Refresh();
+                    Header[1].UnreadCount = 0;
                     break;
                 case 2:
                     await Comment.Refresh();
+                    Header[2].UnreadCount = 0;
                     break;
                 case 3:
                     await CommentMention.Refresh();
+                    Header[3].UnreadCount = 0;
                     break;
                 case 4:
                     await Favor.Refresh();
                     break;
                 case 5:
                     await Message.Refresh();
+                    Header[5].UnreadCount = 0;
                     break;
                 default:
                     break;

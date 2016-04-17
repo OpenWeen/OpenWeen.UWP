@@ -33,17 +33,17 @@
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="{StaticResource UserImageGridLength}" />
                     <ColumnDefinition Width="8" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Grid Grid.ColumnSpan="3">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="{StaticResource UserImageGridLength}" />
                         <ColumnDefinition Width="8" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Ellipse DataContext="{x:Bind User}" Width="50" Height="50">
+                    <Ellipse DataContext="{x:Bind User}" Width="{StaticResource UserImageSize}" Height="{StaticResource UserImageSize}">
                         <Ellipse.Fill>
                             <ImageBrush ImageSource="{x:Bind User.ProfileImageUrl}" />
                         </Ellipse.Fill>

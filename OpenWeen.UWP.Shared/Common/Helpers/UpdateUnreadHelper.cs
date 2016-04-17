@@ -24,6 +24,8 @@ namespace OpenWeen.UWP.Shared.Common.Helpers
 
         public static void UpdateUnread(UnReadModel unread)
         {
+            if (unread == null)
+                return;
             var builder = new StringBuilder();
             if (unread.MentionStatus > 0 && unread.MentionStatus != _prevUnread?.MentionStatus && Settings.IsMentionNotify)
             {

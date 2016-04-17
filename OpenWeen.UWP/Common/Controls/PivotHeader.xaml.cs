@@ -58,11 +58,15 @@ namespace OpenWeen.UWP.Common.Controls
             if (SelectedIndex == index)
             {
                 BackToTop?.Invoke(this, new EventArgs());
-                if (ItemsSource[index].UnreadCount > 0)
+                try
                 {
-                    ItemsSource[index].UnreadCount = 0;
-                    Refresh?.Invoke(this, new EventArgs());
+                    if (ItemsSource[index].UnreadCount > 0)
+                    {
+                        ItemsSource[index].UnreadCount = 0;
+                        Refresh?.Invoke(this, new EventArgs());
+                    }
                 }
+                catch { }
             }
             else
             {

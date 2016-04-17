@@ -320,6 +320,9 @@
         <SolidColorBrush x:Key="AppTheme" Color="#FF327AFF" />
         <SolidColorBrush x:Key="AppBarColor" Color="#5EFFFFFF"/>
         <x:Double x:Key="PaneWidth">150</x:Double>
+        <x:Double x:Key="UserImageSize">32</x:Double>
+        <GridLength x:Key="UserImageGridLength">32</GridLength>
+        <x:Double x:Key="PivotImageSize">32</x:Double>
         <Style x:Key="PivotWithHeaderBackgroundStyle" TargetType="Pivot">
             <Setter Property="Margin" Value="0" />
             <Setter Property="Padding" Value="0" />

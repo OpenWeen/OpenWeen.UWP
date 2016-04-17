@@ -15,7 +15,14 @@ namespace OpenWeen.UWP.ViewModel
     {
         public ObservableCollection<T> WeiboList { get; private set; } = new ObservableCollection<T>();
         protected int _pageCount = 1;
-        protected bool _hasMore => WeiboList.Count < _totalNumber;
+        protected bool _hasMore
+        {
+            get
+            {
+                lock (WeiboList)
+                    return WeiboList.Count < _totalNumber;
+            }
+        }
         protected int _totalNumber = 0;
 
         protected bool _isLoading;
@@ -37,13 +44,21 @@ namespace OpenWeen.UWP.ViewModel
             if (IsLoading)
                 return;
             IsLoading = true;
+            lock (WeiboList)
+            {
+                WeiboList = new ObservableCollection<T>();
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WeiboList)));
+            }
             try
             {
                 _pageCount = 1;
                 var item = await RefreshOverride();
-                WeiboList = new ObservableCollection<T>((item.Item2));
-                _totalNumber = item.Item1;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WeiboList)));
+                lock (WeiboList)
+                {
+                    WeiboList = new ObservableCollection<T>((item.Item2));
+                    _totalNumber = item.Item1;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WeiboList)));
+                }
             }
             catch (Exception e) when (e is HttpRequestException || e is WebException)
             {
@@ -54,7 +69,6 @@ namespace OpenWeen.UWP.ViewModel
             }
             catch(Newtonsoft.Json.JsonException)
             {
-                WeiboList = new ObservableCollection<T>();
             }
             IsLoading = false;
         }
@@ -66,26 +80,26 @@ namespace OpenWeen.UWP.ViewModel
             IsLoading = true;
             try
             {
-                (await LoadMoreOverride()).ToList().ForEach(item => WeiboList.Add(item));
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WeiboList)));
+                var list = await LoadMoreOverride();
+                lock (WeiboList)
+                {
+                    list.ToList().ForEach(item => WeiboList.Add(item));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WeiboList)));
+                }
             }
-            catch (Exception e) when (e is HttpRequestException || e is WebException)
+            catch (Exception e) when (e is HttpRequestException || e is WebException || e is Newtonsoft.Json.JsonException)
             {
+                _pageCount--;
 #if DEBUG
                 throw;
 #endif
-                OnWebException();
-            }
-            catch (Newtonsoft.Json.JsonException)
-            {
-                WeiboList = new ObservableCollection<T>();
             }
             IsLoading = false;
         }
 
-        protected virtual async void OnWebException()
+        protected virtual void OnWebException()
         {
-            WeiboList = new ObservableCollection<T>();
+
         }
 
         protected abstract Task<IEnumerable<T>> LoadMoreOverride();

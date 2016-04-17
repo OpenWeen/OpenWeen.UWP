@@ -69,8 +69,13 @@ namespace OpenWeen.UWP.View
 
         private void ExtendedSplash_OrientationChanged(DisplayInformation sender, object args)
         {
-            var height = StatusBar.GetForCurrentView().OccludedRect.Height;
-            var width = StatusBar.GetForCurrentView().OccludedRect.Width;
+            var statusBar = StatusBar.GetForCurrentView();
+            if ((Window.Current.Content as Frame) == null || statusBar == null)
+            {
+                return;
+            }
+            var height = statusBar.OccludedRect.Height;
+            var width = statusBar.OccludedRect.Width;
             switch (sender.CurrentOrientation)
             {
                 case DisplayOrientations.None:
@@ -205,6 +210,10 @@ namespace OpenWeen.UWP.View
             {
                 e.Handled = true;
                 rootFrame.GoBack();
+            }
+            else
+            {
+                Application.Current.Exit();
             }
         }
 

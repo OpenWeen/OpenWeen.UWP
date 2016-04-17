@@ -17,7 +17,7 @@
     </ItemsControl.ItemTemplate>
     <ItemsControl.ItemsPanel>
         <ItemsPanelTemplate>
-            <ItemsWrapGrid Orientation="Horizontal" />
+            <ItemsWrapGrid MaximumRowsOrColumns="3" Orientation="Horizontal" />
         </ItemsPanelTemplate>
     </ItemsControl.ItemsPanel>
     <ItemsControl.Template>

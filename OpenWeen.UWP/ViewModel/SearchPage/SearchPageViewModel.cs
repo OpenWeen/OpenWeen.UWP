@@ -11,14 +11,14 @@ namespace OpenWeen.UWP.ViewModel.SearchPage
     {
         public SearchWeiboList WeiboList { get; } = new SearchWeiboList();
         public SearchUserList UserList { get; } = new SearchUserList();
-        public SearchPageViewModel()
-        {
-
-        }
+        public string SearchText { get; set; }
 
         internal void Search(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-
+            if (string.IsNullOrEmpty(SearchText))
+                return;
+            WeiboList.SetTextAndRefresh(SearchText);
+            UserList.SetTextAndRefresh(SearchText);
         }
     }
 }
