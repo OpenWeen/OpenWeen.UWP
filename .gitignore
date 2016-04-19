@@ -210,7 +210,6 @@ FakesAssemblies/
 GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
-/OpenWeen.UWP/Assets
 /OpenWeen.UWP/BundleArtifacts
 /OpenWeen.UWP/Common/XamarinInsightsKey.cs
 /OpenWeen.UWP/ApplicationInsights.config
@@ -220,3 +219,13 @@ ModelManifest.xml
 /OpenWeen.UWP/_scale-125.appx
 /OpenWeen.UWP/_scale-100.appx
 /OpenWeen.UWP/Common/HockeyAppKey.cs
+/OpenWeen.UWP/Assets/Emotion
+/OpenWeen.UWP/Assets/930x450.png
+/OpenWeen.UWP/Assets/88x88.png
+/OpenWeen.UWP/Assets/775x375.png
+/OpenWeen.UWP/Assets/620x300.png
+/OpenWeen.UWP/Assets/50x50.png
+/OpenWeen.UWP/Assets/48x48.png
+/OpenWeen.UWP/Assets/300x300.png
+/OpenWeen.UWP/Assets/24x24.png
+/OpenWeen.UWP/Assets/2480x1200.png

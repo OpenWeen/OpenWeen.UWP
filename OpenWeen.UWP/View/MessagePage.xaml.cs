@@ -46,7 +46,7 @@ namespace OpenWeen.UWP.View
         {
             var item = e.ClickedItem as EmotionModel;
             var index = textBox.SelectionStart;
-            textBox.Text = textBox.Text.Insert(index, item.Value);
+            textBox.Text = textBox.Text.Insert(index, item.Value);//TUDO:pure emotion can not send message
             textBox.SelectionStart = index + item.Value.Length;
         }
 
