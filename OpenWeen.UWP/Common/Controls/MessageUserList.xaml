@@ -53,7 +53,7 @@
                 <Setter.Value>
                     <TransitionCollection>
                         <AddDeleteThemeTransition />
-                        <ContentThemeTransition />
+                        <!--<ContentThemeTransition />-->
                         <ReorderThemeTransition />
                         <EntranceThemeTransition IsStaggeringEnabled="False" />
                     </TransitionCollection>
