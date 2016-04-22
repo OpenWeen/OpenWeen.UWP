@@ -39,8 +39,8 @@
                         <ImageBrush ImageSource="{x:Bind ProfileImageUrl}" />
                     </Ellipse.Fill>
                 </Ellipse>
-                <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{x:Bind ScreenName}" FontWeight="Bold" Style="{ThemeResource BodyTextBlockStyle}" />
-                <TextBlock Foreground="LightGray" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Text="{x:Bind Description}"/>
+                <TextBlock Margin="12,0,0,0" Grid.Column="1" VerticalAlignment="Center" Text="{x:Bind ScreenName}" FontWeight="Bold" Style="{ThemeResource BodyTextBlockStyle}" />
+                <TextBlock Margin="12,0,0,0" Foreground="LightGray" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Text="{x:Bind Description}"/>
             </Grid>
         </DataTemplate>
     </ItemsControl.ItemTemplate>
