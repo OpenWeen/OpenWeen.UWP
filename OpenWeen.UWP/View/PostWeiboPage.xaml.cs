@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using OpenWeen.Core.Model;
 using OpenWeen.Core.Model.Status;
@@ -43,7 +45,7 @@ namespace OpenWeen.UWP.View
                 string value = "";
                 
                 richEditBox.Document.GetText(Windows.UI.Text.TextGetOptions.NoHidden, out value);
-                return 140 - value.Length;
+                return 140 - Encoding.GetEncoding("gb2312").GetByteCount(value) / 2;
             }
         }
 

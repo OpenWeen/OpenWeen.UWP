@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using OpenWeen.Core.Model;
@@ -169,6 +170,9 @@ namespace OpenWeen.UWP.View
             {
                 await InitUid();
             }
+
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
             await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
              {
                  DismissExtendedSplash();
