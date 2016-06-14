@@ -10,29 +10,64 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <ItemsControl ItemsSource="{x:Bind ItemsSource}" Tapped="ItemsControl_Tapped">
-        <ItemsControl.ItemsPanel>
+    <ListView  ItemsSource="{x:Bind ItemsSource}" DoubleTapped="ListView_DoubleTapped" Tapped="ItemsControl_Tapped">
+        <ListView.ItemContainerStyle>
+            <Style TargetType="ListViewItem">
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ListViewItem">
+                            <ListViewItemPresenter
+          ContentTransitions="{TemplateBinding ContentTransitions}"
+          SelectionCheckMarkVisualEnabled="True"
+          CheckBrush="{ThemeResource SystemControlForegroundBaseMediumHighBrush}"
+          CheckBoxBrush="{ThemeResource SystemControlForegroundBaseMediumHighBrush}"
+          DragBackground="{ThemeResource ListViewItemDragBackgroundThemeBrush}"
+          DragForeground="{ThemeResource ListViewItemDragForegroundThemeBrush}"
+          FocusBorderBrush="{ThemeResource SystemControlForegroundAltHighBrush}"
+          FocusSecondaryBorderBrush="{ThemeResource SystemControlForegroundBaseHighBrush}"
+          PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}"
+          PointerOverBackground="{ThemeResource SystemControlHighlightListLowBrush}"
+                                SelectedPointerOverBackground="{ThemeResource SystemControlHighlightListLowBrush}"
+          PointerOverForeground="{ThemeResource SystemControlHighlightAltBaseHighBrush}"
+          SelectedForeground="{StaticResource AppTheme}"
+          PressedBackground="{ThemeResource SystemControlHighlightListMediumBrush}"
+          DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
+          DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
+          ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}"
+          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+          ContentMargin="{TemplateBinding Padding}"
+          CheckMode="Inline"/>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+
+            </Style>
+        </ListView.ItemContainerStyle>
+        <ListView.ItemsPanel>
             <ItemsPanelTemplate>
                 <StackPanel Orientation="Vertical" />
             </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
-        <ItemsControl.ItemTemplate>
+        </ListView.ItemsPanel>
+        <ListView.ItemTemplate>
             <DataTemplate x:DataType="model:HeaderModel">
-                <Grid Opacity="{x:Bind Opacity,Mode=OneWay}">
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
+                    <Rectangle Width="4" HorizontalAlignment="Left" Fill="{StaticResource AppTheme}" Visibility="{x:Bind IsActive,Converter={StaticResource BoolToVisibilityConverter},Mode=OneWay}"/>
                     <SymbolIcon Width="48" Height="48" Symbol="{x:Bind Icon}" />
                     <TextBlock VerticalAlignment="Center" Grid.Column="1" Text="{x:Bind Text}" />
                     <Grid Margin="10" Visibility="{x:Bind UnreadCount,Mode=OneWay,Converter={StaticResource UnreadCountToVisibilityConverter}}" Width="10" Height="10" HorizontalAlignment="Right" VerticalAlignment="Top">
                         <Ellipse Fill="Red" />
-                        <TextBlock FontSize="8" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{x:Bind UnreadCount,Mode=OneWay}" />
+                        <TextBlock FontSize="8" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{x:Bind UnreadCount,Mode=OneWay}" />
                     </Grid>
                 </Grid>
             </DataTemplate>
-        </ItemsControl.ItemTemplate>
-        <ItemsControl.Template>
+        </ListView.ItemTemplate>
+        <ListView.Template>
             <ControlTemplate TargetType="ItemsControl">
                 <Border>
                     <ScrollViewer VerticalScrollBarVisibility="Hidden">
@@ -40,6 +75,6 @@
                     </ScrollViewer>
                 </Border>
             </ControlTemplate>
-        </ItemsControl.Template>
-    </ItemsControl>
+        </ListView.Template>
+    </ListView>
 </UserControl>

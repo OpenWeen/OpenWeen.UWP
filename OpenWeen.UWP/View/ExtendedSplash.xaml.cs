@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using OpenWeen.Core.Model;
-//using ImageLib;
-//using ImageLib.Cache.Memory;
-//using ImageLib.Cache.Storage;
-//using ImageLib.Cache.Storage.CacheImpl;
-//using ImageLib.Gif;
 using OpenWeen.UWP.BackgroundTask;
 using OpenWeen.UWP.Common;
 using OpenWeen.UWP.Common.Helpers;
@@ -20,8 +14,6 @@ using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Background;
 using Windows.Foundation;
 using Windows.Graphics.Display;
-using Windows.Storage;
-using Windows.Storage.Streams;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -208,8 +200,8 @@ namespace OpenWeen.UWP.View
         {
             if (rootFrame.CanGoBack)
             {
-                e.Handled = true;
                 rootFrame.GoBack();
+                e.Handled = true;
             }
             else
             {

@@ -87,7 +87,7 @@ namespace OpenWeen.UWP.Model
 
         public async void PictureClick(object sender, WeiboPictureClickEventArgs e)
         {
-            var items = e.DataContext.PicUrls.Select(item => new ImageModel(PictureHelper.ThumbnailToOriginal(item.ThumbnailPic))).ToList();
+            var items = e.DataContext.PicUrls.Select(item => new ImageModel(item.OriginalPic == null ? PictureHelper.ThumbnailToOriginal(item.ThumbnailPic) : item.OriginalPic)).ToList();
             var dialog = new ImageViewDialog(items, e.DataContext.PicUrls.FindIndex((item=>item.ThumbnailPic == e.ClickedPicture.ThumbnailPic)));
             await dialog.ShowAsync();
         }

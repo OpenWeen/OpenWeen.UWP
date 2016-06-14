@@ -30,6 +30,7 @@ namespace OpenWeen.UWP.Model
             set
             {
                 _isActive = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsActive)));
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Opacity)));
             }
         }

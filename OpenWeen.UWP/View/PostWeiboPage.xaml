@@ -24,7 +24,6 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <ProgressBar Grid.RowSpan="2" IsIndeterminate="{x:Bind IsSending,Mode=OneWay}" Visibility="{x:Bind IsSending,Mode=OneWay,Converter={StaticResource BoolToVisibilityConverter}}" />
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />

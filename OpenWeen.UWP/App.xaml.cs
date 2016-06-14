@@ -8,6 +8,7 @@ using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace OpenWeen.UWP
@@ -50,8 +51,8 @@ namespace OpenWeen.UWP
             }
             else
             {
-                ApplicationView.GetForCurrentView().TitleBar.BackgroundColor = Color.FromArgb(255, 35, 85, 178);
-                ApplicationView.GetForCurrentView().TitleBar.ButtonBackgroundColor = Color.FromArgb(255, 35, 85, 178);
+                ApplicationView.GetForCurrentView().TitleBar.BackgroundColor = ((SolidColorBrush)Resources["AppTheme"]).Color;
+                ApplicationView.GetForCurrentView().TitleBar.ButtonBackgroundColor = ((SolidColorBrush)Resources["AppTheme"]).Color;
             }
             ApplicationView.GetForCurrentView().SetDesiredBoundsMode(ApplicationViewBoundsMode.UseCoreWindow);
 

@@ -18,6 +18,7 @@ using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
@@ -31,16 +32,17 @@ namespace OpenWeen.UWP.View
     public sealed partial class PostWeiboPage : Page, INotifyPropertyChanged
     {
         public ObservableCollection<ImageData> Images { get; } = new ObservableCollection<ImageData>();
-        public bool IsSending { get; private set; }
         private IPostWeibo _data;
         public bool AllowPicture { get; set; } = true;
+        private bool _isSending;
 
         public int TextCount
         {
             get
             {
                 string value = "";
-                richEditBox.Document.GetText(Windows.UI.Text.TextGetOptions.AdjustCrlf, out value);
+                
+                richEditBox.Document.GetText(Windows.UI.Text.TextGetOptions.NoHidden, out value);
                 return 140 - value.Length;
             }
         }
@@ -50,7 +52,7 @@ namespace OpenWeen.UWP.View
             get
             {
                 string value = "";
-                richEditBox.Document.GetText(Windows.UI.Text.TextGetOptions.AdjustCrlf, out value);
+                richEditBox.Document.GetText(Windows.UI.Text.TextGetOptions.NoHidden, out value);
                 return value;
             }
             set
@@ -64,6 +66,7 @@ namespace OpenWeen.UWP.View
         public PostWeiboPage()
         {
             this.InitializeComponent();
+            Transitions = new TransitionCollection { new NavigationThemeTransition() { DefaultNavigationTransitionInfo = new SlideNavigationTransitionInfo() } };
             cvs.Source = Emojis;
             (semanticZoom.ZoomedOutView as ListViewBase).ItemsSource = cvs.View.CollectionGroups;
         }
@@ -164,18 +167,23 @@ namespace OpenWeen.UWP.View
 
         public async void PostWeibo()
         {
-            if (IsSending || Text?.Length < 0)
+            if (_isSending || Text?.Length < 0)
                 return;
             if (TextCount < 0)
             {
                 var dialog = new MessageDialog("超出140字限制", "错误");
-                dialog.Commands.Add(new UICommand("删除超出部分并发送", DeleteOverflow));
+                dialog.Commands.Add(new UICommand("删除超出部分并发送", (command)=> 
+                {
+                    Text = Text.Remove(139);
+                    PostWeibo();
+                }));
                 dialog.Commands.Add(new UICommand("取消"));
                 await dialog.ShowAsync();
                 return;
             }
-            IsSending = true;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsSending)));
+            _isSending = true;
+            var sardialog = new Common.Controls.SitbackAndRelaxDialog();
+            sardialog.ShowAsync();
             bool isSuccess = false;
             switch (_data.Type)
             {
@@ -196,10 +204,10 @@ namespace OpenWeen.UWP.View
             }
             if (isSuccess)
             {
+                sardialog.Hide();
                 Frame.GoBack();
-                IsSending = false;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsSending)));
             }
+            _isSending = false;
         }
 
         private async Task<bool> Comment()
@@ -245,13 +253,7 @@ namespace OpenWeen.UWP.View
             }
             return false;
         }
-
-        private void DeleteOverflow(IUICommand command)
-        {
-            Text = Text.Remove(140);
-            PostWeibo();
-        }
-
+        
         private async void richEditBox_DragOver(object sender, DragEventArgs e)
         {
             if (!AllowPicture)

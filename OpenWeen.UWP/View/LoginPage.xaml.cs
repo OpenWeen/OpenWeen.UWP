@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using OpenWeen.Core.Helper;
-using OpenWeen.Core.Model;
 using OpenWeen.UWP.Common;
 using OpenWeen.UWP.Common.Controls;
 using OpenWeen.UWP.Shared.Common;

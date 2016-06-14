@@ -75,7 +75,7 @@
         </Grid>
         <SplitView x:Name="splitView" Grid.Row="1" DisplayMode="Inline" OpenPaneLength="{StaticResource PaneWidth}">
             <SplitView.Pane>
-                <Grid Background="{StaticResource AppTheme}" RequestedTheme="Dark">
+                <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="*" />

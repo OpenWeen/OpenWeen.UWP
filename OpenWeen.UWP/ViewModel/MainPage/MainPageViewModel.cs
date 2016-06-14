@@ -35,7 +35,7 @@ namespace OpenWeen.UWP.ViewModel.MainPage
         {
             new GroupModel() { ID = -1, Name = "全部分组" }
         };
-        private int _groupSelectedIndex;
+        private int _groupSelectedIndex = 0;
 
         public int GroupSelectedIndex
         {
@@ -99,10 +99,14 @@ namespace OpenWeen.UWP.ViewModel.MainPage
             Favor.Refresh();
             Message.Refresh();
 #pragma warning restore CS4014 // 由于此调用不会等待，因此在调用完成前将继续执行当前方法
-            (await Core.Api.Friendships.Groups.GetGroups()).Lists.ForEach(item => Groups.Add(item));
-            PropertyChanged?.Invoke(this,new PropertyChangedEventArgs(nameof(Groups)));
-            GroupSelectedIndex = 0;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(GroupSelectedIndex)));
+            try
+            {
+                (await Core.Api.Friendships.Groups.GetGroups()).Lists.ForEach(item => Groups.Add(item));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Groups)));
+            }
+            catch (Exception ex) when (ex is WebException || ex is HttpRequestException || ex is TaskCanceledException || ex is NullReferenceException)
+            {
+            }
         }
 
         private void Timer_Tick(object sender, object e)
@@ -118,7 +122,7 @@ namespace OpenWeen.UWP.ViewModel.MainPage
                     UpdateUnreadHelper.UpdateUnread(unread);
                     UpdateUnreadHelper.Count = Header.Sum(item => item.UnreadCount);
                 }
-                catch (Exception ex) when (ex is WebException || ex is HttpRequestException)
+                catch (Exception ex) when (ex is WebException || ex is HttpRequestException || ex is TaskCanceledException)
                 {
 
                 }

@@ -60,15 +60,12 @@ namespace OpenWeen.UWP.ViewModel
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WeiboList)));
                 }
             }
-            catch (Exception e) when (e is HttpRequestException || e is WebException)
+            catch (Exception e) when (e is HttpRequestException || e is WebException || e is Newtonsoft.Json.JsonException || e is TaskCanceledException)
             {
 #if DEBUG
                 throw;
 #endif
                 OnWebException();
-            }
-            catch(Newtonsoft.Json.JsonException)
-            {
             }
             IsLoading = false;
         }
@@ -87,7 +84,7 @@ namespace OpenWeen.UWP.ViewModel
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WeiboList)));
                 }
             }
-            catch (Exception e) when (e is HttpRequestException || e is WebException || e is Newtonsoft.Json.JsonException)
+            catch (Exception e) when (e is HttpRequestException || e is WebException || e is Newtonsoft.Json.JsonException || e is TaskCanceledException)
             {
                 _pageCount--;
 #if DEBUG
