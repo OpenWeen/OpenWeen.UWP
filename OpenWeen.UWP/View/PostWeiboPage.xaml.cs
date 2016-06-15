@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using OpenWeen.Core.Model;
@@ -209,6 +210,10 @@ namespace OpenWeen.UWP.View
                 sardialog.Hide();
                 Frame.GoBack();
             }
+            else
+            {
+                Common.Controls.Notification.Show("发送失败");
+            }
             _isSending = false;
         }
 
@@ -217,14 +222,29 @@ namespace OpenWeen.UWP.View
             if (_data is ReplyCommentData)
             {
                 var data = _data as ReplyCommentData;
-                await Core.Api.Comments.Reply(data.ID, data.CID, Text);
-                return true;
+                try
+                {
+                    await Core.Api.Comments.Reply(data.ID, data.CID, Text);
+                    return true;
+                }
+                catch (Exception e) when (e is WebException || e is System.Net.Http.HttpRequestException) 
+                {
+                    return false;
+                }
             }
             else if (_data is CommentData)
             {
                 var data = _data as CommentData;
-                await Core.Api.Comments.PostComment(data.ID, Text);
-                return true;
+                try
+                {
+                    await Core.Api.Comments.PostComment(data.ID, Text);
+                    return true;
+
+                }
+                catch (Exception e) when (e is WebException || e is System.Net.Http.HttpRequestException)
+                {
+                    return false;
+                }
             }
             return false;
         }
@@ -232,26 +252,41 @@ namespace OpenWeen.UWP.View
         private async Task<bool> RePost()
         {
             var data = _data as RepostData;
-            await Core.Api.Statuses.PostWeibo.Repost(data.ID, Text);
-            return true;
+            try
+            {
+                await Core.Api.Statuses.PostWeibo.Repost(data.ID, Text);
+                return true;
+
+            }
+            catch (Exception e) when (e is WebException || e is System.Net.Http.HttpRequestException)
+            {
+                return false;
+            }
         }
 
         private async Task<bool> NewPost()
         {
-            if (Images.Count > 0)
+            try
             {
-                var pics = new List<PictureModel>();
-                foreach (var item in Images)
+                if (Images.Count > 0)
                 {
-                    pics.Add(await Core.Api.Statuses.PostWeibo.UploadPicture(item.Data));
+                    var pics = new List<PictureModel>();
+                    foreach (var item in Images)
+                    {
+                        pics.Add(await Core.Api.Statuses.PostWeibo.UploadPicture(item.Data));
+                    }
+                    await Core.Api.Statuses.PostWeibo.PostWithMultiPics(Text?.Length > 0 ? Text : "分享图片", string.Join(",", pics.Select(item => item.PicID)));
+                    return true;
                 }
-                await Core.Api.Statuses.PostWeibo.PostWithMultiPics(Text?.Length > 0 ? Text : "分享图片", string.Join(",", pics.Select(item => item.PicID)));
-                return true;
+                else if (Text?.Length > 0)
+                {
+                    await Core.Api.Statuses.PostWeibo.Post(Text);
+                    return true;
+                }
             }
-            else if (Text?.Length > 0)
+            catch (Exception e) when (e is WebException || e is System.Net.Http.HttpRequestException)
             {
-                await Core.Api.Statuses.PostWeibo.Post(Text);
-                return true;
+
             }
             return false;
         }

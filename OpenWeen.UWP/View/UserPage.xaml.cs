@@ -27,8 +27,26 @@ namespace OpenWeen.UWP.View
         {
             base.OnNavigatedTo(e);
             UserPageVM = e.Parameter as UserPageViewModel;
+            if (e.NavigationMode == NavigationMode.Back)
+            {
+                weiboList.Loaded += WeiboList_Loaded;
+            }
         }
 
+        private void WeiboList_Loaded(object sender, RoutedEventArgs e)
+        {
+            Common.Helpers.MoreVisualTreeHelper.GetObject<ScrollViewer>(weiboList).ChangeView(0, UserPageVM.ScrollViewerPosition, 1, true);
+            weiboList.Loaded -= WeiboList_Loaded;
+        }
+
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            base.OnNavigatingFrom(e);
+            if (e.NavigationMode == NavigationMode.New)
+            {
+                UserPageVM.ScrollViewerPosition = Common.Helpers.MoreVisualTreeHelper.GetObject<ScrollViewer>(weiboList).VerticalOffset;
+            }
+        }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             var menu = Resources["SettingFlyout"] as MenuFlyout;

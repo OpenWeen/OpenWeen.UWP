@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Net;
+using System.Net.Http;
 using OpenWeen.UWP.Common;
+using OpenWeen.UWP.Common.Controls;
 using OpenWeen.UWP.View;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -18,6 +21,7 @@ namespace OpenWeen.UWP
     /// </summary>
     sealed partial class App : Application
     {
+        
         /// <summary>
         /// 初始化单一实例应用程序对象。这是执行的创作代码的第一行，
         /// 已执行，逻辑上等同于 main() 或 WinMain()。
@@ -67,6 +71,16 @@ namespace OpenWeen.UWP
                 }
             }
             Window.Current.Activate();
+            UnhandledException += App_UnhandledException;
+        }
+
+        private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            if (e.Exception is WebException || e.Exception is HttpRequestException)
+            {
+                Notification.Show($"网络错误 {e.Exception.Message}");
+                e.Handled = true;
+            }
         }
 
         /// <summary>

@@ -32,6 +32,8 @@ namespace OpenWeen.UWP.ViewModel.UserPage
             }
         }
 
+        public double ScrollViewerPosition { get; internal set; }
+
         public UserPageViewModel(long uid)
         {
             UidOrUserName = uid;

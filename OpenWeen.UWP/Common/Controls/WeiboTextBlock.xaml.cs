@@ -122,7 +122,6 @@ namespace OpenWeen.UWP.Common.Controls
                 string innerText = null;
                 if (model != null)
                 {
-                    Debug.WriteLine($"Type {model.UrlStruct?.Where(m => m.ShortUrl == item.Value)?.FirstOrDefault()?.Type} ; link {model.UrlStruct?.Where(m => m.ShortUrl == item.Value)?.FirstOrDefault()?.ShortUrl}");
                     innerText = model.UrlStruct?.Where(m => m.ShortUrl == item.Value)?.FirstOrDefault()?.UrlTitle;
                     var memodel = DataContext as MessageModel;
                     if (memodel != null && string.IsNullOrEmpty(innerText))

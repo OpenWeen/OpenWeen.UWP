@@ -122,6 +122,9 @@
     <Compile Include="Common\Controls\MessageUserList.xaml.cs">
       <DependentUpon>MessageUserList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\Controls\Notification.xaml.cs">
+      <DependentUpon>Notification.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Common\Controls\PivotHeader.xaml.cs">
       <DependentUpon>PivotHeader.xaml</DependentUpon>
     </Compile>
@@ -2149,6 +2152,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Common\Controls\MessageUserList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Common\Controls\Notification.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

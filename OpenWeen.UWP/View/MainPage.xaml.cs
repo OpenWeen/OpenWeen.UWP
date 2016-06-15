@@ -26,7 +26,7 @@ namespace OpenWeen.UWP
         public MainPage()
         {
             InitializeComponent();
-            NavigationCacheMode = NavigationCacheMode.Enabled;
+            NavigationCacheMode = NavigationCacheMode.Required;
         }
         public void BackTop()
         {
