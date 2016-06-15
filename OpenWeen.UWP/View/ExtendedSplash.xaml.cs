@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using OpenWeen.Core.Model;
-//using ImageLib;
-//using ImageLib.Cache.Memory;
-//using ImageLib.Cache.Storage;
-//using ImageLib.Cache.Storage.CacheImpl;
-//using ImageLib.Gif;
 using OpenWeen.UWP.BackgroundTask;
 using OpenWeen.UWP.Common;
 using OpenWeen.UWP.Common.Helpers;
@@ -20,8 +15,6 @@ using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Background;
 using Windows.Foundation;
 using Windows.Graphics.Display;
-using Windows.Storage;
-using Windows.Storage.Streams;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -63,8 +56,38 @@ namespace OpenWeen.UWP.View
             {
                 var diff = StatusBar.GetForCurrentView().OccludedRect.Height;
                 rootFrame.Margin = new Thickness(0, diff, 0, 0);
+                DisplayInformation.GetForCurrentView().OrientationChanged += ExtendedSplash_OrientationChanged;
             }
         }
+
+        private void ExtendedSplash_OrientationChanged(DisplayInformation sender, object args)
+        {
+            var statusBar = StatusBar.GetForCurrentView();
+            if ((Window.Current.Content as Frame) == null || statusBar == null)
+            {
+                return;
+            }
+            var height = statusBar.OccludedRect.Height;
+            var width = statusBar.OccludedRect.Width;
+            switch (sender.CurrentOrientation)
+            {
+                case DisplayOrientations.None:
+                case DisplayOrientations.Portrait:
+                case DisplayOrientations.PortraitFlipped:
+                    (Window.Current.Content as Frame).Margin = new Thickness(0, height, 0, 0);
+                    break;
+                case DisplayOrientations.Landscape:
+                    (Window.Current.Content as Frame).Margin = new Thickness(width, 0, 0, 0);
+                    break;
+                case DisplayOrientations.LandscapeFlipped:
+                    (Window.Current.Content as Frame).Margin = new Thickness(0, 0, width, 0);
+                    break;
+                default:
+                    break;
+            }
+        }
+        
+
         private void InitTransitions()
         {
             TransitionCollection collection = new TransitionCollection();
@@ -147,6 +170,9 @@ namespace OpenWeen.UWP.View
             {
                 await InitUid();
             }
+
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
             await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
              {
                  DismissExtendedSplash();
@@ -178,8 +204,12 @@ namespace OpenWeen.UWP.View
         {
             if (rootFrame.CanGoBack)
             {
-                e.Handled = true;
                 rootFrame.GoBack();
+                e.Handled = true;
+            }
+            else
+            {
+                Application.Current.Exit();
             }
         }
 

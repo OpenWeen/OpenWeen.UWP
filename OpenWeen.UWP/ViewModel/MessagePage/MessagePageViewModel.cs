@@ -39,7 +39,14 @@ namespace OpenWeen.UWP.ViewModel.MessagePage
 
         private async void GetNew()
         {
-            (await Core.Api.DirectMessages.GetConversation(_uid, since_id: WeiboList[WeiboList.Count - 1].ID, count: _count)).DirectMessages.ForEach(item => WeiboList.Add(item));
+            long id = 0;
+            lock (WeiboList)
+                id = WeiboList[WeiboList.Count - 1].ID;
+            var list = (await Core.Api.DirectMessages.GetConversation(_uid, since_id: id, count: _count));
+            lock (WeiboList)
+            {
+                list.DirectMessages.ForEach(item => WeiboList.Add(item));
+            }
         }
 
         internal void CleanUp()
@@ -51,7 +58,10 @@ namespace OpenWeen.UWP.ViewModel.MessagePage
 
         protected override async Task<IEnumerable<DirectMessageModel>> LoadMoreOverride()
         {
-            var list = (await Core.Api.DirectMessages.GetConversation(_uid, max_id: WeiboList[0].ID, count: _count)).DirectMessages;
+            long id = 0;
+            lock (WeiboList)
+                id = WeiboList[0].ID;
+            var list = (await Core.Api.DirectMessages.GetConversation(_uid, max_id: id, count: _count)).DirectMessages;
             list.RemoveAt(0);
             return list;
         }
@@ -63,7 +73,11 @@ namespace OpenWeen.UWP.ViewModel.MessagePage
             _isLoading = true;
             try
             {
-                (await LoadMoreOverride()).ToList().ForEach(item => WeiboList.Insert(0, item));
+                var list = await LoadMoreOverride();
+                lock (WeiboList)
+                {
+                    list.ToList().ForEach(item => WeiboList.Insert(0, item));
+                }
             }
             catch (Exception e) when (e is HttpRequestException || e is WebException)
             {
@@ -78,14 +92,16 @@ namespace OpenWeen.UWP.ViewModel.MessagePage
         public async void Send()
         {
             if (string.IsNullOrEmpty(EnterText))
-            {
                 return;
-            }
             var text = EnterText;
             EnterText = "";
             OnPropertyChanged(nameof(EnterText));
-            WeiboList.Add(await Core.Api.DirectMessages.Send(long.Parse(_uid), text));
-            OnPropertyChanged(nameof(WeiboList));
+            var item = await Core.Api.DirectMessages.Send(long.Parse(_uid), text);
+            lock (WeiboList)
+            {
+                WeiboList.Add(item);
+                OnPropertyChanged(nameof(WeiboList));
+            }
         }
 
         protected override async Task<Tuple<int, List<DirectMessageModel>>> RefreshOverride()

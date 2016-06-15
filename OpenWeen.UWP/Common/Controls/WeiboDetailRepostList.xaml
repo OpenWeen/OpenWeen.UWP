@@ -16,7 +16,7 @@
                 <Setter.Value>
                     <TransitionCollection>
                         <AddDeleteThemeTransition />
-                        <ContentThemeTransition />
+                        <!--<ContentThemeTransition />-->
                         <ReorderThemeTransition />
                         <EntranceThemeTransition IsStaggeringEnabled="False" />
                     </TransitionCollection>
@@ -54,12 +54,12 @@
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <TextBlock DataContext="{x:Bind User}" Style="{ThemeResource BodyTextBlockStyle}" Padding="8,4" Text="{x:Bind User.ScreenName}" FontWeight="Bold" />
-                        <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Foreground="LightGray" Grid.Row="1" Padding="8,4" Text="{x:Bind CreateTime,Converter={StaticResource TimeConverter}}" />
+                        <TextBlock FontFamily="Microsoft Yahei UI" Foreground="#525C65" FontSize="16" DataContext="{x:Bind User}" Style="{ThemeResource BodyTextBlockStyle}" Padding="8,4" Text="{x:Bind User.ScreenName}" FontWeight="Bold" />
+                        <TextBlock FontFamily="Microsoft Yahei UI" Foreground="#CCCCCC" FontSize="15" Style="{ThemeResource CaptionTextBlockStyle}" Grid.Row="1" Padding="8,4" Text="{x:Bind CreateTime,Converter={StaticResource TimeConverter}}" />
                     </Grid>
                 </Grid>
-                <Grid Grid.Column="2" Grid.Row="1" Padding="8,4,8,4">
-                    <controls:WeiboTextBlock UserClick="WeiboTextBlock_UserClick" TopicClick="WeiboTextBlock_TopicClick" Grid.Row="1" Text="{x:Bind Text}" />
+                <Grid Grid.Column="2" Grid.Row="1" Padding="8,4,8,9">
+                    <controls:WeiboTextBlock FontFamily="Microsoft Yahei UI" UserClick="WeiboTextBlock_UserClick" TopicClick="WeiboTextBlock_TopicClick" Grid.Row="1" Text="{x:Bind Text}" />
                 </Grid>
             </Grid>
         </DataTemplate>
@@ -73,7 +73,11 @@
         <ControlTemplate TargetType="ItemsControl">
             <Border>
                 <ScrollViewer ViewChanged="ScrollViewer_ViewChanged" x:Name="ScrollViewer" AutomationProperties.AccessibilityView="Raw" BringIntoViewOnFocusChange="True" IsDeferredScrollingEnabled="True">
-                    <ItemsPresenter />
+                    <ItemsPresenter VerticalAlignment="Top">
+                        <ItemsPresenter.Footer>
+                            <ProgressBar Margin="16" Visibility="{Binding RelativeSource={RelativeSource TemplatedParent},Path=IsLoading, Mode=OneWay,Converter={StaticResource BoolToVisibilityConverter}}" IsIndeterminate="{Binding RelativeSource={RelativeSource TemplatedParent},Path=IsLoading, Mode=OneWay}"/>
+                        </ItemsPresenter.Footer>
+                    </ItemsPresenter>
                 </ScrollViewer>
             </Border>
         </ControlTemplate>

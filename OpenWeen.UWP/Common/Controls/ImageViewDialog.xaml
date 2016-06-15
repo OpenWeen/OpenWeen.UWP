@@ -35,7 +35,7 @@
         <FlipView x:Name="flipView" SelectionChanged="flipView_SelectionChanged" Background="Transparent" ItemsSource="{x:Bind Items}" DataContextChanged="flipView_DataContextChanged">
             <FlipView.ItemTemplate>
                 <DataTemplate x:DataType="model:ImageModel">
-                    <ScrollViewer PointerExited="ScrollViewer_PointerExited" PointerPressed="ScrollViewer_PointerPressed" PointerReleased="ScrollViewer_PointerReleased" PointerMoved="ScrollViewer_PointerMoved" HorizontalScrollBarVisibility="Auto" HorizontalScrollMode="Auto" ZoomMode="Enabled" HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" VerticalScrollBarVisibility="Auto">
+                    <ScrollViewer MaxZoomFactor="50" PointerExited="ScrollViewer_PointerExited" PointerPressed="ScrollViewer_PointerPressed" PointerReleased="ScrollViewer_PointerReleased" PointerMoved="ScrollViewer_PointerMoved" HorizontalScrollBarVisibility="Auto" HorizontalScrollMode="Auto" ZoomMode="Enabled" HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" VerticalScrollBarVisibility="Auto">
                         <Grid>
                             <ProgressRing Foreground="White" IsActive="{x:Bind IsLoading,Mode=OneWay}" />
                             <Image Tapped="Image_Tapped" ImageFailed="{x:Bind LoadFailed}" ImageOpened="{x:Bind Loaded}" gif:AnimationBehavior.AutoStart="True" gif:AnimationBehavior.SourceUri="{Binding SourceUri}"/>

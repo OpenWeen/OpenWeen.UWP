@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Common\Helpers\SettingHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\Helpers\ToastNotificationHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\Helpers\UpdateUnreadHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\SettingNames.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\Settings.cs" />
   </ItemGroup>

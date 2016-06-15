@@ -16,19 +16,19 @@
         </MenuFlyout>
     </Page.Resources>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <controls:WeiboList ItemClick="{x:Bind ActionModel.ItemClick}" TopicClick="{x:Bind ActionModel.TopicClick}" Favor="{x:Bind ActionModel.Favor}" PictureClick="{x:Bind ActionModel.PictureClick}" UserClick="{x:Bind ActionModel.UserClick}" Comment="{x:Bind ActionModel.Comment}" Repost="{x:Bind ActionModel.Repost}" ItemsSource="{x:Bind UserPageVM.UserTimeline.WeiboList,Mode=OneWay}">
+        <controls:WeiboList x:Name="weiboList" LoadMore="{x:Bind UserPageVM.UserTimeline.LoadMore}" IsLoading="{x:Bind UserPageVM.IsLoading,Mode=OneWay}" ItemClick="{x:Bind ActionModel.ItemClick}" TopicClick="{x:Bind ActionModel.TopicClick}" Favor="{x:Bind ActionModel.Favor}" PictureClick="{x:Bind ActionModel.PictureClick}" UserClick="{x:Bind ActionModel.UserClick}" Comment="{x:Bind ActionModel.Comment}" Repost="{x:Bind ActionModel.Repost}" ItemsSource="{x:Bind UserPageVM.UserTimeline.WeiboList,Mode=OneWay}">
             <controls:WeiboList.Header>
-                <Grid>
+                <Grid Background="{StaticResource AppTheme}" Visibility="{x:Bind UserPageVM.IsLoading,Mode=OneWay,Converter={StaticResource BoolToVisibilityConverter},ConverterParameter=true}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <Grid RequestedTheme="Dark" Background="{StaticResource AppTheme}" Grid.Row="1">
+                    <Grid RequestedTheme="Dark" Grid.Row="1">
                         <TextBlock Margin="125,0,0,0" Style="{ThemeResource FlyoutPickerTitleTextBlockStyle}" Text="{x:Bind UserPageVM.User.ScreenName,Mode=OneWay}" />
                     </Grid>
-                    <Grid RequestedTheme="Dark" Background="{StaticResource AppTheme}" Padding="8" Grid.Row="2">
+                    <Grid RequestedTheme="Dark" Padding="8" Grid.Row="2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto" />
                             <ColumnDefinition Width="*" />
@@ -43,7 +43,7 @@
                         </Grid>
                         <Button Margin="8,0,0,0" Grid.Column="2" Click="{x:Bind UserPageVM.ChangeFollow}" Visibility="{x:Bind UserPageVM.IsMe,Mode=OneWay,Converter={StaticResource BoolToVisibilityConverter},ConverterParameter=true}" HorizontalAlignment="Right" VerticalAlignment="Center" Content="{x:Bind UserPageVM.Follow.Text,Mode=OneWay}" />
                     </Grid>
-                    <Grid DataContext="{x:Bind UserPageVM.User,Mode=OneWay}" Background="{StaticResource AppTheme}">
+                    <Grid DataContext="{x:Bind UserPageVM.User,Mode=OneWay}" >
                         <Image Extensions:ImageExtensions.FadeInOnLoaded="True" Extensions:ImageExtensions.ImageLoadedTransitionType="FadeIn" Height="150" Source="{Binding Coverimage}" Stretch="UniformToFill" />
                         <Ellipse Width="75" Height="75" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="25,-25" Stroke="White">
                             <Ellipse.Fill>

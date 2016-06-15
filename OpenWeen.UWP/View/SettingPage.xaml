@@ -40,6 +40,7 @@
                 <TextBlock Text="公测用户可以发送反馈来反馈" />
                 <Button Click="Button_Click" Margin="4" Content="项目地址" HorizontalAlignment="Stretch" />
                 <Button Click="Button_Click_1" Margin="4" Content="反馈" HorizontalAlignment="Stretch" />
+                <Button Click="{x:Bind Crash}" Margin="4" Content="爆炸！" HorizontalAlignment="Stretch" />
             </StackPanel>
         </ScrollViewer>
     </Grid>

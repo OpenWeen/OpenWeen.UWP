@@ -16,6 +16,6 @@
         <Grid Background="{StaticResource AppTheme}" RequestedTheme="Dark" Padding="16" >
             <TextBlock Text="{x:Bind UserListVM.Header}" Style="{ThemeResource TitleTextBlockStyle}"/>
         </Grid>
-        <controls:UserList UserClick="{x:Bind ActionModel.UserClick}" LoadMore="{x:Bind UserListVM.LoadMore}" Grid.Row="1" ItemsSource="{x:Bind UserListVM.WeiboList,Mode=OneWay}"/>
+        <controls:UserList IsLoading="{x:Bind UserListVM.IsLoading,Mode=OneWay}" UserClick="{x:Bind ActionModel.UserClick}" LoadMore="{x:Bind UserListVM.LoadMore}" Grid.Row="1" ItemsSource="{x:Bind UserListVM.WeiboList,Mode=OneWay}"/>
     </Grid>
 </Page>

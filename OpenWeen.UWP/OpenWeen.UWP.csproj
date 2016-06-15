@@ -17,11 +17,10 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>OpenWeen.UWP_StoreKey.pfx</PackageCertificateKeyFile>
-    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
     <PackageCertificateThumbprint>126559E006A14707084A7D13B935653CAA541F12</PackageCertificateThumbprint>
     <AppxBundle>Always</AppxBundle>
-    <HockeyAppResourceId>8a7dc2f1a734405b948a1e3f79f3646d</HockeyAppResourceId>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -81,6 +80,8 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>false</UseDotNetNativeToolchain>
+    <EnableGatekeeperAnalysis>false</EnableGatekeeperAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
@@ -97,9 +98,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <Content Include="ApplicationInsights.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Assets\BadgeLogo.scale-200.png" />
     <Content Include="Assets\emotion.json" />
     <None Include="OpenWeen.UWP_StoreKey.pfx" />
     <None Include="project.json" />
@@ -122,6 +121,9 @@
     </Compile>
     <Compile Include="Common\Controls\MessageUserList.xaml.cs">
       <DependentUpon>MessageUserList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Common\Controls\Notification.xaml.cs">
+      <DependentUpon>Notification.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\Controls\PivotHeader.xaml.cs">
       <DependentUpon>PivotHeader.xaml</DependentUpon>
@@ -165,9 +167,9 @@
     <Compile Include="Common\Extension\IEnumerableExtension.cs" />
     <Compile Include="Common\Helpers\BackgroundHelper.cs" />
     <Compile Include="Common\Helpers\MoreVisualTreeHelper.cs" />
+    <Compile Include="Common\HockeyAppKey.cs" />
     <Compile Include="Common\MessageDataTemplateSelector.cs" />
     <Compile Include="Common\StaticResource.cs" />
-    <Compile Include="Common\XamarinInsightsKey.cs" />
     <Compile Include="Model\FollowModel.cs" />
     <Compile Include="Model\HeaderModel.cs" />
     <Compile Include="Model\ImageModel.cs" />
@@ -175,6 +177,9 @@
     <Compile Include="ViewModel\MainPage\CommentMentionViewModel.cs" />
     <Compile Include="ViewModel\MainPage\CommentViewModel.cs" />
     <Compile Include="ViewModel\MainPage\FavorViewModel.cs" />
+    <Compile Include="ViewModel\SearchPage\SearchPageViewModel.cs" />
+    <Compile Include="ViewModel\SearchPage\SearchUserList.cs" />
+    <Compile Include="ViewModel\SearchPage\SearchWeiboList.cs" />
     <Compile Include="ViewModel\UserPage\FollowerListViewModel.cs" />
     <Compile Include="ViewModel\UserPage\FriendListViewModel.cs" />
     <Compile Include="ViewModel\MainPage\MentionViewModel.cs" />
@@ -207,6 +212,9 @@
     </Compile>
     <Compile Include="View\PostWeiboPage.xaml.cs">
       <DependentUpon>PostWeiboPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SearchPage.xaml.cs">
+      <DependentUpon>SearchPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\SettingPage.xaml.cs">
       <DependentUpon>SettingPage.xaml</DependentUpon>
@@ -2147,6 +2155,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Common\Controls\Notification.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Common\Controls\PivotHeader.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -2204,6 +2216,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\PostWeiboPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SearchPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

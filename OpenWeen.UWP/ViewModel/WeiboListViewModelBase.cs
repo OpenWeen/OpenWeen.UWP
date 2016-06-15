@@ -15,67 +15,88 @@ namespace OpenWeen.UWP.ViewModel
     {
         public ObservableCollection<T> WeiboList { get; private set; } = new ObservableCollection<T>();
         protected int _pageCount = 1;
-        protected bool _isLoading;
-        protected bool _hasMore => WeiboList.Count < _totalNumber;
+        protected bool _hasMore
+        {
+            get
+            {
+                lock (WeiboList)
+                    return WeiboList.Count < _totalNumber;
+            }
+        }
         protected int _totalNumber = 0;
+
+        protected bool _isLoading;
+        public bool IsLoading
+        {
+            get { return _isLoading; }
+            private set
+            {
+                _isLoading = value;
+                OnPropertyChanged();
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName]string name = "") => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 
         public async Task Refresh()
         {
-            if (_isLoading)
+            if (IsLoading)
                 return;
-            _isLoading = true;
+            IsLoading = true;
+            lock (WeiboList)
+            {
+                WeiboList = new ObservableCollection<T>();
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WeiboList)));
+            }
             try
             {
                 _pageCount = 1;
                 var item = await RefreshOverride();
-                WeiboList = new ObservableCollection<T>((item.Item2));
-                _totalNumber = item.Item1;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WeiboList)));
+                lock (WeiboList)
+                {
+                    WeiboList = new ObservableCollection<T>((item.Item2));
+                    _totalNumber = item.Item1;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WeiboList)));
+                }
             }
-            catch (Exception e) when (e is HttpRequestException || e is WebException)
+            catch (Exception e) when (e is HttpRequestException || e is WebException || e is Newtonsoft.Json.JsonException || e is TaskCanceledException)
             {
 #if DEBUG
                 throw;
 #endif
                 OnWebException();
             }
-            catch(Newtonsoft.Json.JsonException)
-            {
-                WeiboList = new ObservableCollection<T>();
-            }
-            _isLoading = false;
+            IsLoading = false;
         }
 
         public async Task LoadMore()
         {
-            if (_isLoading || !_hasMore)
+            if (IsLoading || !_hasMore)
                 return;
-            _isLoading = true;
+            IsLoading = true;
             try
             {
-                (await LoadMoreOverride()).ToList().ForEach(item => WeiboList.Add(item));
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WeiboList)));
+                var list = await LoadMoreOverride();
+                lock (WeiboList)
+                {
+                    list.ToList().ForEach(item => WeiboList.Add(item));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WeiboList)));
+                }
             }
-            catch (Exception e) when (e is HttpRequestException || e is WebException)
+            catch (Exception e) when (e is HttpRequestException || e is WebException || e is Newtonsoft.Json.JsonException || e is TaskCanceledException)
             {
+                _pageCount--;
 #if DEBUG
                 throw;
 #endif
-                OnWebException();
             }
-            catch (Newtonsoft.Json.JsonException)
-            {
-                WeiboList = new ObservableCollection<T>();
-            }
-            _isLoading = false;
+            IsLoading = false;
         }
 
-        protected virtual async void OnWebException()
+        protected virtual void OnWebException()
         {
-            WeiboList = new ObservableCollection<T>();
+
         }
 
         protected abstract Task<IEnumerable<T>> LoadMoreOverride();

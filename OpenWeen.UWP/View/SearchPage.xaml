@@ -1,0 +1,33 @@
+﻿<Page
+    x:Class="OpenWeen.UWP.View.SearchPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:OpenWeen.UWP.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:control="using:OpenWeen.UWP.Common.Controls"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Padding="16" Background="{StaticResource AppTheme}" RequestedTheme="Dark">
+            <AutoSuggestBox Text="{x:Bind ViewModel.SearchText,Mode=TwoWay}" QuerySubmitted="{x:Bind ViewModel.Search}" QueryIcon="Find" />
+        </Grid>
+        <Pivot Grid.Row="1" Style="{StaticResource PivotWithHeaderBackgroundStyle}">
+            <Pivot.ItemContainerStyle>
+                <Style TargetType="PivotItem">
+                    <Setter Property="Margin" Value="0"/>
+                </Style>
+            </Pivot.ItemContainerStyle>
+            <PivotItem Header="微博">
+                <control:WeiboList Repost="{x:Bind ActionModel.Repost}" Comment="{x:Bind ActionModel.Comment}" ItemClick="{x:Bind ActionModel.ItemClick}" UserClick="{x:Bind ActionModel.UserClick}" PictureClick="{x:Bind ActionModel.PictureClick}" TopicClick="{x:Bind ActionModel.TopicClick}" Favor="{x:Bind ActionModel.Favor}"  ItemsSource="{x:Bind ViewModel.WeiboList.WeiboList,Mode=OneWay}" LoadMore="{x:Bind ViewModel.WeiboList.LoadMore}" IsLoading="{x:Bind ViewModel.WeiboList.IsLoading,Mode=OneWay}"/>
+            </PivotItem>
+            <PivotItem Header="用户">
+                <control:UserList UserClick="{x:Bind ActionModel.UserClick}"  ItemsSource="{x:Bind ViewModel.UserList.WeiboList,Mode=OneWay}" LoadMore="{x:Bind ViewModel.UserList.LoadMore}" IsLoading="{x:Bind ViewModel.UserList.IsLoading,Mode=OneWay}"/>
+            </PivotItem>
+        </Pivot>
+    </Grid>
+</Page>

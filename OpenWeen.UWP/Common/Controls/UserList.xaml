@@ -39,8 +39,8 @@
                         <ImageBrush ImageSource="{x:Bind ProfileImageUrl}" />
                     </Ellipse.Fill>
                 </Ellipse>
-                <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{x:Bind ScreenName}" FontWeight="Bold" Style="{ThemeResource BodyTextBlockStyle}" />
-                <TextBlock Foreground="LightGray" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Text="{x:Bind Description}"/>
+                <TextBlock Margin="12,0,0,0" Grid.Column="1" VerticalAlignment="Center" Text="{x:Bind ScreenName}" FontWeight="Bold" Style="{ThemeResource BodyTextBlockStyle}" />
+                <TextBlock Margin="12,0,0,0" Foreground="LightGray" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Text="{x:Bind Description}"/>
             </Grid>
         </DataTemplate>
     </ItemsControl.ItemTemplate>
@@ -53,7 +53,11 @@
         <ControlTemplate TargetType="ItemsControl">
             <Border>
                 <ScrollViewer ViewChanged="ScrollViewer_ViewChanged" x:Name="ScrollViewer" AutomationProperties.AccessibilityView="Raw" BringIntoViewOnFocusChange="True" IsDeferredScrollingEnabled="True">
-                    <ItemsPresenter />
+                    <ItemsPresenter VerticalAlignment="Top">
+                        <ItemsPresenter.Footer>
+                            <ProgressBar Margin="16" Visibility="{Binding RelativeSource={RelativeSource TemplatedParent},Path=IsLoading, Mode=OneWay,Converter={StaticResource BoolToVisibilityConverter}}" IsIndeterminate="{Binding RelativeSource={RelativeSource TemplatedParent},Path=IsLoading, Mode=OneWay}"/>
+                        </ItemsPresenter.Footer>
+                    </ItemsPresenter>
                 </ScrollViewer>
             </Border>
         </ControlTemplate>

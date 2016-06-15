@@ -11,13 +11,13 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
     <ItemsControl.ItemTemplate>
-        <DataTemplate x:DataType="statusmodel:PictureModel">
-            <Image Extensions:ImageExtensions.FadeInOnLoaded="True" Extensions:ImageExtensions.ImageLoadedTransitionType="FadeIn" Tapped="Image_Tapped" MaxHeight="{Binding Converter={StaticResource ImageSizeConverter}}" MaxWidth="{Binding Converter={StaticResource ImageSizeConverter}}" Margin="4" Source="{x:Bind ThumbnailPic}" />
+        <DataTemplate >
+            <Image Tapped="Image_Tapped" MaxHeight="{Binding Converter={StaticResource ImageSizeConverter}}" MaxWidth="{Binding Converter={StaticResource ImageSizeConverter}}" ImageFailed="Image_ImageFailed" MinWidth="100" MinHeight="100" Margin="4" Source="{Binding ThumbnailPic,Mode=OneWay}" Stretch="UniformToFill" />
         </DataTemplate>
     </ItemsControl.ItemTemplate>
     <ItemsControl.ItemsPanel>
         <ItemsPanelTemplate>
-            <ItemsWrapGrid Orientation="Horizontal" />
+            <ItemsWrapGrid MaximumRowsOrColumns="3" Orientation="Horizontal" />
         </ItemsPanelTemplate>
     </ItemsControl.ItemsPanel>
     <ItemsControl.Template>

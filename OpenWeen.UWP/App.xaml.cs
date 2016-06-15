@@ -1,6 +1,8 @@
 ﻿using System;
-using Microsoft.ApplicationInsights;
+using System.Net;
+using System.Net.Http;
 using OpenWeen.UWP.Common;
+using OpenWeen.UWP.Common.Controls;
 using OpenWeen.UWP.View;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -9,6 +11,7 @@ using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace OpenWeen.UWP
@@ -18,15 +21,13 @@ namespace OpenWeen.UWP
     /// </summary>
     sealed partial class App : Application
     {
+        
         /// <summary>
         /// 初始化单一实例应用程序对象。这是执行的创作代码的第一行，
         /// 已执行，逻辑上等同于 main() 或 WinMain()。
         /// </summary>
         public App()
         {
-            WindowsAppInitializer.InitializeAsync(
-                WindowsCollectors.Metadata |
-                WindowsCollectors.Session);
             this.InitializeComponent();
             this.Suspending += OnSuspending;
         }
@@ -44,14 +45,8 @@ namespace OpenWeen.UWP
                 this.DebugSettings.EnableFrameRateCounter = true;
             }
 #endif
-            Xamarin.Insights.HasPendingCrashReport += (sender, isStartupCrash) =>
-            {
-                if (isStartupCrash)
-                {
-                    Xamarin.Insights.PurgePendingCrashReports().Wait();
-                }
-            };
-            Xamarin.Insights.Initialize(XamarinInsightsKey.Key);
+            Microsoft.HockeyApp.HockeyClient.Current.Configure(HockeyAppKey.ApiKey);
+
             if (StaticResource.IsPhone)
             {
                 StatusBar.GetForCurrentView().BackgroundColor = Color.FromArgb(255, 35, 85, 178); ;
@@ -60,32 +55,32 @@ namespace OpenWeen.UWP
             }
             else
             {
-                ApplicationView.GetForCurrentView().TitleBar.BackgroundColor = Color.FromArgb(255, 35, 85, 178);
-                ApplicationView.GetForCurrentView().TitleBar.ButtonBackgroundColor = Color.FromArgb(255, 35, 85, 178);
+                ApplicationView.GetForCurrentView().TitleBar.BackgroundColor = ((SolidColorBrush)Resources["AppTheme"]).Color;
+                ApplicationView.GetForCurrentView().TitleBar.ButtonBackgroundColor = ((SolidColorBrush)Resources["AppTheme"]).Color;
             }
             ApplicationView.GetForCurrentView().SetDesiredBoundsMode(ApplicationViewBoundsMode.UseCoreWindow);
 
-            UnhandledException += App_UnhandledException;
-
-            if (e.PreviousExecutionState != ApplicationExecutionState.Running)
+            Frame rootFrame = Window.Current.Content as Frame;
+            if (rootFrame == null)
             {
-                bool loadState = (e.PreviousExecutionState == ApplicationExecutionState.Terminated);
-                ExtendedSplash extendedSplash = new ExtendedSplash(e.SplashScreen, loadState);
-                Window.Current.Content = extendedSplash;
+                if (e.PreviousExecutionState != ApplicationExecutionState.Running)
+                {
+                    bool loadState = (e.PreviousExecutionState == ApplicationExecutionState.Terminated);
+                    ExtendedSplash extendedSplash = new ExtendedSplash(e.SplashScreen, loadState);
+                    Window.Current.Content = extendedSplash;
+                }
             }
             Window.Current.Activate();
+            UnhandledException += App_UnhandledException;
         }
 
-        private async void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            e.Handled = true;
-            TelemetryClient telemetry = new TelemetryClient();
-            telemetry.TrackException(e.Exception);
-#if DEBUG
-            var dialog = new MessageDialog(e.Message + e.Exception.StackTrace);
-            await dialog.ShowAsync();
-#endif
-            Exit();
+            if (e.Exception is WebException || e.Exception is HttpRequestException)
+            {
+                Notification.Show($"网络错误 {e.Exception.Message}");
+                e.Handled = true;
+            }
         }
 
         /// <summary>

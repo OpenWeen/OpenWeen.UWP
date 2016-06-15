@@ -38,7 +38,11 @@
         <ControlTemplate TargetType="ItemsControl">
             <Border>
                 <ScrollViewer ViewChanged="ScrollViewer_ViewChanged" x:Name="ScrollViewer" AutomationProperties.AccessibilityView="Raw" BringIntoViewOnFocusChange="True" IsDeferredScrollingEnabled="True">
-                    <ItemsPresenter />
+                    <ItemsPresenter VerticalAlignment="Top">
+                        <ItemsPresenter.Footer>
+                            <ProgressBar Margin="16" Visibility="{Binding RelativeSource={RelativeSource TemplatedParent},Path=IsLoading, Mode=OneWay,Converter={StaticResource BoolToVisibilityConverter}}" IsIndeterminate="{Binding RelativeSource={RelativeSource TemplatedParent},Path=IsLoading, Mode=OneWay}"/>
+                        </ItemsPresenter.Footer>
+                    </ItemsPresenter>
                 </ScrollViewer>
             </Border>
         </ControlTemplate>
@@ -49,7 +53,7 @@
                 <Setter.Value>
                     <TransitionCollection>
                         <AddDeleteThemeTransition />
-                        <ContentThemeTransition />
+                        <!--<ContentThemeTransition />-->
                         <ReorderThemeTransition />
                         <EntranceThemeTransition IsStaggeringEnabled="False" />
                     </TransitionCollection>

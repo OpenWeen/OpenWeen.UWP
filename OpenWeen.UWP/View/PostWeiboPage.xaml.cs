@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using OpenWeen.Core.Model;
 using OpenWeen.Core.Model.Status;
@@ -18,6 +21,7 @@ using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
@@ -31,17 +35,18 @@ namespace OpenWeen.UWP.View
     public sealed partial class PostWeiboPage : Page, INotifyPropertyChanged
     {
         public ObservableCollection<ImageData> Images { get; } = new ObservableCollection<ImageData>();
-        public bool IsSending { get; private set; }
         private IPostWeibo _data;
         public bool AllowPicture { get; set; } = true;
+        private bool _isSending;
 
         public int TextCount
         {
             get
             {
                 string value = "";
-                richEditBox.Document.GetText(Windows.UI.Text.TextGetOptions.AdjustCrlf, out value);
-                return 140 - value.Length;
+                
+                richEditBox.Document.GetText(Windows.UI.Text.TextGetOptions.NoHidden, out value);
+                return 140 - Encoding.GetEncoding("gb2312").GetByteCount(value) / 2;
             }
         }
 
@@ -50,7 +55,7 @@ namespace OpenWeen.UWP.View
             get
             {
                 string value = "";
-                richEditBox.Document.GetText(Windows.UI.Text.TextGetOptions.AdjustCrlf, out value);
+                richEditBox.Document.GetText(Windows.UI.Text.TextGetOptions.NoHidden, out value);
                 return value;
             }
             set
@@ -64,6 +69,7 @@ namespace OpenWeen.UWP.View
         public PostWeiboPage()
         {
             this.InitializeComponent();
+            Transitions = new TransitionCollection { new NavigationThemeTransition() { DefaultNavigationTransitionInfo = new SlideNavigationTransitionInfo() } };
             cvs.Source = Emojis;
             (semanticZoom.ZoomedOutView as ListViewBase).ItemsSource = cvs.View.CollectionGroups;
         }
@@ -164,18 +170,23 @@ namespace OpenWeen.UWP.View
 
         public async void PostWeibo()
         {
-            if (IsSending || Text?.Length < 0)
+            if (_isSending || Text?.Length < 0)
                 return;
             if (TextCount < 0)
             {
                 var dialog = new MessageDialog("超出140字限制", "错误");
-                dialog.Commands.Add(new UICommand("删除超出部分并发送", DeleteOverflow));
+                dialog.Commands.Add(new UICommand("删除超出部分并发送", (command)=> 
+                {
+                    Text = Text.Remove(139);
+                    PostWeibo();
+                }));
                 dialog.Commands.Add(new UICommand("取消"));
                 await dialog.ShowAsync();
                 return;
             }
-            IsSending = true;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsSending)));
+            _isSending = true;
+            var sardialog = new Common.Controls.SitbackAndRelaxDialog();
+            sardialog.ShowAsync();
             bool isSuccess = false;
             switch (_data.Type)
             {
@@ -196,10 +207,14 @@ namespace OpenWeen.UWP.View
             }
             if (isSuccess)
             {
+                sardialog.Hide();
                 Frame.GoBack();
-                IsSending = false;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsSending)));
             }
+            else
+            {
+                Common.Controls.Notification.Show("发送失败");
+            }
+            _isSending = false;
         }
 
         private async Task<bool> Comment()
@@ -207,14 +222,29 @@ namespace OpenWeen.UWP.View
             if (_data is ReplyCommentData)
             {
                 var data = _data as ReplyCommentData;
-                await Core.Api.Comments.Reply(data.ID, data.CID, Text);
-                return true;
+                try
+                {
+                    await Core.Api.Comments.Reply(data.ID, data.CID, Text);
+                    return true;
+                }
+                catch (Exception e) when (e is WebException || e is System.Net.Http.HttpRequestException) 
+                {
+                    return false;
+                }
             }
             else if (_data is CommentData)
             {
                 var data = _data as CommentData;
-                await Core.Api.Comments.PostComment(data.ID, Text);
-                return true;
+                try
+                {
+                    await Core.Api.Comments.PostComment(data.ID, Text);
+                    return true;
+
+                }
+                catch (Exception e) when (e is WebException || e is System.Net.Http.HttpRequestException)
+                {
+                    return false;
+                }
             }
             return false;
         }
@@ -222,36 +252,45 @@ namespace OpenWeen.UWP.View
         private async Task<bool> RePost()
         {
             var data = _data as RepostData;
-            await Core.Api.Statuses.PostWeibo.Repost(data.ID, Text);
-            return true;
+            try
+            {
+                await Core.Api.Statuses.PostWeibo.Repost(data.ID, Text);
+                return true;
+
+            }
+            catch (Exception e) when (e is WebException || e is System.Net.Http.HttpRequestException)
+            {
+                return false;
+            }
         }
 
         private async Task<bool> NewPost()
         {
-            if (Images.Count > 0)
+            try
             {
-                var pics = new List<PictureModel>();
-                foreach (var item in Images)
+                if (Images.Count > 0)
                 {
-                    pics.Add(await Core.Api.Statuses.PostWeibo.UploadPicture(item.Data));
+                    var pics = new List<PictureModel>();
+                    foreach (var item in Images)
+                    {
+                        pics.Add(await Core.Api.Statuses.PostWeibo.UploadPicture(item.Data));
+                    }
+                    await Core.Api.Statuses.PostWeibo.PostWithMultiPics(Text?.Length > 0 ? Text : "分享图片", string.Join(",", pics.Select(item => item.PicID)));
+                    return true;
                 }
-                await Core.Api.Statuses.PostWeibo.PostWithMultiPics(Text?.Length > 0 ? Text : "分享图片", string.Join(",", pics.Select(item => item.PicID)));
-                return true;
+                else if (Text?.Length > 0)
+                {
+                    await Core.Api.Statuses.PostWeibo.Post(Text);
+                    return true;
+                }
             }
-            else if (Text?.Length > 0)
+            catch (Exception e) when (e is WebException || e is System.Net.Http.HttpRequestException)
             {
-                await Core.Api.Statuses.PostWeibo.Post(Text);
-                return true;
+
             }
             return false;
         }
-
-        private void DeleteOverflow(IUICommand command)
-        {
-            Text = Text.Remove(140);
-            PostWeibo();
-        }
-
+        
         private async void richEditBox_DragOver(object sender, DragEventArgs e)
         {
             if (!AllowPicture)

@@ -5,7 +5,9 @@ using System.Net.Http;
 using OpenWeen.UWP.Common.Helpers;
 using OpenWeen.UWP.Model;
 using Windows.Foundation;
+using Windows.Graphics.Display;
 using Windows.Storage;
+using Windows.Storage.Pickers;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -25,7 +27,14 @@ namespace OpenWeen.UWP.Common.Controls
             this.InitializeComponent();
             InitSize();
             Window.Current.SizeChanged += Current_SizeChanged;
+            DisplayInformation.GetForCurrentView().OrientationChanged += ExtendedSplash_OrientationChanged;
         }
+
+        private void ExtendedSplash_OrientationChanged(DisplayInformation sender, object args)
+        {
+            InitSize();
+        }
+
 
         private void Current_SizeChanged(object sender, Windows.UI.Core.WindowSizeChangedEventArgs e)
         {
@@ -34,6 +43,7 @@ namespace OpenWeen.UWP.Common.Controls
 
         public void HideEx()
         {
+            DisplayInformation.GetForCurrentView().OrientationChanged -= ExtendedSplash_OrientationChanged;
             Window.Current.SizeChanged -= Current_SizeChanged;
             Hide();
         }
@@ -84,7 +94,12 @@ namespace OpenWeen.UWP.Common.Controls
         public async void Save()
         {
             var name = Path.GetFileName(Items[flipView.SelectedIndex].SourceUri.ToString());
-            var file = await KnownFolders.SavedPictures.CreateFileAsync(name);
+            var picker = new FileSavePicker();
+            picker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
+            picker.FileTypeChoices.Add("Image file", new List<string>() { ".jpg", ".png", ".gif" });
+            var file = await picker.PickSaveFileAsync();
+            if (file == null)
+                return;
             using (var client = new HttpClient())
             using (var fstream = await file.OpenStreamForWriteAsync())
             using (var stream = await client.GetStreamAsync(Items[flipView.SelectedIndex].SourceUri))

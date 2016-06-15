@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:OpenWeen.UWP.Model"
     mc:Ignorable="d"
+    VerticalAlignment="Center"
     d:DesignHeight="300"
     d:DesignWidth="400">
     <ItemsControl ItemsSource="{x:Bind ItemsSource}" Tapped="ItemsControl_Tapped">

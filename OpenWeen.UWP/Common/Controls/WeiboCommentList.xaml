@@ -14,7 +14,7 @@
                 <Setter.Value>
                     <TransitionCollection>
                         <AddDeleteThemeTransition />
-                        <ContentThemeTransition />
+                        <!--<ContentThemeTransition />-->
                         <ReorderThemeTransition />
                         <EntranceThemeTransition IsStaggeringEnabled="False" />
                     </TransitionCollection>
@@ -31,17 +31,17 @@
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="{StaticResource UserImageGridLength}" />
                     <ColumnDefinition Width="8" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Grid Grid.ColumnSpan="3">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="{StaticResource UserImageGridLength}" />
                         <ColumnDefinition Width="8" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Ellipse DataContext="{x:Bind User}" Width="50" Height="50">
+                    <Ellipse DataContext="{x:Bind User}" Width="{StaticResource UserImageSize}" Height="{StaticResource UserImageSize}">
                         <Ellipse.Fill>
                             <ImageBrush ImageSource="{x:Bind User.ProfileImageUrl}" />
                         </Ellipse.Fill>
@@ -55,9 +55,9 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
-                        <SymbolIcon Grid.Column="1" Tapped="Comment_Tapped" Foreground="LightGray" Symbol="Comment" />
-                        <TextBlock DataContext="{x:Bind User}" Style="{ThemeResource BodyTextBlockStyle}" Padding="8,4" Text="{x:Bind User.ScreenName}" FontWeight="Bold" />
-                        <TextBlock Grid.ColumnSpan="2" Style="{ThemeResource CaptionTextBlockStyle}" Foreground="LightGray" Grid.Row="1" Padding="8,4" Text="{x:Bind CreateTime,Converter={StaticResource TimeConverter}}" />
+                        <SymbolIcon Grid.Column="1" Tapped="Comment_Tapped" Margin="0,0,9,0" Foreground="LightGray" Symbol="Comment" />
+                        <TextBlock   DataContext="{x:Bind User}" FontFamily="Microsoft Yahei UI" Foreground="#525C65" FontSize="18" Style="{ThemeResource BodyTextBlockStyle}" Padding="8,4,0,0" Text="{x:Bind User.ScreenName}" FontWeight="Bold" />
+                        <TextBlock Grid.ColumnSpan="2"  FontFamily="Microsoft Yahei UI" Foreground="#CCCCCC" FontSize="15" Style="{ThemeResource CaptionTextBlockStyle}" Grid.Row="1" Padding="8,4,0,0" Text="{x:Bind CreateTime,Converter={StaticResource TimeConverter}}" />
                     </Grid>
                 </Grid>
                 <Grid Grid.Column="2" Grid.Row="1" Padding="8,4,8,4">
@@ -72,9 +72,9 @@
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.ColumnSpan="2" Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind Status.User.ScreenName}" FontWeight="Bold" />
+                    <TextBlock FontFamily="Microsoft Yahei UI" Grid.ColumnSpan="2" Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind Status.User.ScreenName}" FontWeight="Bold" />
                     <Image Grid.Row="1" Source="{Binding ThumbnailPic}" Visibility="{Binding ThumbnailPic,Converter={StaticResource NullToVisibilityConverter}}" MaxHeight="50" MaxWidth="50" Margin="8" />
-                    <local:WeiboTextBlock Grid.Column="1" Grid.Row="1" Text="{x:Bind Status.Text}" />
+                    <local:WeiboTextBlock FontFamily="Microsoft Yahei UI" Grid.Column="1" Grid.Row="1" Text="{x:Bind Status.Text}" />
                 </Grid>
             </Grid>
         </DataTemplate>
@@ -87,7 +87,11 @@
     <ItemsControl.Template>
         <ControlTemplate TargetType="ItemsControl">
             <ScrollViewer ViewChanging="ScrollViewer_ViewChanging">
-                <ItemsPresenter />
+                <ItemsPresenter VerticalAlignment="Top">
+                    <ItemsPresenter.Footer>
+                        <ProgressBar Margin="16" Visibility="{Binding RelativeSource={RelativeSource TemplatedParent},Path=IsLoading, Mode=OneWay,Converter={StaticResource BoolToVisibilityConverter}}" IsIndeterminate="{Binding RelativeSource={RelativeSource TemplatedParent},Path=IsLoading, Mode=OneWay}"/>
+                    </ItemsPresenter.Footer>
+                </ItemsPresenter>
             </ScrollViewer>
         </ControlTemplate>
     </ItemsControl.Template>

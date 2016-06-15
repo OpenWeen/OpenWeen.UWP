@@ -21,7 +21,18 @@ namespace OpenWeen.UWP.ViewModel.UserPage
         public bool IsBlocked { get; private set; }
         public bool IsMe => StaticResource.Uid == User?.ID;
         public string BlockState => Settings.BlockUser?.Contains(User?.ID ?? -1) == true ? "已屏蔽" : "屏蔽";
-        public bool IsLoading { get; private set; }
+        protected bool _isLoading;
+        public bool IsLoading
+        {
+            get { return _isLoading; }
+            private set
+            {
+                _isLoading = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsLoading)));
+            }
+        }
+
+        public double ScrollViewerPosition { get; internal set; }
 
         public UserPageViewModel(long uid)
         {
@@ -33,6 +44,12 @@ namespace OpenWeen.UWP.ViewModel.UserPage
         {
             UidOrUserName = userName;
             Init();
+        }
+
+        public UserPageViewModel(UserModel user)
+        {
+            User = user;
+            InitList();
         }
 
         public UserPageViewModel(object uidOrUserName)
@@ -47,6 +64,7 @@ namespace OpenWeen.UWP.ViewModel.UserPage
 
         private async void Init()
         {
+            IsLoading = true;
             try
             {
                 if (UidOrUserName is string)
@@ -66,23 +84,29 @@ namespace OpenWeen.UWP.ViewModel.UserPage
             {
                 await new MessageDialog("无效的用户").ShowAsync();
             }
-            //Fuck weibo does not weico to check the block state
+            await InitList();
+            IsLoading = false;
+        }
+
+        private async System.Threading.Tasks.Task InitList()
+        {
+            //Fuck weibo does not allow weico to check the block state
             //IsBlocked = await Core.Api.Blocks.IsBlocked(User.ID);
             UserTimeline = new UserTimelineViewModel(User.ID);
             await UserTimeline.Refresh();
-            UserImageTimeline = new UserImageTimelineViewModel(User.ID);
-            await UserImageTimeline.Refresh();
+            //UserImageTimeline = new UserImageTimelineViewModel(User.ID);
+            //await UserImageTimeline.Refresh();
             Follow.SetState(User.Following, User.FollowMe, IsBlocked);
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BlockState)));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsMe)));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UserTimeline)));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UserImageTimeline)));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(User)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UserTimeline)));
+            //PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UserImageTimeline)));
         }
 
         public void AddBlock()
         {
-            if (User == null)
+            if (User == null || IsMe)
                 return;
 
             if (Settings.BlockUser?.Contains(User.ID) == true)
@@ -118,7 +142,7 @@ namespace OpenWeen.UWP.ViewModel.UserPage
 
         public async void AddWeiboBlock()
         {
-            if (User == null)
+            if (User == null || IsMe)
                 return;
             await Core.Api.Blocks.AddBlock(User.ID);
         }

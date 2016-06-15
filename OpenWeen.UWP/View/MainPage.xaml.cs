@@ -5,6 +5,7 @@ using OpenWeen.UWP.Model;
 using OpenWeen.UWP.View;
 using OpenWeen.UWP.ViewModel;
 using OpenWeen.UWP.ViewModel.MainPage;
+using OpenWeen.UWP.ViewModel.SearchPage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -25,7 +26,7 @@ namespace OpenWeen.UWP
         public MainPage()
         {
             InitializeComponent();
-            NavigationCacheMode = NavigationCacheMode.Enabled;
+            NavigationCacheMode = NavigationCacheMode.Required;
         }
         public void BackTop()
         {
@@ -44,6 +45,22 @@ namespace OpenWeen.UWP
         public void Setting()
         {
             Frame.Navigate(typeof(SettingPage));
+        }
+        public void Search()
+        {
+            Frame.Navigate(typeof(SearchPage), new SearchPageViewModel());
+        }
+        public void ShowGroup(object sender, RoutedEventArgs e)
+        {
+            var menu = Resources["GroupFlout"] as Flyout;
+            menu.Placement = (Window.Current.Content as Frame).ActualWidth > 720 ? Windows.UI.Xaml.Controls.Primitives.FlyoutPlacementMode.Right : Windows.UI.Xaml.Controls.Primitives.FlyoutPlacementMode.Top;
+            menu.ShowAt(e.OriginalSource as FrameworkElement);
+        }
+
+        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var menu = Resources["GroupFlout"] as Flyout;
+            menu.Hide();
         }
     }
 }
