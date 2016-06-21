@@ -45,7 +45,7 @@ namespace OpenWeen.UWP
                 this.DebugSettings.EnableFrameRateCounter = true;
             }
 #endif
-            Microsoft.HockeyApp.HockeyClient.Current.Configure(HockeyAppKey.ApiKey);
+            //Microsoft.HockeyApp.HockeyClient.Current.Configure(HockeyAppKey.ApiKey);
 
             if (StaticResource.IsPhone)
             {
@@ -72,9 +72,30 @@ namespace OpenWeen.UWP
             }
             Window.Current.Activate();
             UnhandledException += App_UnhandledException;
+            RegisterExceptionHandlingSynchronizationContext();
+        }
+        protected override void OnActivated(IActivatedEventArgs args)
+        {
+            base.OnActivated(args);
+            RegisterExceptionHandlingSynchronizationContext();
+        }
+        private void RegisterExceptionHandlingSynchronizationContext()
+        {
+            ExceptionHandlingSynchronizationContext
+                .Register()
+                .UnhandledException += SynchronizationContext_UnhandledException;
         }
 
-        private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        private void SynchronizationContext_UnhandledException(object sender, Common.UnhandledExceptionEventArgs e)
+        {
+            if (e.Exception is WebException || e.Exception is HttpRequestException)
+            {
+                Notification.Show($"网络错误 {e.Exception.Message}");
+                e.Handled = true;
+            }
+        }
+
+        private void App_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
         {
             if (e.Exception is WebException || e.Exception is HttpRequestException)
             {

@@ -11,6 +11,7 @@ using OpenWeen.UWP.Common;
 using OpenWeen.UWP.Common.Helpers;
 using OpenWeen.UWP.Shared.Common;
 using OpenWeen.UWP.Shared.Common.Helpers;
+using OpenWeen.UWP.ToastNotificationTask;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Background;
 using Windows.Foundation;
@@ -165,6 +166,7 @@ namespace OpenWeen.UWP.View
         {
             dismissed = true;
             await BackgroundHelper.Register<UpdateUnreadCountTask>(new TimeTrigger(15, false));
+            await BackgroundHelper.Register<ToastNotificationBackgroundTask>(new ToastNotificationActionTrigger());
             await InitEmotion();
             if (CheckForLogin())
             {

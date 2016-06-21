@@ -81,10 +81,7 @@ namespace OpenWeen.UWP.ViewModel.MessagePage
             }
             catch (Exception e) when (e is HttpRequestException || e is WebException)
             {
-#if DEBUG
-                throw;
-#endif
-                OnWebException();
+                OnWebException(e);
             }
             _isLoading = false;
         }

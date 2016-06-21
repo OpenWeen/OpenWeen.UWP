@@ -205,9 +205,9 @@ namespace OpenWeen.UWP.View
                 default:
                     break;
             }
+            sardialog.Hide();
             if (isSuccess)
             {
-                sardialog.Hide();
                 Frame.GoBack();
             }
             else

@@ -164,6 +164,7 @@
     <Compile Include="Common\Converter\UnreadCountToVisibilityConverter.cs" />
     <Compile Include="Common\Entities\FollowState.cs" />
     <Compile Include="Common\Entities\PostWeiboType.cs" />
+    <Compile Include="Common\ExceptionHandlingSynchronizationContext.cs" />
     <Compile Include="Common\Extension\IEnumerableExtension.cs" />
     <Compile Include="Common\Helpers\BackgroundHelper.cs" />
     <Compile Include="Common\Helpers\MoreVisualTreeHelper.cs" />
@@ -2244,6 +2245,10 @@
     <ProjectReference Include="..\OpenWeen.UWP.BackgroundTask\OpenWeen.UWP.BackgroundTask.csproj">
       <Project>{62fc5331-972f-4599-b405-aabd3b4512ad}</Project>
       <Name>OpenWeen.UWP.BackgroundTask</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OpenWeen.UWP.ToastNotificationTask\OpenWeen.UWP.ToastNotificationTask.csproj">
+      <Project>{97af04fb-17b4-49e7-b693-8fac313d233a}</Project>
+      <Name>OpenWeen.UWP.ToastNotificationTask</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

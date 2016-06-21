@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using OpenWeen.Core.Model;
+using OpenWeen.UWP.Common.Controls;
 using Windows.UI.Popups;
 namespace OpenWeen.UWP.ViewModel
 {
@@ -62,10 +63,7 @@ namespace OpenWeen.UWP.ViewModel
             }
             catch (Exception e) when (e is HttpRequestException || e is WebException || e is Newtonsoft.Json.JsonException || e is TaskCanceledException)
             {
-#if DEBUG
-                throw;
-#endif
-                OnWebException();
+                OnWebException(e);
             }
             IsLoading = false;
         }
@@ -87,16 +85,13 @@ namespace OpenWeen.UWP.ViewModel
             catch (Exception e) when (e is HttpRequestException || e is WebException || e is Newtonsoft.Json.JsonException || e is TaskCanceledException)
             {
                 _pageCount--;
-#if DEBUG
-                throw;
-#endif
             }
             IsLoading = false;
         }
 
-        protected virtual void OnWebException()
+        protected virtual void OnWebException(Exception e)
         {
-
+            Notification.Show($"网络错误 {e.Message}");
         }
 
         protected abstract Task<IEnumerable<T>> LoadMoreOverride();

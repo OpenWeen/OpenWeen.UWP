@@ -22,6 +22,11 @@
         <uap:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#327AFF" />
       </uap:VisualElements>
       <Extensions>
+        <Extension Category="windows.backgroundTasks" EntryPoint="OpenWeen.UWP.ToastNotificationTask.ToastNotificationBackgroundTask">
+          <BackgroundTasks>
+            <Task Type="systemEvent" />
+          </BackgroundTasks>
+        </Extension>
         <Extension Category="windows.backgroundTasks" EntryPoint="OpenWeen.UWP.BackgroundTask.UpdateUnreadCountTask">
           <BackgroundTasks>
             <Task Type="timer" />

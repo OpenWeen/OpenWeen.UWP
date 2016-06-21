@@ -15,6 +15,11 @@ namespace OpenWeen.UWP.View
     /// </summary>
     public sealed partial class SettingPage : Page
     {
+        public bool IsMoreInfoNotifyEnable
+        {
+            get { return Settings.IsMoreInfoNotifyEnable; }
+            set { Settings.IsMoreInfoNotifyEnable = value; }
+        }
         public string BlockText
         {
             get

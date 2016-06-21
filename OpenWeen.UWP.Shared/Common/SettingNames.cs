@@ -11,5 +11,6 @@
         public const string IsCommentNotify = nameof(IsCommentNotify);
         public const string IsMessageNotify = nameof(IsMessageNotify);
         public const string IsFollowerNotify = nameof(IsFollowerNotify);
+        public const string IsMoreInfoNotifyEnable = nameof(IsMoreInfoNotifyEnable);
     }
 }

@@ -107,6 +107,19 @@ namespace OpenWeen.UWP.Shared.Common
                 SetSetting(SettingNames.IsFollowerNotify, value);
             }
         }
+
+        public static bool IsMoreInfoNotifyEnable
+        {
+            get
+            {
+                return GetSetting(SettingNames.IsMoreInfoNotifyEnable, false);
+            }
+            set
+            {
+                SetSetting(SettingNames.IsMoreInfoNotifyEnable, value);
+            }
+        }
+
     }
     internal enum NotifyDuration
     {
