@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using OpenWeen.Core.Model.Comment;
 using OpenWeen.Core.Model.Status;
+using OpenWeen.UWP.Shared.Common;
+using OpenWeen.UWP.Shared.Common.Helpers;
 using Windows.ApplicationModel.Background;
 using Windows.UI.Notifications;
 
@@ -16,6 +18,10 @@ namespace OpenWeen.UWP.ToastNotificationTask
     {
         public async void Run(IBackgroundTaskInstance taskInstance)
         {
+            if (!CheckForLogin())
+            {
+                return;
+            }
             var details = taskInstance.TriggerDetails as ToastNotificationActionTriggerDetail;
             if (!string.IsNullOrEmpty(details?.Argument))
             {
@@ -27,7 +33,14 @@ namespace OpenWeen.UWP.ToastNotificationTask
                     switch (argument["item"])//TODO:actually not working
                     {
                         case nameof(MessageModel):
-                            await Core.Api.Statuses.PostWeibo.Repost(Convert.ToInt64(argument["id"]), $"{content}{argument["data"]}");
+                            if (argument.Keys.Contains("cid"))
+                            {
+                                await Core.Api.Comments.PostComment(Convert.ToInt64(argument["id"]), content);
+                            }
+                            else
+                            {
+                                await Core.Api.Statuses.PostWeibo.Repost(Convert.ToInt64(argument["id"]), string.Join("", $"{content}{argument["data"]}".Take(140)));
+                            }
                             break;
                         case nameof(CommentModel):
                             await Core.Api.Comments.Reply(Convert.ToInt64(argument["id"]), Convert.ToInt64(argument["cid"]), $"{argument["data"]}{content}");
@@ -45,6 +58,19 @@ namespace OpenWeen.UWP.ToastNotificationTask
                     def.Complete();
                 }
                 // Perform tasks
+            }
+        }
+
+        private bool CheckForLogin()
+        {
+            try
+            {
+                Core.Api.Entity.AccessToken = SettingHelper.GetListSetting<string>(SettingNames.AccessToken, isThrowException: true).FirstOrDefault();
+                return true;
+            }
+            catch (SettingException)
+            {
+                return false;
             }
         }
     }

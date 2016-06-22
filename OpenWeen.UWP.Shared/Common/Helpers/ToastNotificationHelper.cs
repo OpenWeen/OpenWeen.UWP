@@ -44,6 +44,7 @@ namespace OpenWeen.UWP.Shared.Common.Helpers
   "</visual>" +
   "<actions>" +
     "<input id=\"content\" type=\"text\" placeHolderContent=\"回复\" />" +
+    (msg is MessageModel ? $"<action activationType=\"background\" content=\"转发\" arguments=\"item={msg.GetType().Name};id={id};data={data}\" hint-inputId=\"转发微博\"/>" : null) +
     $"<action activationType=\"background\" content=\"回复\" arguments=\"item={msg.GetType().Name};id={id};cid={cid};data={data}\" hint-inputId=\"转发微博\"/>" +
   "</actions>" +
 "</toast>";
