@@ -51,7 +51,8 @@ namespace OpenWeen.UWP.Model
         public void Repost(object sender, WeiboActionEventArgs e)
         {
             var item = e.TargetItem as MessageModel;
-            (Window.Current.Content as Frame).Navigate(typeof(PostWeiboPage), new RepostData(item.ID, item.RetweetedStatus == null ? "" : $"//@{item.User.Name}:{item.Text}"));
+            if (item != null)
+                (Window.Current.Content as Frame).Navigate(typeof(PostWeiboPage), new RepostData(item.ID, item.RetweetedStatus == null ? "" : $"//@{item.User.Name}:{item.Text}"));
         }
 
         private bool _isFavoring;

@@ -1,10 +1,10 @@
 ﻿{
   "dependencies": {
-    "HockeySDK.UWP": "4.0.0",
+    "HockeySDK.UWP": "4.1.2",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.1.0",
-    "Newtonsoft.Json": "8.0.3",
-    "NotificationsExtensions.Win10": "14332.0.1",
-    "OpenWeen.Core": "1.2.1",
+    "Newtonsoft.Json": "9.0.1",
+    "NotificationsExtensions.Win10": "14332.0.2",
+    "OpenWeen.Core": "1.2.2",
     "WinRTXamlToolkit.Controls.DataVisualization": "2.0.0",
     "XamlAnimatedGif": "1.1.4"
   },

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -6,6 +7,8 @@ using OpenWeen.Core.Model;
 using OpenWeen.Core.Model.Status;
 using OpenWeen.UWP.Common.Controls.Events;
 using OpenWeen.UWP.Common.Extension;
+using OpenWeen.UWP.Model;
+using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Documents;
@@ -58,7 +61,7 @@ namespace OpenWeen.UWP.Common.Controls
         {
             string text = "";
             var model = DataContext as MessageModel;
-            string ortext = (model != null && model.IsLongText && model.LongText != null) ? model.LongText.Content : Text;
+            string ortext = (model?.LongText != null) ? model.LongText.Content : Text;
             try
             {
                 text = ortext.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
@@ -80,11 +83,8 @@ namespace OpenWeen.UWP.Common.Controls
             var xaml = string.Format(@"<Paragraph
                                         xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation""
                                         xmlns:x=""http://schemas.microsoft.com/winfx/2006/xaml"" >
-                                    <Paragraph.Inlines>
-                                    <Run></Run>
-                                      {0}
-                                    </Paragraph.Inlines>
-                                </Paragraph>", text);
+                                    <Paragraph.Inlines><Run></Run>{0}</Paragraph.Inlines>
+                                    </Paragraph>", text);
             richTextBlock.Blocks.Clear();
             richTextBlock.Blocks.Add((Paragraph)XamlReader.Load(xaml));
         }
@@ -116,21 +116,39 @@ namespace OpenWeen.UWP.Common.Controls
         private string ReplaceHyperlink(string text)
         {
             var matches = Regex.Matches(text, "http(s)?://([a-zA-Z|\\d]+\\.)+[a-zA-Z|\\d]+(/[a-zA-Z|\\d|\\-|\\+|_./?%=]*)?");
+            //foreach (Match item in matches)
+            //{
+            //    var model = DataContext as BaseModel;
+            //    string innerText = null;
+            //    if (model != null)
+            //    {
+            //        innerText = model.UrlStruct?.Where(m => m.ShortUrl == item.Value)?.FirstOrDefault()?.UrlTitle;
+            //        var memodel = DataContext as MessageModel;
+            //        if (memodel != null && string.IsNullOrEmpty(innerText))
+            //        {
+            //            innerText = memodel.RetweetedStatus?.UrlStruct?.Where(m => m.ShortUrl == item.Value)?.FirstOrDefault()?.UrlTitle;
+            //        }
+            //    }
+            //    innerText = string.IsNullOrEmpty(innerText) ? "网页链接" : innerText;
+            //    text = text.Replace(item.Value, $@"<Hyperlink NavigateUri=""{item.Value}"">{innerText}</Hyperlink>");
+            //}
+            var model = DataContext as MessageModel;
+            var index = text.IndexOf("全文： http://m.weibo.cn/");
+            if (index != -1)
+            {
+                text = text.Remove(index);
+                text += @"<InlineUIContainer><TextBlock Foreground=""{ThemeResource HyperlinkForegroundThemeBrush}""><Underline>全文</Underline></TextBlock></InlineUIContainer>";
+            }
+            //if (model?.IsLongText == true)
+            //{
+            //    var a = text.IndexOf("全文");
+            //    a = text.IndexOf("全文：");
+            //    text = text.Remove(text.IndexOf("全文") - 1);
+            //    //text = text.Replace($"全文： {matches[matches.Count - 1].Value}", @"<InlineUIContainer><TextBlock Foreground=""{ThemeResource HyperlinkForegroundThemeBrush}""><Underline>全文</Underline></TextBlock></InlineUIContainer>");
+            //}
             foreach (Match item in matches)
             {
-                var model = DataContext as BaseModel;
-                string innerText = null;
-                if (model != null)
-                {
-                    innerText = model.UrlStruct?.Where(m => m.ShortUrl == item.Value)?.FirstOrDefault()?.UrlTitle;
-                    var memodel = DataContext as MessageModel;
-                    if (memodel != null && string.IsNullOrEmpty(innerText))
-                    {
-                        innerText = memodel.RetweetedStatus?.UrlStruct?.Where(m => m.ShortUrl == item.Value)?.FirstOrDefault()?.UrlTitle;
-                    }
-                }
-                innerText = string.IsNullOrEmpty(innerText) ? "网页链接" : innerText;
-                text = text.Replace(item.Value, $@"<Hyperlink NavigateUri=""{item.Value}"">{innerText}</Hyperlink>");
+                text = text.Replace(item.Value, "<InlineUIContainer><TextBlock Foreground=\"{ThemeResource HyperlinkForegroundThemeBrush}\" Tag=\"" + item.Value + "\"><Underline>网页链接</Underline></TextBlock></InlineUIContainer>");
             }
             return text;
         }
@@ -146,7 +164,7 @@ namespace OpenWeen.UWP.Common.Controls
             return text;
         }
 
-        private void richTextBlock_Tapped(object sender, TappedRoutedEventArgs e)
+        private async void richTextBlock_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if (e.OriginalSource is TextBlock)
             {
@@ -160,6 +178,42 @@ namespace OpenWeen.UWP.Common.Controls
                 {
                     e.Handled = true;
                     UserClick?.Invoke(this, new WeiboUserClickEventArgs(text.Replace("@", "")));
+                }
+                else if((e.OriginalSource as TextBlock).Tag != null)
+                {
+                    e.Handled = true;
+                    try
+                    {
+                        var item = (await Core.Api.ShortUrl.Info((e.OriginalSource as TextBlock).Tag.ToString())).Urls.FirstOrDefault();
+                        //TODO:check url infomation
+                        switch (item.Type)
+                        {
+                            case 39:
+                                {
+                                    var picid = item.AnnotationList?.FirstOrDefault()?.Item?.PicIds?.FirstOrDefault();
+                                    if (!string.IsNullOrEmpty(picid))
+                                    {
+                                        var items = new List<ImageModel> { new ImageModel($"http://ww1.sinaimg.cn/large/{picid}.jpg") };//TODO: better way to get image url
+                                        var dialog = new ImageViewDialog(items);
+                                        await dialog.ShowAsync();
+                                    }
+                                    else
+                                    {
+                                        await Launcher.LaunchUriAsync(new Uri(item?.UrlLong));
+                                        break;
+                                    }
+
+                                }
+                                break;
+                            default:
+                                await Launcher.LaunchUriAsync(new Uri(item?.UrlLong));
+                                break;
+                        }
+                    }
+                    catch
+                    {
+                        await Launcher.LaunchUriAsync(new Uri((e.OriginalSource as TextBlock).Tag.ToString()));
+                    }
                 }
             }
         }

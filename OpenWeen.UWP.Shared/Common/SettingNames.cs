@@ -12,5 +12,7 @@
         public const string IsMessageNotify = nameof(IsMessageNotify);
         public const string IsFollowerNotify = nameof(IsFollowerNotify);
         public const string IsMoreInfoNotifyEnable = nameof(IsMoreInfoNotifyEnable);
+        public const string IsNightMode = nameof(IsNightMode);
+        public const string IsOffImage = nameof(IsOffImage);
     }
 }

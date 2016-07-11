@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using OpenWeen.UWP.Common;
 using OpenWeen.UWP.Common.Controls;
+using OpenWeen.UWP.Shared.Common;
 using OpenWeen.UWP.View;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -29,6 +31,7 @@ namespace OpenWeen.UWP
         public App()
         {
             this.InitializeComponent();
+            RequestedTheme = Settings.IsNightMode ? ApplicationTheme.Dark : ApplicationTheme.Light;
             this.Suspending += OnSuspending;
         }
 
@@ -46,12 +49,12 @@ namespace OpenWeen.UWP
             }
 #endif
             //Microsoft.HockeyApp.HockeyClient.Current.Configure(HockeyAppKey.ApiKey);
-
             if (StaticResource.IsPhone)
             {
-                StatusBar.GetForCurrentView().BackgroundColor = Color.FromArgb(255, 35, 85, 178); ;
-                StatusBar.GetForCurrentView().BackgroundOpacity = 1d;
-                StatusBar.GetForCurrentView().ForegroundColor = Colors.White;
+                var statusBar = Type.GetType("Windows.UI.ViewManagement.StatusBar, Windows.Phone.PhoneContract, Culture=neutral, PublicKeyToken=null, ContentType=WindowsRuntime").GetMethod("GetForCurrentView").Invoke(null, null);
+                statusBar.GetType().GetProperty("BackgroundColor").SetValue(statusBar, ((SolidColorBrush)Resources["AppTheme"]).Color);
+                statusBar.GetType().GetProperty("BackgroundOpacity").SetValue(statusBar, 1d);
+                statusBar.GetType().GetProperty("ForegroundColor").SetValue(statusBar, Colors.White);
             }
             else
             {

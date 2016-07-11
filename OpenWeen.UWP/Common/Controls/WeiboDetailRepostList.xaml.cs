@@ -1,4 +1,5 @@
 ﻿using System;
+using OpenWeen.Core.Model;
 using OpenWeen.Core.Model.Status;
 using OpenWeen.Core.Model.User;
 using OpenWeen.UWP.Common.Controls.Events;
@@ -17,6 +18,12 @@ namespace OpenWeen.UWP.Common.Controls
         public event EventHandler<WeiboItemClickEventArgs> ItemClick;
 
         public event EventHandler<WeiboTopicClickEventArgs> TopicClick;
+
+        public event EventHandler<WeiboActionEventArgs> Repost;
+
+        public event EventHandler<WeiboActionEventArgs> Comment;
+
+        public event EventHandler<WeiboActionEventArgs> Favor;
 
         public event EventHandler LoadMore;
         public bool IsLoading
@@ -70,5 +77,24 @@ namespace OpenWeen.UWP.Common.Controls
                 ItemClick?.Invoke(this, new WeiboItemClickEventArgs(context as MessageModel));
             }
         }
+
+        private void Reshare_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            e.Handled = true;
+            Repost?.Invoke(this, new WeiboActionEventArgs((e.OriginalSource as FrameworkElement).DataContext as BaseModel));
+        }
+
+        private void Comment_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            e.Handled = true;
+            Comment?.Invoke(this, new WeiboActionEventArgs((e.OriginalSource as FrameworkElement).DataContext as BaseModel));
+        }
+
+        private void Favor_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            e.Handled = true;
+            Favor?.Invoke(this, new WeiboActionEventArgs((e.OriginalSource as FrameworkElement).DataContext as BaseModel));
+        }
+
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -55,7 +56,9 @@ namespace OpenWeen.UWP.View
             RestoreStateAsync(loadState);
             if (StaticResource.IsPhone)
             {
-                var diff = StatusBar.GetForCurrentView().OccludedRect.Height;
+                var statusBar = Type.GetType("Windows.UI.ViewManagement.StatusBar, Windows.Phone.PhoneContract, Culture=neutral, PublicKeyToken=null, ContentType=WindowsRuntime").GetMethod("GetForCurrentView").Invoke(null, null);
+
+                var diff = ((Rect)statusBar.GetType().GetProperty("OccludedRect").GetValue(statusBar)).Height;
                 rootFrame.Margin = new Thickness(0, diff, 0, 0);
                 DisplayInformation.GetForCurrentView().OrientationChanged += ExtendedSplash_OrientationChanged;
             }
@@ -63,13 +66,15 @@ namespace OpenWeen.UWP.View
 
         private void ExtendedSplash_OrientationChanged(DisplayInformation sender, object args)
         {
-            var statusBar = StatusBar.GetForCurrentView();
+            var statusBar = Type.GetType("Windows.UI.ViewManagement.StatusBar, Windows.Phone.PhoneContract, Culture=neutral, PublicKeyToken=null, ContentType=WindowsRuntime").GetMethod("GetForCurrentView").Invoke(null, null);
             if ((Window.Current.Content as Frame) == null || statusBar == null)
             {
                 return;
             }
-            var height = statusBar.OccludedRect.Height;
-            var width = statusBar.OccludedRect.Width;
+
+            var rect = ((Rect)statusBar.GetType().GetProperty("OccludedRect").GetValue(statusBar));
+            var height = rect.Height;
+            var width = rect.Width;
             switch (sender.CurrentOrientation)
             {
                 case DisplayOrientations.None:

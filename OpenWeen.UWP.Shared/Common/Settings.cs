@@ -120,6 +120,17 @@ namespace OpenWeen.UWP.Shared.Common
             }
         }
 
+        public static bool IsNightMode
+        {
+            get { return GetSetting(SettingNames.IsNightMode, false); }
+            set { SetSetting(SettingNames.IsNightMode, value); }
+        }
+
+        public static bool IsOffImage
+        {
+            get { return GetSetting(SettingNames.IsOffImage, false); }
+            set { SetSetting(SettingNames.IsOffImage, value); }
+        }
     }
     internal enum NotifyDuration
     {

@@ -68,7 +68,7 @@ namespace OpenWeen.UWP.Common.Controls
             });
         }
 
-        private ImageViewDialog(List<ImageModel> items) : this()
+        public ImageViewDialog(List<ImageModel> items) : this()
         {
             Items = items;
         }

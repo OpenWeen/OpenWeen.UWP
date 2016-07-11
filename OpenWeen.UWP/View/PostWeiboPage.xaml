@@ -30,7 +30,7 @@
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
-            <RichEditBox KeyDown="richEditBox_KeyDown" KeyUp="richEditBox_KeyUp" x:Name="richEditBox" DragOver="richEditBox_DragOver" Drop="richEditBox_Drop" TextChanged="RichEditBox_TextChanged" Paste="RichEditBox_Paste" BorderThickness="0" AcceptsReturn="False" />
+            <RichEditBox KeyDown="richEditBox_KeyDown" Background="Transparent" KeyUp="richEditBox_KeyUp" x:Name="richEditBox" DragOver="richEditBox_DragOver" Drop="richEditBox_Drop" TextChanged="RichEditBox_TextChanged" Paste="RichEditBox_Paste" BorderThickness="0" AcceptsReturn="False" />
             <Grid Grid.Row="1">
                 <TextBlock HorizontalAlignment="Right" Text="{x:Bind TextCount,Mode=OneWay}" />
             </Grid>
@@ -51,7 +51,7 @@
                 </ItemsControl.Style>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Image Tapped="Image_Tapped" Extensions:ImageExtensions.FadeInOnLoaded="True" Extensions:ImageExtensions.ImageLoadedTransitionType="FadeIn" MaxHeight="100" Margin="4" Source="{Binding Image}" />
+                        <Image Tapped="Image_Tapped" Extensions:ImageExtensions.FadeInOnLoaded="True" Extensions:ImageExtensions.ImageLoadedTransitionType="FadeIn" MaxHeight="100" MaxWidth="100" Margin="4" Source="{Binding Image}" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
                 <ItemsControl.ItemsPanel>
@@ -103,7 +103,7 @@
         </Grid>
     </Grid>
     <Page.BottomAppBar>
-        <CommandBar Background="{StaticResource AppBarColor}">
+        <CommandBar Opacity="0.75">
             <AppBarButton Visibility="{x:Bind AllowPicture,Mode=OneWay,Converter={StaticResource BoolToVisibilityConverter}}" Icon="Camera" Label="添加图片" Click="{x:Bind AddImage}" />
             <AppBarButton Icon="Emoji" Label="表情" Click="{x:Bind ShowEmoji}" />
             <AppBarButton Visibility="Collapsed" Icon="Account" Label="@好友" Click="{x:Bind AddFriend}" />

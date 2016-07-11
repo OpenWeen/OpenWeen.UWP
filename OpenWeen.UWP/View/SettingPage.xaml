@@ -17,6 +17,9 @@
         </Grid>
         <ScrollViewer Grid.Row="1" Padding="16,16,16,0">
             <StackPanel Orientation="Vertical">
+                <TextBlock Text="通用" Style="{ThemeResource SubtitleTextBlockStyle}" />
+                <ToggleSwitch Header="夜间模式（重启生效）" IsOn="{x:Bind IsNightMode,Mode=TwoWay}" Style="{StaticResource NotifyTypeSwitchStyle}"/>
+                <ToggleSwitch Header="无图模式" IsOn="{x:Bind IsOffImage,Mode=TwoWay}" Style="{StaticResource NotifyTypeSwitchStyle}"/>
                 <TextBlock Text="通知" Style="{ThemeResource SubtitleTextBlockStyle}" />
                 <ComboBox Header="通知间隔（重启生效）" SelectedIndex="{x:Bind NotifyDurationIndex,Mode=TwoWay}" HorizontalAlignment="Stretch">
                     <ComboBoxItem Content="1分钟"/>

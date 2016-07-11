@@ -1,4 +1,5 @@
 ﻿using System;
+using OpenWeen.Core.Model;
 using OpenWeen.Core.Model.Status;
 using OpenWeen.Core.Model.User;
 using OpenWeen.UWP.Common.Controls.Events;
@@ -82,19 +83,19 @@ namespace OpenWeen.UWP.Common.Controls
         private void Reshare_Tapped(object sender, TappedRoutedEventArgs e)
         {
             e.Handled = true;
-            Repost?.Invoke(this, new WeiboActionEventArgs((e.OriginalSource as FrameworkElement).DataContext as MessageModel));
+            Repost?.Invoke(this, new WeiboActionEventArgs((e.OriginalSource as FrameworkElement).DataContext as BaseModel));
         }
 
         private void Comment_Tapped(object sender, TappedRoutedEventArgs e)
         {
             e.Handled = true;
-            Comment?.Invoke(this, new WeiboActionEventArgs((e.OriginalSource as FrameworkElement).DataContext as MessageModel));
+            Comment?.Invoke(this, new WeiboActionEventArgs((e.OriginalSource as FrameworkElement).DataContext as BaseModel));
         }
 
         private void Favor_Tapped(object sender, TappedRoutedEventArgs e)
         {
             e.Handled = true;
-            Favor?.Invoke(this, new WeiboActionEventArgs((e.OriginalSource as FrameworkElement).DataContext as MessageModel));
+            Favor?.Invoke(this, new WeiboActionEventArgs((e.OriginalSource as FrameworkElement).DataContext as BaseModel));
         }
 
         private void WeiboTextBlock_UserClick(object sender, WeiboUserClickEventArgs e)

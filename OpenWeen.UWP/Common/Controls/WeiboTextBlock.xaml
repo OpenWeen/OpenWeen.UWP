@@ -7,5 +7,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
     <RichTextBlock IsTextSelectionEnabled="{x:Bind IsTextSelectionEnabled,Mode=OneWay}" Tapped="richTextBlock_Tapped" x:Name="richTextBlock">
+        <Paragraph>
+            <Hyperlink />
+            <InlineUIContainer>
+                <TextBlock />
+            </InlineUIContainer>
+        </Paragraph>
     </RichTextBlock>
 </UserControl>

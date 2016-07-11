@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="51945Tlaster.OpenWeen" Publisher="CN=F82B0EE7-EF8D-4515-BEAB-DD968D07D67F" Version="1.2.2.0" />
+  <Identity Name="51945Tlaster.OpenWeen" Publisher="CN=F82B0EE7-EF8D-4515-BEAB-DD968D07D67F" Version="1.2.3.0" />
   <mp:PhoneIdentity PhoneProductId="d7f18c0a-f9ef-4da4-a2fa-1e6906bddb4b" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>OpenWeen</DisplayName>
@@ -22,14 +22,14 @@
         <uap:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#327AFF" />
       </uap:VisualElements>
       <Extensions>
-        <Extension Category="windows.backgroundTasks" EntryPoint="OpenWeen.UWP.BackgroundTask.UpdateUnreadCountTask">
-          <BackgroundTasks>
-            <Task Type="timer" />
-          </BackgroundTasks>
-        </Extension>
         <Extension Category="windows.backgroundTasks" EntryPoint="OpenWeen.UWP.ToastNotificationTask.ToastNotificationBackgroundTask">
           <BackgroundTasks>
             <Task Type="systemEvent" />
+          </BackgroundTasks>
+        </Extension>
+        <Extension Category="windows.backgroundTasks" EntryPoint="OpenWeen.UWP.BackgroundTask.UpdateUnreadCountTask">
+          <BackgroundTasks>
+            <Task Type="timer" />
           </BackgroundTasks>
         </Extension>
       </Extensions>

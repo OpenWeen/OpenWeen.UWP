@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using OpenWeen.Core.Model.Status;
+using OpenWeen.UWP.Common.Controls;
 
 namespace OpenWeen.UWP.ViewModel.DetailPage
 {
@@ -24,13 +25,13 @@ namespace OpenWeen.UWP.ViewModel.DetailPage
         private async void Init(MessageModel item)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Item)));
-            if (item.IsLongText)
+            if (item.Text.IndexOf("全文： http://m.weibo.cn/") != -1)
             {
                 try
                 {
                     Item = await Core.Api.Statuses.Query.GetStatus(item.ID, true);
                     Item.Text = Item.LongText.Content;
-                    Item.UrlStruct = Item.LongText.UrlStruct;
+                    //Item.UrlStruct = Item.LongText.UrlStruct;
                 }
                 catch (Exception)
                 {
@@ -40,6 +41,19 @@ namespace OpenWeen.UWP.ViewModel.DetailPage
             {
                 Item = item;
             }
+            //try
+            //{
+            //    Item = await Core.Api.Statuses.Query.GetStatus(item.ID, true);
+            //    if (item.LongText != null)
+            //    {
+            //        Item.Text = Item.LongText.Content;
+            //    }
+            //    //Item.UrlStruct = Item.LongText.UrlStruct;
+            //}
+            //catch (Exception e)
+            //{
+            //    Notification.Show($"网络错误 {e.Message}");
+            //}
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Item)));
             IsLoading = false;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsLoading)));

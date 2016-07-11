@@ -32,7 +32,7 @@ namespace OpenWeen.UWP.View
                 Settings.BlockText = value.Split(',');
             }
         }
-
+        
         public string BlockUser
         {
             get
@@ -112,7 +112,16 @@ namespace OpenWeen.UWP.View
                 Settings.IsFollowerNotify = value;
             }
         }
-
+        public bool IsNightMode
+        {
+            get { return Settings.IsNightMode; }
+            set { Settings.IsNightMode = value; }
+        }
+        public bool IsOffImage
+        {
+            get { return Settings.IsOffImage; }
+            set { Settings.IsOffImage = value; }
+        }
         public SettingPage()
         {
             this.InitializeComponent();
