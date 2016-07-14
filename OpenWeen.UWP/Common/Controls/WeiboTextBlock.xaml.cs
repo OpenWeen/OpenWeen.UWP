@@ -185,7 +185,6 @@ namespace OpenWeen.UWP.Common.Controls
                     try
                     {
                         var item = (await Core.Api.ShortUrl.Info((e.OriginalSource as TextBlock).Tag.ToString())).Urls.FirstOrDefault();
-                        //TODO:check url infomation
                         switch (item.Type)
                         {
                             case 39:
@@ -194,8 +193,23 @@ namespace OpenWeen.UWP.Common.Controls
                                     if (!string.IsNullOrEmpty(picid))
                                     {
                                         var items = new List<ImageModel> { new ImageModel($"http://ww1.sinaimg.cn/large/{picid}.jpg") };//TODO: better way to get image url
-                                        var dialog = new ImageViewDialog(items);
-                                        await dialog.ShowAsync();
+                                        await new ImageViewDialog(items).ShowAsync();
+                                    }
+                                    else if (item.AnnotationList?.FirstOrDefault()?.Item?.ObjectType == "video")
+                                    {
+                                        if (item.AnnotationList?.FirstOrDefault()?.Item?.OriginalUrl != null)
+                                        {
+                                            await new WeiboVideoPlayer(item?.UrlLong, item.AnnotationList?.FirstOrDefault().Item.OriginalUrl).ShowAsync();
+                                        }
+                                        else if(item.AnnotationList?.FirstOrDefault()?.Item?.Stream?.Url != null)
+                                        {
+                                            await new WeiboVideoPlayer(item?.UrlLong, item.AnnotationList?.FirstOrDefault()?.Item?.Stream?.Url).ShowAsync();
+                                        }
+                                        else
+                                        {
+                                            await Launcher.LaunchUriAsync(new Uri(item?.UrlLong));
+                                        }
+                                        
                                     }
                                     else
                                     {

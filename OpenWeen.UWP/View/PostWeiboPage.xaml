@@ -103,7 +103,7 @@
         </Grid>
     </Grid>
     <Page.BottomAppBar>
-        <CommandBar Opacity="0.75">
+        <CommandBar>
             <AppBarButton Visibility="{x:Bind AllowPicture,Mode=OneWay,Converter={StaticResource BoolToVisibilityConverter}}" Icon="Camera" Label="添加图片" Click="{x:Bind AddImage}" />
             <AppBarButton Icon="Emoji" Label="表情" Click="{x:Bind ShowEmoji}" />
             <AppBarButton Visibility="Collapsed" Icon="Account" Label="@好友" Click="{x:Bind AddFriend}" />

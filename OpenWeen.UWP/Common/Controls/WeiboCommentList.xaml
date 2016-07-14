@@ -24,7 +24,7 @@
     </ItemsControl.Style>
     <ItemsControl.ItemTemplate>
         <DataTemplate x:DataType="commentModel:CommentModel">
-            <Grid BorderBrush="LightGray" BorderThickness="0,0,0,1" Tapped="Grid_Tapped" Margin="8">
+            <Grid BorderBrush="{StaticResource SplitlineColor}" BorderThickness="0,0,0,1" Tapped="Grid_Tapped" Margin="8">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
@@ -56,14 +56,14 @@
                             <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
                         <SymbolIcon Grid.Column="1" Tapped="Comment_Tapped" Margin="0,0,9,0" Foreground="LightGray" Symbol="Comment" />
-                        <TextBlock DataContext="{x:Bind User}" FontFamily="Microsoft Yahei UI"  FontSize="18" Style="{ThemeResource BodyTextBlockStyle}" Padding="8,4,0,0" Text="{x:Bind User.ScreenName}" FontWeight="Bold" />
-                        <TextBlock Grid.ColumnSpan="2"  FontFamily="Microsoft Yahei UI" Foreground="#CCCCCC" FontSize="15" Style="{ThemeResource CaptionTextBlockStyle}" Grid.Row="1" Padding="8,4,0,0" Text="{x:Bind CreateTime,Converter={StaticResource TimeConverter}}" />
+                        <TextBlock DataContext="{x:Bind User}"   FontSize="18" Style="{ThemeResource BodyTextBlockStyle}" Padding="8,4,0,0" Text="{x:Bind User.ScreenName}" FontWeight="Bold" />
+                        <TextBlock Grid.ColumnSpan="2"   Foreground="#CCCCCC" FontSize="15" Style="{ThemeResource CaptionTextBlockStyle}" Grid.Row="1" Padding="8,4,0,0" Text="{x:Bind CreateTime,Converter={StaticResource TimeConverter}}" />
                     </Grid>
                 </Grid>
                 <Grid Grid.Column="2" Grid.Row="1" Padding="8,4,8,4">
                     <local:WeiboTextBlock Grid.Row="1" Text="{x:Bind Text}" />
                 </Grid>
-                <Grid MaxHeight="100" DataContext="{x:Bind Status}" Margin="8,4" Padding="8,4" Grid.Column="2" BorderBrush="LightGray" Grid.Row="2" Visibility="{x:Bind Status,Converter={StaticResource NullToVisibilityConverter}}" BorderThickness="1">
+                <Grid MaxHeight="100" DataContext="{x:Bind Status}" Margin="8,4" Padding="8,4" Grid.Column="2" BorderBrush="{StaticResource SplitlineColor}" Grid.Row="2" Visibility="{x:Bind Status,Converter={StaticResource NullToVisibilityConverter}}" BorderThickness="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
@@ -72,9 +72,9 @@
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock FontFamily="Microsoft Yahei UI" Grid.ColumnSpan="2" Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind Status.User.ScreenName}" FontWeight="Bold" />
+                    <TextBlock  Grid.ColumnSpan="2" Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind Status.User.ScreenName}" FontWeight="Bold" />
                     <Image Grid.Row="1" Source="{Binding ThumbnailPic}" Visibility="{x:Bind Converter={StaticResource ImageModeConverter}}" MaxHeight="50" MaxWidth="50" Margin="8" />
-                    <local:WeiboTextBlock FontFamily="Microsoft Yahei UI" Grid.Column="1" Grid.Row="1" Text="{x:Bind Status.Text}" />
+                    <local:WeiboTextBlock  Grid.Column="1" Grid.Row="1" Text="{x:Bind Status.Text}" />
                 </Grid>
             </Grid>
         </DataTemplate>

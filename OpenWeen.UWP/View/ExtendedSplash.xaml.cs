@@ -56,41 +56,38 @@ namespace OpenWeen.UWP.View
             RestoreStateAsync(loadState);
             if (StaticResource.IsPhone)
             {
-                var statusBar = Type.GetType("Windows.UI.ViewManagement.StatusBar, Windows.Phone.PhoneContract, Culture=neutral, PublicKeyToken=null, ContentType=WindowsRuntime").GetMethod("GetForCurrentView").Invoke(null, null);
-
-                var diff = ((Rect)statusBar.GetType().GetProperty("OccludedRect").GetValue(statusBar)).Height;
-                rootFrame.Margin = new Thickness(0, diff, 0, 0);
-                DisplayInformation.GetForCurrentView().OrientationChanged += ExtendedSplash_OrientationChanged;
+                //var diff = StatusBar.GetForCurrentView().OccludedRect.Height;
+                //rootFrame.Margin = new Thickness(0, diff, 0, 0);
+                //DisplayInformation.GetForCurrentView().OrientationChanged += ExtendedSplash_OrientationChanged;
             }
         }
 
         private void ExtendedSplash_OrientationChanged(DisplayInformation sender, object args)
         {
-            var statusBar = Type.GetType("Windows.UI.ViewManagement.StatusBar, Windows.Phone.PhoneContract, Culture=neutral, PublicKeyToken=null, ContentType=WindowsRuntime").GetMethod("GetForCurrentView").Invoke(null, null);
-            if ((Window.Current.Content as Frame) == null || statusBar == null)
+            if ((Window.Current.Content as Frame) == null)
             {
                 return;
             }
 
-            var rect = ((Rect)statusBar.GetType().GetProperty("OccludedRect").GetValue(statusBar));
-            var height = rect.Height;
-            var width = rect.Width;
-            switch (sender.CurrentOrientation)
-            {
-                case DisplayOrientations.None:
-                case DisplayOrientations.Portrait:
-                case DisplayOrientations.PortraitFlipped:
-                    (Window.Current.Content as Frame).Margin = new Thickness(0, height, 0, 0);
-                    break;
-                case DisplayOrientations.Landscape:
-                    (Window.Current.Content as Frame).Margin = new Thickness(width, 0, 0, 0);
-                    break;
-                case DisplayOrientations.LandscapeFlipped:
-                    (Window.Current.Content as Frame).Margin = new Thickness(0, 0, width, 0);
-                    break;
-                default:
-                    break;
-            }
+            //var rect = StatusBar.GetForCurrentView().OccludedRect;
+            //var height = rect.Height;
+            //var width = rect.Width;
+            //switch (sender.CurrentOrientation)
+            //{
+            //    case DisplayOrientations.None:
+            //    case DisplayOrientations.Portrait:
+            //    case DisplayOrientations.PortraitFlipped:
+            //        (Window.Current.Content as Frame).Margin = new Thickness(0, height, 0, 0);
+            //        break;
+            //    case DisplayOrientations.Landscape:
+            //        (Window.Current.Content as Frame).Margin = new Thickness(width, 0, 0, 0);
+            //        break;
+            //    case DisplayOrientations.LandscapeFlipped:
+            //        (Window.Current.Content as Frame).Margin = new Thickness(0, 0, width, 0);
+            //        break;
+            //    default:
+            //        break;
+            //}
         }
         
 

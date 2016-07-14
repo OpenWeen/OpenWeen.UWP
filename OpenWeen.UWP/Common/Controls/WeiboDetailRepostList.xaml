@@ -26,7 +26,7 @@
     </ItemsControl.Style>
     <ItemsControl.ItemTemplate>
         <DataTemplate x:DataType="statusmodel:BaseModel">
-            <Grid BorderBrush="LightGray" BorderThickness="0,0,0,1" Visibility="{x:Bind Converter={StaticResource BlockToVisibilityConverter}}" Tapped="Grid_Tapped" Margin="8">
+            <Grid BorderBrush="{StaticResource SplitlineColor}" BorderThickness="0,0,0,1" Visibility="{x:Bind Converter={StaticResource BlockToVisibilityConverter}}" Tapped="Grid_Tapped" Margin="8">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
@@ -54,12 +54,12 @@
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <TextBlock FontFamily="Microsoft Yahei UI"  FontSize="16" DataContext="{x:Bind User}" Style="{ThemeResource BodyTextBlockStyle}" Padding="8,4" Text="{x:Bind User.ScreenName}" FontWeight="Bold" />
-                        <TextBlock FontFamily="Microsoft Yahei UI" Foreground="#CCCCCC" FontSize="15" Style="{ThemeResource CaptionTextBlockStyle}" Grid.Row="1" Padding="8,4" Text="{x:Bind CreateTime,Converter={StaticResource TimeConverter}}" />
+                        <TextBlock   FontSize="16" DataContext="{x:Bind User}" Style="{ThemeResource BodyTextBlockStyle}" Padding="8,4" Text="{x:Bind User.ScreenName}" FontWeight="Bold" />
+                        <TextBlock  Foreground="#CCCCCC" FontSize="15" Style="{ThemeResource CaptionTextBlockStyle}" Grid.Row="1" Padding="8,4" Text="{x:Bind CreateTime,Converter={StaticResource TimeConverter}}" />
                     </Grid>
                 </Grid>
                 <Grid Grid.Column="2" Grid.Row="1" Padding="8,4,8,9">
-                    <controls:WeiboTextBlock FontFamily="Microsoft Yahei UI" UserClick="WeiboTextBlock_UserClick" TopicClick="WeiboTextBlock_TopicClick" Grid.Row="1" Text="{x:Bind Text}" />
+                    <controls:WeiboTextBlock  UserClick="WeiboTextBlock_UserClick" TopicClick="WeiboTextBlock_TopicClick" Grid.Row="1" Text="{x:Bind Text}" />
                 </Grid>
                 <Grid Padding="8,5,0,12" Grid.Column="2" Grid.Row="3">
                     <StackPanel Orientation="Horizontal">

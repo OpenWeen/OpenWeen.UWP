@@ -59,7 +59,7 @@
                                 <controls:WeiboImageList PictureClick="WeiboImageList_PictureClick" Visibility="{x:Bind WeiboDetailVM.Item.PicUrls,Mode=OneWay,Converter={StaticResource NullToVisibilityConverter}}" ItemsSource="{x:Bind WeiboDetailVM.Item.PicUrls,Mode=OneWay}" />
                                 <controls:WeiboTextBlock IsTextSelectionEnabled="True" DataContext="{x:Bind WeiboDetailVM.Item,Mode=OneWay}" UserClick="{x:Bind ActionModel.UserClick}" TopicClick="{x:Bind ActionModel.TopicClick}" Grid.Row="1" Text="{x:Bind WeiboDetailVM.Item.Text,Mode=OneWay}" />
                             </Grid>
-                            <Grid DataContext="{x:Bind WeiboDetailVM.Item.RetweetedStatus,Mode=OneWay}" Margin="8,4" Padding="8,4" Grid.Column="2" BorderBrush="LightGray" Grid.Row="2" Visibility="{x:Bind WeiboDetailVM.Item.RetweetedStatus,Mode=OneWay,Converter={StaticResource NullToVisibilityConverter}}" BorderThickness="1">
+                            <Grid DataContext="{x:Bind WeiboDetailVM.Item.RetweetedStatus,Mode=OneWay}" Margin="8,4" Padding="8,4" Grid.Column="2" BorderBrush="{StaticResource SplitlineColor}" Grid.Row="2" Visibility="{x:Bind WeiboDetailVM.Item.RetweetedStatus,Mode=OneWay,Converter={StaticResource NullToVisibilityConverter}}" BorderThickness="1">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto" />
                                     <RowDefinition Height="auto" />

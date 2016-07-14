@@ -73,5 +73,19 @@ namespace OpenWeen.UWP.Common.Controls
                 SelectedIndex = index;
             }
         }
+
+        private void ItemsControl_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            var index = ItemsSource.FindIndex(item => item == (e.OriginalSource as FrameworkElement).DataContext as HeaderModel);
+            try
+            {
+                if (ItemsSource[index].UnreadCount > 0)
+                {
+                    ItemsSource[index].UnreadCount = 0;
+                }
+                Refresh?.Invoke(this, new EventArgs());
+            }
+            catch { }
+        }
     }
 }

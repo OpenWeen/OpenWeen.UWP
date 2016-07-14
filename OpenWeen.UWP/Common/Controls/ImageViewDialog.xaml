@@ -9,28 +9,10 @@
     BorderThickness="0"
     xmlns:gif="using:XamlAnimatedGif"
     xmlns:Extensions="using:WinRTXamlToolkit.Controls.Extensions"
-    RequestedTheme="Dark"
     SecondaryButtonText="关闭"
+    RequestedTheme="Dark"
     RightTapped="ContentDialog_RightTapped"
-    mc:Ignorable="d" FullSizeDesired="True" Background="#7F000000">
-    <ContentDialog.Style>
-        <Style TargetType="ContentDialog">
-            <Setter Property="Foreground" Value="{ThemeResource SystemControlPageTextBaseHighBrush}" />
-            <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}" />
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="VerticalAlignment" Value="Top" />
-            <Setter Property="IsTabStop" Value="False" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ContentDialog">
-                        <Border x:Name="BackgroundElement" Background="{TemplateBinding Background}" FlowDirection="{TemplateBinding FlowDirection}" BorderThickness="0" BorderBrush="{ThemeResource SystemControlForegroundAccentBrush}" MaxWidth="{TemplateBinding MaxWidth}" MinWidth="{TemplateBinding MinWidth}">
-                            <ContentPresenter x:Name="Content" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" FontSize="{ThemeResource ControlContentThemeFontSize}" FontFamily="{ThemeResource ContentControlThemeFontFamily}" Foreground="{TemplateBinding Foreground}" Grid.Row="1" TextWrapping="Wrap" />
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </ContentDialog.Style>
+    mc:Ignorable="d" FullSizeDesired="True" Background="#7F000000" Style="{StaticResource PopupStyle}">
     <Grid>
         <FlipView x:Name="flipView" SelectionChanged="flipView_SelectionChanged" Background="Transparent" ItemsSource="{x:Bind Items}" DataContextChanged="flipView_DataContextChanged">
             <FlipView.ItemTemplate>

@@ -134,7 +134,7 @@
         </SplitView>
     </Grid>
     <Page.BottomAppBar>
-        <CommandBar  x:Name="BottomCommandBar" Opacity="0.75">
+        <CommandBar  x:Name="BottomCommandBar">
             <AppBarButton Click="{x:Bind ShowGroup}" Icon="ContactInfo" Label="分组"/>
             <AppBarButton Click="{x:Bind Search}" Icon="Find" Label="搜索"/>
             <AppBarButton Click="{x:Bind MainVM.Refresh}" Icon="Refresh" Label="刷新" />

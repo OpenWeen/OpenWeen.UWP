@@ -155,6 +155,9 @@
     <Compile Include="Common\Controls\WeiboTextBlock.xaml.cs">
       <DependentUpon>WeiboTextBlock.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\Controls\WeiboVideoPlayer.xaml.cs">
+      <DependentUpon>WeiboVideoPlayer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Common\Converter\BlockToVisibilityConverter.cs" />
     <Compile Include="Common\Converter\BoolToVisibilityConverter.cs" />
     <Compile Include="Common\Converter\FavorToColorConverter.cs" />
@@ -2201,6 +2204,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Common\Controls\WeiboVideoPlayer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\ExtendedSplash.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -2252,7 +2259,6 @@
       <Name>OpenWeen.UWP.ToastNotificationTask</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="..\OpenWeen.UWP.Shared\OpenWeen.UWP.Shared.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

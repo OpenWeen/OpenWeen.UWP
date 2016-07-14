@@ -25,7 +25,7 @@
     </ItemsControl.Style>
     <ItemsControl.ItemTemplate>
         <DataTemplate x:DataType="statusmodel:MessageModel">
-            <Grid BorderBrush="LightGray" Visibility="{x:Bind Converter={StaticResource BlockToVisibilityConverter}}" Tapped="Grid_Tapped" Margin="8" BorderThickness="0,0,0,1">
+            <Grid BorderBrush="{StaticResource SplitlineColor}" Visibility="{x:Bind Converter={StaticResource BlockToVisibilityConverter}}" Tapped="Grid_Tapped" Margin="8" BorderThickness="0,0,0,1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
@@ -53,8 +53,8 @@
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <TextBlock FontFamily="Microsoft Yahei UI" FontSize="18" DataContext="{x:Bind User}" Style="{ThemeResource BodyTextBlockStyle}" Padding="8,4,0,0" Text="{x:Bind User.ScreenName}" FontWeight="Bold" />
-                        <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" FontFamily="Microsoft Yahei UI" Foreground="#CCCCCC" FontSize="15"  Grid.Row="1" Padding="8,4,0,0" Text="{x:Bind CreateTime,Converter={StaticResource TimeConverter}}" />
+                        <TextBlock  FontSize="18" DataContext="{x:Bind User}" Style="{ThemeResource BodyTextBlockStyle}" Padding="8,4,0,0" Text="{x:Bind User.ScreenName}" FontWeight="Bold" />
+                        <TextBlock Style="{ThemeResource CaptionTextBlockStyle}"  Foreground="#CCCCCC" FontSize="15"  Grid.Row="1" Padding="8,4,0,0" Text="{x:Bind CreateTime,Converter={StaticResource TimeConverter}}" />
                     </Grid>
                 </Grid>
                 <Grid Grid.Column="2" Grid.Row="1" Padding="8,4,8,4">
@@ -65,15 +65,15 @@
                     <controls:WeiboImageList PictureClick="WeiboImageList_PictureClick" Visibility="{x:Bind Converter={StaticResource ImageModeConverter}}" ItemsSource="{x:Bind PicUrls}" />
                     <controls:WeiboTextBlock UserClick="WeiboTextBlock_UserClick" TopicClick="WeiboTextBlock_TopicClick" Grid.Row="1" Text="{x:Bind Text}" />
                 </Grid>
-                <Grid DataContext="{x:Bind RetweetedStatus}" Margin="8,4" Padding="8,4" Grid.Column="2" BorderBrush="#CCCCCC" Grid.Row="2" Visibility="{x:Bind RetweetedStatus,Converter={StaticResource NullToVisibilityConverter}}" BorderThickness="1">
+                <Grid DataContext="{x:Bind RetweetedStatus}" Margin="8,4" Padding="8,4" Grid.Column="2" BorderBrush="{StaticResource SplitlineColor}" Grid.Row="2" Visibility="{x:Bind RetweetedStatus,Converter={StaticResource NullToVisibilityConverter}}" BorderThickness="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
-                    <TextBlock FontFamily="Microsoft Yahei UI"  DataContext="{x:Bind RetweetedStatus.User}" Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind RetweetedStatus.User.ScreenName}" FontWeight="Bold" />
+                    <TextBlock   DataContext="{x:Bind RetweetedStatus.User}" Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind RetweetedStatus.User.ScreenName}" FontWeight="Bold" />
                     <controls:WeiboImageList PictureClick="WeiboImageList_PictureClick" Grid.Row="1" Visibility="{x:Bind Converter={StaticResource ImageModeConverter}}" ItemsSource="{x:Bind RetweetedStatus.PicUrls}" />
-                    <controls:WeiboTextBlock FontFamily="Microsoft Yahei UI"  UserClick="WeiboTextBlock_UserClick" TopicClick="WeiboTextBlock_TopicClick"  Grid.Row="2" Text="{x:Bind RetweetedStatus.Text}" />
+                    <controls:WeiboTextBlock   UserClick="WeiboTextBlock_UserClick" TopicClick="WeiboTextBlock_TopicClick"  Grid.Row="2" Text="{x:Bind RetweetedStatus.Text}" />
                 </Grid>
                 <Grid Padding="8,5,0,12" Grid.Column="2" Grid.Row="3">
                     <StackPanel Orientation="Horizontal">

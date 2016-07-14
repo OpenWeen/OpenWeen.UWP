@@ -71,14 +71,17 @@ namespace OpenWeen.UWP.View
             catch (UriFormatException)
             {
                 await new MessageDialog("请输入正确的参数内容").ShowAsync();
+                return;
             }
             catch (FileNotFoundException)
             {
                 //user can not connect to the auth page and close the auth page
+                return;
             }
             catch (UnauthorizedAccessException)
             {
                 await new MessageDialog("登陆失败").ShowAsync();
+                return;
             }
             var sit = new SitbackAndRelaxDialog();
             var sitTask = sit.ShowAsync();

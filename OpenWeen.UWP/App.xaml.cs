@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
+using Microsoft.HockeyApp;
 using OpenWeen.UWP.Common;
 using OpenWeen.UWP.Common.Controls;
 using OpenWeen.UWP.Shared.Common;
@@ -48,20 +49,19 @@ namespace OpenWeen.UWP
                 this.DebugSettings.EnableFrameRateCounter = true;
             }
 #endif
-            //Microsoft.HockeyApp.HockeyClient.Current.Configure(HockeyAppKey.ApiKey);
+            HockeyClient.Current.Configure(HockeyAppKey.ApiKey);
             if (StaticResource.IsPhone)
             {
-                var statusBar = Type.GetType("Windows.UI.ViewManagement.StatusBar, Windows.Phone.PhoneContract, Culture=neutral, PublicKeyToken=null, ContentType=WindowsRuntime").GetMethod("GetForCurrentView").Invoke(null, null);
-                statusBar.GetType().GetProperty("BackgroundColor").SetValue(statusBar, ((SolidColorBrush)Resources["AppTheme"]).Color);
-                statusBar.GetType().GetProperty("BackgroundOpacity").SetValue(statusBar, 1d);
-                statusBar.GetType().GetProperty("ForegroundColor").SetValue(statusBar, Colors.White);
+                //StatusBar.GetForCurrentView().BackgroundColor = ((SolidColorBrush)Resources["AppTheme"]).Color;
+                //StatusBar.GetForCurrentView().BackgroundOpacity = 1d;
+                //StatusBar.GetForCurrentView().ForegroundColor = Colors.White;
             }
             else
             {
                 ApplicationView.GetForCurrentView().TitleBar.BackgroundColor = ((SolidColorBrush)Resources["AppTheme"]).Color;
                 ApplicationView.GetForCurrentView().TitleBar.ButtonBackgroundColor = ((SolidColorBrush)Resources["AppTheme"]).Color;
             }
-            ApplicationView.GetForCurrentView().SetDesiredBoundsMode(ApplicationViewBoundsMode.UseCoreWindow);
+            //ApplicationView.GetForCurrentView().SetDesiredBoundsMode(ApplicationViewBoundsMode.UseCoreWindow);
 
             Frame rootFrame = Window.Current.Content as Frame;
             if (rootFrame == null)

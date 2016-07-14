@@ -28,6 +28,14 @@ namespace OpenWeen.UWP.Common.Controls
             InitSize();
             Window.Current.SizeChanged += Current_SizeChanged;
             DisplayInformation.GetForCurrentView().OrientationChanged += ExtendedSplash_OrientationChanged;
+            Closed += ImageViewDialog_Closed;
+        }
+
+        private void ImageViewDialog_Closed(ContentDialog sender, ContentDialogClosedEventArgs args)
+        {
+            DisplayInformation.GetForCurrentView().OrientationChanged -= ExtendedSplash_OrientationChanged;
+            Window.Current.SizeChanged -= Current_SizeChanged;
+            Closed -= ImageViewDialog_Closed;
         }
 
         private void ExtendedSplash_OrientationChanged(DisplayInformation sender, object args)
@@ -47,7 +55,6 @@ namespace OpenWeen.UWP.Common.Controls
             Window.Current.SizeChanged -= Current_SizeChanged;
             Hide();
         }
-        
         private async void InitSize()
         {
             MinHeight = (Window.Current.Content as Frame).ActualHeight;
@@ -59,7 +66,7 @@ namespace OpenWeen.UWP.Common.Controls
         {
             await Window.Current.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
-                var img = MoreVisualTreeHelper.GetObject<Image>(flipView.ItemContainerGenerator.ContainerFromItem(flipView.SelectedItem));
+                var img = MoreVisualTreeHelper.GetObject<Image>(flipView.ContainerFromItem(flipView.SelectedItem));
                 if (img != null)
                 {
                     img.Width = (Window.Current.Content as Frame).ActualWidth;

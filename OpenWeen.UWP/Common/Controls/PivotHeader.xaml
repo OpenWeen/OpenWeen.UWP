@@ -10,7 +10,7 @@
     VerticalAlignment="Center"
     d:DesignHeight="300"
     d:DesignWidth="400">
-    <ItemsControl ItemsSource="{x:Bind ItemsSource}" Tapped="ItemsControl_Tapped">
+    <ItemsControl ItemsSource="{x:Bind ItemsSource}" DoubleTapped="ItemsControl_DoubleTapped" Tapped="ItemsControl_Tapped">
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
                 <StackPanel Orientation="Horizontal" />
@@ -24,7 +24,7 @@
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
                     <SymbolIcon Symbol="{x:Bind Icon}" />
-                    <TextBlock Grid.Row="1" Text="{x:Bind Text}" />
+                    <TextBlock Visibility="Collapsed" Grid.Row="1" Text="{x:Bind Text}" />
                     <Grid Visibility="{x:Bind UnreadCount,Mode=OneWay,Converter={StaticResource UnreadCountToVisibilityConverter}}" Width="10" Height="10" HorizontalAlignment="Right" VerticalAlignment="Top">
                         <Ellipse Fill="Red" />
                         <TextBlock FontSize="8" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{x:Bind UnreadCount,Mode=OneWay}" />
