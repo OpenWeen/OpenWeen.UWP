@@ -8,6 +8,21 @@ namespace OpenWeen.UWP.Shared.Common
 {
     internal static class Settings
     {
+        public static bool EnableWaterFall
+        {
+            get { return GetSetting(SettingNames.EnableWaterFall, false); }
+            set { SetSetting(SettingNames.EnableWaterFall, value); }
+        }
+        public static bool IsMergeMentionAndComment
+        {
+            get { return GetSetting(SettingNames.IsMergeMentionAndComment, false); }
+            set { SetSetting(SettingNames.IsMergeMentionAndComment, value); }
+        }
+        public static int LoadCount
+        {
+            get { return GetSetting(SettingNames.LoadCount, 20); }
+            set { SetSetting(SettingNames.LoadCount, value); }
+        }
         public static double ImageSize
         {
             get
@@ -40,6 +55,11 @@ namespace OpenWeen.UWP.Shared.Common
             {
                 SetListSetting(SettingNames.BlockText, value);
             }
+        }
+        public static int SelectedUserIndex
+        {
+            get { return GetSetting(SettingNames.SelectedUserIndex, 0); }
+            set { SetSetting(SettingNames.SelectedUserIndex, value); }
         }
         public static IEnumerable<string> AccessToken
         {

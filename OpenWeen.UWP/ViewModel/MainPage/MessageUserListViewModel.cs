@@ -11,7 +11,7 @@ namespace OpenWeen.UWP.ViewModel.MainPage
     {
         protected override async Task<IEnumerable<DirectMessageUserModel>> LoadMoreOverride()
         {
-            var item = await Core.Api.DirectMessages.GetUserList(cursor: _pageCount);
+            var item = await Core.Api.DirectMessages.GetUserList(cursor: _pageCount, count: LoadCount);
             _pageCount = int.Parse(item.NextCursor);
             return item.UserList;
         }
@@ -20,7 +20,7 @@ namespace OpenWeen.UWP.ViewModel.MainPage
         {
             _pageCount = 0;
             await Core.Api.Remind.ClearUnRead(Core.Api.RemindType.Dm);
-            var item = await Core.Api.DirectMessages.GetUserList(cursor: _pageCount);
+            var item = await Core.Api.DirectMessages.GetUserList(cursor: _pageCount, count: LoadCount);
             _pageCount = int.Parse(item.NextCursor);
             return Tuple.Create(item.TotalNumber, item.UserList);
         }

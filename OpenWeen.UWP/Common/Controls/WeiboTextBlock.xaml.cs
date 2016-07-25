@@ -198,30 +198,18 @@ namespace OpenWeen.UWP.Common.Controls
                                     else if (item.AnnotationList?.FirstOrDefault()?.Item?.ObjectType == "video")
                                     {
                                         if (item.AnnotationList?.FirstOrDefault()?.Item?.OriginalUrl != null)
-                                        {
                                             await new WeiboVideoPlayer(item?.UrlLong, item.AnnotationList?.FirstOrDefault().Item.OriginalUrl).ShowAsync();
-                                        }
-                                        else if(item.AnnotationList?.FirstOrDefault()?.Item?.Stream?.Url != null)
-                                        {
+                                        else if (item.AnnotationList?.FirstOrDefault()?.Item?.Stream?.Url != null)
                                             await new WeiboVideoPlayer(item?.UrlLong, item.AnnotationList?.FirstOrDefault()?.Item?.Stream?.Url).ShowAsync();
-                                        }
                                         else
-                                        {
-                                            await Launcher.LaunchUriAsync(new Uri(item?.UrlLong));
-                                        }
-                                        
+                                            throw new NotSupportedException();
                                     }
                                     else
-                                    {
-                                        await Launcher.LaunchUriAsync(new Uri(item?.UrlLong));
-                                        break;
-                                    }
-
+                                        throw new NotSupportedException();
                                 }
                                 break;
                             default:
-                                await Launcher.LaunchUriAsync(new Uri(item?.UrlLong));
-                                break;
+                                throw new NotSupportedException();
                         }
                     }
                     catch

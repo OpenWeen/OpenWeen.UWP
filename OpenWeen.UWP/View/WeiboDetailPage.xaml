@@ -18,8 +18,8 @@
             <PivotItem Header="详情">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <Grid>
-                        <ProgressBar IsIndeterminate="{x:Bind WeiboDetailVM.IsLoading,Mode=OneWay}" Visibility="{x:Bind WeiboDetailVM.IsLoading,Mode=OneWay,Converter={StaticResource BoolToVisibilityConverter}}" Padding="16" Background="Transparent" VerticalAlignment="Top"/>
-                        <Grid Visibility="{x:Bind WeiboDetailVM.IsLoading,Mode=OneWay,Converter={StaticResource BoolToVisibilityConverter},ConverterParameter=true}" Tapped="Grid_Tapped">
+                        <ProgressBar IsIndeterminate="{Binding ViewModel.Item.IsNotCompleted,Mode=OneWay}" Visibility="{Binding ViewModel.Item.IsNotCompleted,Mode=OneWay,Converter={StaticResource BoolToVisibilityConverter}}" Padding="16" Background="Transparent" VerticalAlignment="Top"/>
+                        <Grid Visibility="{Binding ViewModel.Item.IsNotCompleted,Mode=OneWay,Converter={StaticResource BoolToVisibilityConverter},ConverterParameter=true}" Tapped="Grid_Tapped">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto" />
                                 <RowDefinition Height="auto" />
@@ -37,9 +37,9 @@
                                     <ColumnDefinition Width="8" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Ellipse DataContext="{x:Bind WeiboDetailVM.Item.User,Mode=OneWay}" Width="50" Height="50">
+                                <Ellipse DataContext="{x:Bind ViewModel.Item.Result.User,Mode=OneWay}" Width="50" Height="50">
                                     <Ellipse.Fill>
-                                        <ImageBrush ImageSource="{x:Bind WeiboDetailVM.Item.User.ProfileImageUrl,Mode=OneWay}" />
+                                        <ImageBrush ImageSource="{x:Bind ViewModel.Item.Result.User.ProfileImageUrl,Mode=OneWay}" />
                                     </Ellipse.Fill>
                                 </Ellipse>
                                 <Grid Grid.Column="2">
@@ -47,8 +47,8 @@
                                         <RowDefinition Height="*" />
                                         <RowDefinition Height="*" />
                                     </Grid.RowDefinitions>
-                                    <TextBlock DataContext="{x:Bind WeiboDetailVM.Item.User,Mode=OneWay}" Style="{ThemeResource BodyTextBlockStyle}" Padding="8,4" Text="{x:Bind WeiboDetailVM.Item.User.ScreenName,Mode=OneWay}" FontWeight="Bold" />
-                                    <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Foreground="LightGray" Grid.Row="1" Padding="8,4" Text="{x:Bind WeiboDetailVM.Item.CreateTime,Mode=OneWay,Converter={StaticResource TimeConverter}}" />
+                                    <TextBlock DataContext="{x:Bind ViewModel.Item.Result.User,Mode=OneWay}" Style="{ThemeResource BodyTextBlockStyle}" Padding="8,4" Text="{x:Bind ViewModel.Item.Result.User.ScreenName,Mode=OneWay}" FontWeight="Bold" />
+                                    <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Foreground="LightGray" Grid.Row="1" Padding="8,4" Text="{x:Bind ViewModel.Item.Result.CreateTime,Mode=OneWay,Converter={StaticResource TimeConverter}}" />
                                 </Grid>
                             </Grid>
                             <Grid Grid.Column="2" Grid.Row="1" Padding="8,4,8,4">
@@ -56,28 +56,28 @@
                                     <RowDefinition Height="auto" />
                                     <RowDefinition Height="auto" />
                                 </Grid.RowDefinitions>
-                                <controls:WeiboImageList PictureClick="WeiboImageList_PictureClick" Visibility="{x:Bind WeiboDetailVM.Item.PicUrls,Mode=OneWay,Converter={StaticResource NullToVisibilityConverter}}" ItemsSource="{x:Bind WeiboDetailVM.Item.PicUrls,Mode=OneWay}" />
-                                <controls:WeiboTextBlock IsTextSelectionEnabled="True" DataContext="{x:Bind WeiboDetailVM.Item,Mode=OneWay}" UserClick="{x:Bind ActionModel.UserClick}" TopicClick="{x:Bind ActionModel.TopicClick}" Grid.Row="1" Text="{x:Bind WeiboDetailVM.Item.Text,Mode=OneWay}" />
+                                <controls:WeiboImageList PictureClick="WeiboImageList_PictureClick" Visibility="{x:Bind ViewModel.Item.Result.PicUrls,Mode=OneWay,Converter={StaticResource NullToVisibilityConverter}}" ItemsSource="{x:Bind ViewModel.Item.Result.PicUrls,Mode=OneWay}" />
+                                <controls:WeiboTextBlock IsTextSelectionEnabled="True" DataContext="{x:Bind ViewModel.Item,Mode=OneWay}" UserClick="{x:Bind ActionModel.UserClick}" TopicClick="{x:Bind ActionModel.TopicClick}" Grid.Row="1" Text="{x:Bind ViewModel.Item.Result.Text,Mode=OneWay}" />
                             </Grid>
-                            <Grid DataContext="{x:Bind WeiboDetailVM.Item.RetweetedStatus,Mode=OneWay}" Margin="8,4" Padding="8,4" Grid.Column="2" BorderBrush="{StaticResource SplitlineColor}" Grid.Row="2" Visibility="{x:Bind WeiboDetailVM.Item.RetweetedStatus,Mode=OneWay,Converter={StaticResource NullToVisibilityConverter}}" BorderThickness="1">
+                            <Grid DataContext="{x:Bind ViewModel.Item.Result.RetweetedStatus,Mode=OneWay}" Margin="8,4" Padding="8,4" Grid.Column="2" BorderBrush="{StaticResource SplitlineColor}" Grid.Row="2" Visibility="{x:Bind ViewModel.Item.Result.RetweetedStatus,Mode=OneWay,Converter={StaticResource NullToVisibilityConverter}}" BorderThickness="1">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto" />
                                     <RowDefinition Height="auto" />
                                     <RowDefinition Height="auto" />
                                 </Grid.RowDefinitions>
-                                <TextBlock DataContext="{x:Bind WeiboDetailVM.Item.RetweetedStatus.User,Mode=OneWay}" Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind WeiboDetailVM.Item.RetweetedStatus.User.ScreenName,Mode=OneWay}" FontWeight="Bold" />
-                                <controls:WeiboImageList PictureClick="WeiboImageList_PictureClick" Grid.Row="1" Visibility="{x:Bind WeiboDetailVM.Item.RetweetedStatus.PicUrls,Mode=OneWay,Converter={StaticResource NullToVisibilityConverter}}" ItemsSource="{x:Bind WeiboDetailVM.Item.RetweetedStatus.PicUrls,Mode=OneWay}" />
-                                <controls:WeiboTextBlock UserClick="{x:Bind ActionModel.UserClick}" TopicClick="{x:Bind ActionModel.TopicClick}"  Grid.Row="2" Text="{x:Bind WeiboDetailVM.Item.RetweetedStatus.Text,Mode=OneWay}" />
+                                <TextBlock DataContext="{x:Bind ViewModel.Item.Result.RetweetedStatus.User,Mode=OneWay}" Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind ViewModel.Item.Result.RetweetedStatus.User.ScreenName,Mode=OneWay}" FontWeight="Bold" />
+                                <controls:WeiboImageList PictureClick="WeiboImageList_PictureClick" Grid.Row="1" Visibility="{x:Bind ViewModel.Item.Result.RetweetedStatus.PicUrls,Mode=OneWay,Converter={StaticResource NullToVisibilityConverter}}" ItemsSource="{x:Bind ViewModel.Item.Result.RetweetedStatus.PicUrls,Mode=OneWay}" />
+                                <controls:WeiboTextBlock UserClick="{x:Bind ActionModel.UserClick}" TopicClick="{x:Bind ActionModel.TopicClick}"  Grid.Row="2" Text="{x:Bind ViewModel.Item.Result.RetweetedStatus.Text,Mode=OneWay}" />
                             </Grid>
                             <Grid Padding="8,4" Grid.Column="2" Grid.Row="3">
                                 <StackPanel Orientation="Horizontal">
                                     <SymbolIcon Symbol="Like" Foreground="LightGray"/>
-                                    <TextBlock Foreground="Gray" Padding="8,0,12,0" Text="{x:Bind WeiboDetailVM.Item.AttitudesCount,Mode=OneWay}"/>
+                                    <TextBlock Foreground="Gray" Padding="8,0,12,0" Text="{x:Bind ViewModel.Item.Result.AttitudesCount,Mode=OneWay}"/>
                                     <SymbolIcon Tapped="Reshare_Tapped" Foreground="LightGray" Symbol="ReShare" />
-                                    <TextBlock Foreground="DarkGray" Padding="8,0,12,0" Text="{x:Bind WeiboDetailVM.Item.RepostsCount,Mode=OneWay}" />
+                                    <TextBlock Foreground="DarkGray" Padding="8,0,12,0" Text="{x:Bind ViewModel.Item.Result.RepostsCount,Mode=OneWay}" />
                                     <SymbolIcon Tapped="Comment_Tapped" Foreground="LightGray" Symbol="Comment" />
-                                    <TextBlock Foreground="DarkGray" Padding="8,0,12,0" Text="{x:Bind WeiboDetailVM.Item.CommentsCount,Mode=OneWay}" />
-                                    <SymbolIcon x:Name="FavorIcon" Tapped="Favor_Tapped" Foreground="{x:Bind WeiboDetailVM.Item.Favorited,Mode=OneWay,Converter={StaticResource FavorToColorConverter}}" Symbol="Favorite" />
+                                    <TextBlock Foreground="DarkGray" Padding="8,0,12,0" Text="{x:Bind ViewModel.Item.Result.CommentsCount,Mode=OneWay}" />
+                                    <SymbolIcon x:Name="FavorIcon" Tapped="Favor_Tapped" Foreground="{x:Bind ViewModel.Item.Result.Favorited,Mode=OneWay,Converter={StaticResource FavorToColorConverter}}" Symbol="Favorite" />
                                 </StackPanel>
                             </Grid>
                         </Grid>
@@ -85,11 +85,28 @@
                 </ScrollViewer>
             </PivotItem>
             <PivotItem Header="转发">
-                <controls:WeiboDetailRepostList Repost="{x:Bind ActionModel.Repost}" Comment="{x:Bind ActionModel.Comment}" Favor="{x:Bind ActionModel.Favor}" IsLoading="{x:Bind WeiboDetailVM.Repost.IsLoading,Mode=OneWay}" LoadMore="{x:Bind WeiboDetailVM.Repost.LoadMore}" UserClick="{x:Bind ActionModel.UserClick}" ItemsSource="{x:Bind WeiboDetailVM.Repost.WeiboList,Mode=OneWay}" />
+                <controls:WeiboListView IsRepostList="True" Repost="{x:Bind ActionModel.Repost}" Comment="{x:Bind ActionModel.Comment}" Favor="{x:Bind ActionModel.Favor}" IsLoading="{x:Bind ViewModel.Repost.IsLoading,Mode=OneWay}" LoadMore="{x:Bind ViewModel.Repost.LoadMore}" UserClick="{x:Bind ActionModel.UserClick}" ItemsSource="{x:Bind ViewModel.Repost.WeiboList,Mode=OneWay}" />
             </PivotItem>
             <PivotItem Header="评论">
-                <controls:WeiboDetailRepostList Repost="{x:Bind ActionModel.Repost}" Comment="{x:Bind ActionModel.Comment}" Favor="{x:Bind ActionModel.Favor}" IsLoading="{x:Bind WeiboDetailVM.Comment.IsLoading,Mode=OneWay}" LoadMore="{x:Bind WeiboDetailVM.Comment.LoadMore}" UserClick="{x:Bind ActionModel.UserClick}" ItemsSource="{x:Bind WeiboDetailVM.Comment.WeiboList,Mode=OneWay}" />
+                <controls:WeiboListView IsRepostList="True" Repost="{x:Bind ActionModel.Repost}" Comment="{x:Bind ActionModel.Comment}" Favor="{x:Bind ActionModel.Favor}" IsLoading="{x:Bind ViewModel.Comment.IsLoading,Mode=OneWay}" LoadMore="{x:Bind ViewModel.Comment.LoadMore}" UserClick="{x:Bind ActionModel.UserClick}" ItemsSource="{x:Bind ViewModel.Comment.WeiboList,Mode=OneWay}" />
             </PivotItem>
         </Pivot>
     </Grid>
+    <Page.BottomAppBar>
+        <CommandBar Visibility="{Binding ViewModel.Item.IsNotCompleted,Mode=OneWay,Converter={StaticResource BoolToVisibilityConverter},ConverterParameter=true}" IsSticky="True" IsOpen="True">
+            <CommandBar.Style>
+                <Style TargetType="CommandBar">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                </Style>
+            </CommandBar.Style>
+            <AppBarButton Icon="Comment" Label="评论" Click="{x:Bind ViewModel.NewComment}"/>
+            <AppBarButton Icon="Send" Label="转发" Click="{x:Bind ViewModel.NewRepost}"/>
+            <CommandBar.Content>
+                <Grid Margin="20,0,0,0">
+                    <TextBox Text="{x:Bind ViewModel.SendText,Mode=TwoWay}"/>
+                </Grid>
+            </CommandBar.Content>
+        </CommandBar>
+    </Page.BottomAppBar>
 </Page>

@@ -15,13 +15,13 @@ namespace OpenWeen.UWP.ViewModel.MainPage
 
             if (_groupID == -1)
             {
-                var list = (await Core.Api.Statuses.Home.GetTimeline(max_id: WeiboList[WeiboList.Count - 1].ID)).Statuses;
+                var list = (await Core.Api.Statuses.Home.GetTimeline(max_id: WeiboList[WeiboList.Count - 1].ID, count: LoadCount)).Statuses;
                 list.RemoveAt(0);
                 return list;
             }
             else
             {
-                var list = (await Core.Api.Friendships.Groups.GetGroupTimeline(_groupID.ToString(), max_id: WeiboList[WeiboList.Count - 1].ID)).Statuses;
+                var list = (await Core.Api.Friendships.Groups.GetGroupTimeline(_groupID.ToString(), max_id: WeiboList[WeiboList.Count - 1].ID, count: LoadCount)).Statuses;
                 list.RemoveAt(0);
                 return list;
             }
@@ -31,12 +31,12 @@ namespace OpenWeen.UWP.ViewModel.MainPage
         {
             if (_groupID == -1)
             {
-                var item = await Core.Api.Statuses.Home.GetTimeline();
+                var item = await Core.Api.Statuses.Home.GetTimeline(count: LoadCount);
                 return Tuple.Create(item.TotalNumber, item.Statuses);
             }
             else
             {
-                var item = await Core.Api.Friendships.Groups.GetGroupTimeline(_groupID.ToString());
+                var item = await Core.Api.Friendships.Groups.GetGroupTimeline(_groupID.ToString(), count: LoadCount);
                 return Tuple.Create(item.TotalNumber, item.Statuses);
             }
         }

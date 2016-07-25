@@ -140,17 +140,14 @@
     <Compile Include="Common\Controls\UserList.xaml.cs">
       <DependentUpon>UserList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Common\Controls\WeiboCommentList.xaml.cs">
-      <DependentUpon>WeiboCommentList.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Common\Controls\WeiboDetailRepostList.xaml.cs">
-      <DependentUpon>WeiboDetailRepostList.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Common\Controls\WeiboImageList.xaml.cs">
       <DependentUpon>WeiboImageList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\Controls\WeiboList.xaml.cs">
       <DependentUpon>WeiboList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Common\Controls\WeiboListView.xaml.cs">
+      <DependentUpon>WeiboListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\Controls\WeiboTextBlock.xaml.cs">
       <DependentUpon>WeiboTextBlock.xaml</DependentUpon>
@@ -158,11 +155,16 @@
     <Compile Include="Common\Controls\WeiboVideoPlayer.xaml.cs">
       <DependentUpon>WeiboVideoPlayer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\Controls\WeiboWaterFall.xaml.cs">
+      <DependentUpon>WeiboWaterFall.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Common\Converter\BlockToVisibilityConverter.cs" />
     <Compile Include="Common\Converter\BoolToVisibilityConverter.cs" />
+    <Compile Include="Common\Converter\DeleteVisibilityConverter.cs" />
     <Compile Include="Common\Converter\FavorToColorConverter.cs" />
     <Compile Include="Common\Converter\ImageModeConverter.cs" />
     <Compile Include="Common\Converter\ImageSizeConverter.cs" />
+    <Compile Include="Common\Converter\IntDoubleConverter.cs" />
     <Compile Include="Common\Converter\NullToVisibilityConverter.cs" />
     <Compile Include="Common\Converter\TimeConverter.cs" />
     <Compile Include="Common\Converter\UnreadCountToVisibilityConverter.cs" />
@@ -175,13 +177,16 @@
     <Compile Include="Common\HockeyAppKey.cs" />
     <Compile Include="Common\MessageDataTemplateSelector.cs" />
     <Compile Include="Common\StaticResource.cs" />
+    <Compile Include="Common\WeiboListTemplateSelector.cs" />
     <Compile Include="Model\FollowModel.cs" />
     <Compile Include="Model\HeaderModel.cs" />
     <Compile Include="Model\ImageModel.cs" />
+    <Compile Include="Model\UserListModel.cs" />
     <Compile Include="Model\WeiboActionModel.cs" />
     <Compile Include="ViewModel\MainPage\CommentMentionViewModel.cs" />
     <Compile Include="ViewModel\MainPage\CommentViewModel.cs" />
     <Compile Include="ViewModel\MainPage\FavorViewModel.cs" />
+    <Compile Include="ViewModel\MainPage\MergeMessageViewModel.cs" />
     <Compile Include="ViewModel\SearchPage\SearchPageViewModel.cs" />
     <Compile Include="ViewModel\SearchPage\SearchUserList.cs" />
     <Compile Include="ViewModel\SearchPage\SearchWeiboList.cs" />
@@ -2135,6 +2140,7 @@
     <Content Include="Assets\SplashScreen.scale-125.png" />
     <Content Include="Assets\SplashScreen.scale-150.png" />
     <Content Include="Assets\SplashScreen.scale-400.png" />
+    <Content Include="FodyWeavers.xml" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
     <Content Include="Assets\Square150x150Logo.scale-200.png" />
@@ -2184,14 +2190,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Common\Controls\WeiboCommentList.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Common\Controls\WeiboDetailRepostList.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Common\Controls\WeiboImageList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -2200,11 +2198,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Common\Controls\WeiboListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Common\Controls\WeiboTextBlock.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Common\Controls\WeiboVideoPlayer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Common\Controls\WeiboWaterFall.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -2250,6 +2256,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\OpenWeen.Core\OpenWeen.Core\OpenWeen.Core.csproj">
+      <Project>{6acabb58-681f-413f-b402-56a36e53263e}</Project>
+      <Name>OpenWeen.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OpenWeen.UWP.BackgroundTask\OpenWeen.UWP.BackgroundTask.csproj">
       <Project>{62fc5331-972f-4599-b405-aabd3b4512ad}</Project>
       <Name>OpenWeen.UWP.BackgroundTask</Name>

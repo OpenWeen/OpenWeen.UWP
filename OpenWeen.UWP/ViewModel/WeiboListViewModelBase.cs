@@ -9,11 +9,13 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using OpenWeen.Core.Model;
 using OpenWeen.UWP.Common.Controls;
+using OpenWeen.UWP.Shared.Common;
 using Windows.UI.Popups;
 namespace OpenWeen.UWP.ViewModel
 {
     public abstract class WeiboListViewModelBase<T> : INotifyPropertyChanged 
     {
+        protected int LoadCount => Settings.LoadCount;
         public ObservableCollection<T> WeiboList { get; private set; } = new ObservableCollection<T>();
         protected int _pageCount = 1;
         protected bool _hasMore

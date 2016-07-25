@@ -13,14 +13,14 @@ namespace OpenWeen.UWP.ViewModel.UserPage
 
         protected override async Task<IEnumerable<MessageModel>> LoadMoreOverride()
         {
-            var list = (await Core.Api.Statuses.UserTimeline.GetUserTimeline(Uid, max_id: WeiboList[WeiboList.Count - 1].ID)).Statuses;
+            var list = (await Core.Api.Statuses.UserTimeline.GetUserTimeline(Uid, count: LoadCount, max_id: WeiboList[WeiboList.Count - 1].ID)).Statuses;
             list.RemoveAt(0);
             return list;
         }
 
         protected override async Task<Tuple<int, List<MessageModel>>> RefreshOverride()
         {
-            var item = await Core.Api.Statuses.UserTimeline.GetUserTimeline(Uid);
+            var item = await Core.Api.Statuses.UserTimeline.GetUserTimeline(Uid, count: LoadCount);
             return Tuple.Create(item.TotalNumber, item.Statuses);
         }
     }

@@ -50,10 +50,10 @@ namespace OpenWeen.UWP.BackgroundTask
         {
             try
             {
-                Core.Api.Entity.AccessToken = SettingHelper.GetListSetting<string>(SettingNames.AccessToken, isThrowException: true).FirstOrDefault();
+                Core.Api.Entity.AccessToken = SettingHelper.GetListSetting<string>(SettingNames.AccessToken, isThrowException: true).ToList()[Settings.SelectedUserIndex];
                 return true;
             }
-            catch (SettingException)
+            catch
             {
                 return false;
             }

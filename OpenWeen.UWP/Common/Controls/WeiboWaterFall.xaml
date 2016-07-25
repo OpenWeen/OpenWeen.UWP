@@ -1,5 +1,5 @@
 ﻿<UserControl
-    x:Class="OpenWeen.UWP.Common.Controls.WeiboList"
+    x:Class="OpenWeen.UWP.Common.Controls.WeiboWaterFall"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:OpenWeen.UWP.Common.Controls"
@@ -10,6 +10,6 @@
     d:DesignWidth="400">
 
     <Grid>
-        
+
     </Grid>
 </UserControl>

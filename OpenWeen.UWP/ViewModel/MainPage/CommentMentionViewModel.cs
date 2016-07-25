@@ -9,7 +9,7 @@ namespace OpenWeen.UWP.ViewModel.MainPage
     {
         protected override async Task<IEnumerable<CommentModel>> LoadMoreOverride()
         {
-            var list = (await Core.Api.Comments.GetCommentMentions(max_id: WeiboList[WeiboList.Count - 1].ID)).Comments;
+            var list = (await Core.Api.Comments.GetCommentMentions(max_id: WeiboList[WeiboList.Count - 1].ID, count: LoadCount)).Comments;
             list.RemoveAt(0);
             return list;
         }
@@ -17,7 +17,7 @@ namespace OpenWeen.UWP.ViewModel.MainPage
         protected override async Task<Tuple<int, List<CommentModel>>> RefreshOverride()
         {
             await Core.Api.Remind.ClearUnRead(Core.Api.RemindType.MentionCmt);
-            var item = await Core.Api.Comments.GetCommentMentions();
+            var item = await Core.Api.Comments.GetCommentMentions(count: LoadCount);
             return Tuple.Create(item.TotalNumber, item.Comments);
         }
     }

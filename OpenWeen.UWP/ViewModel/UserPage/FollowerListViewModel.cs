@@ -16,7 +16,7 @@ namespace OpenWeen.UWP.ViewModel.UserPage
 
         protected override async Task<IEnumerable<UserModel>> LoadMoreOverride()
         {
-            var item = await Core.Api.Friendships.Friends.GetFollowers(UID, cursor: _pageCount);
+            var item = await Core.Api.Friendships.Friends.GetFollowers(UID, cursor: _pageCount, count: LoadCount);
             _pageCount = int.Parse(item.NextCursor);
             return item.Users;
         }
@@ -26,7 +26,7 @@ namespace OpenWeen.UWP.ViewModel.UserPage
             if (UID == StaticResource.Uid)
                 await Core.Api.Remind.ClearUnRead(Core.Api.RemindType.Follower);
             _pageCount = 0;
-            var item = await Core.Api.Friendships.Friends.GetFollowers(UID, cursor: _pageCount);
+            var item = await Core.Api.Friendships.Friends.GetFollowers(UID, cursor: _pageCount, count: LoadCount);
             _pageCount = int.Parse(item.NextCursor);
             return Tuple.Create(item.TotalNumber, item.Users);
         }

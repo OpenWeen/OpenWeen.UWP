@@ -61,16 +61,13 @@ namespace OpenWeen.UWP
                 ApplicationView.GetForCurrentView().TitleBar.BackgroundColor = ((SolidColorBrush)Resources["AppTheme"]).Color;
                 ApplicationView.GetForCurrentView().TitleBar.ButtonBackgroundColor = ((SolidColorBrush)Resources["AppTheme"]).Color;
             }
-            //ApplicationView.GetForCurrentView().SetDesiredBoundsMode(ApplicationViewBoundsMode.UseCoreWindow);
-
             Frame rootFrame = Window.Current.Content as Frame;
             if (rootFrame == null)
             {
                 if (e.PreviousExecutionState != ApplicationExecutionState.Running)
                 {
                     bool loadState = (e.PreviousExecutionState == ApplicationExecutionState.Terminated);
-                    ExtendedSplash extendedSplash = new ExtendedSplash(e.SplashScreen, loadState);
-                    Window.Current.Content = extendedSplash;
+                    Window.Current.Content = new ExtendedSplash(e.SplashScreen, loadState);
                 }
             }
             Window.Current.Activate();

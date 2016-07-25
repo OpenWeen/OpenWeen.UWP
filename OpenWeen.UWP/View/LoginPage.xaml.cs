@@ -11,6 +11,9 @@ using Windows.Security.Authentication.Web;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
+using System.Linq;
+using Windows.UI.Core;
 
 // “空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=234238 上提供
 
@@ -65,8 +68,15 @@ namespace OpenWeen.UWP.View
                         throw new UnauthorizedAccessException();
                     }
                     SettingHelper.SetListSetting(SettingNames.AccessToken, new[] { token }, SetListSettingOption.AddIfExists);
+                    Settings.SelectedUserIndex = Settings.AccessToken.Count() - 1;
                     Core.Api.Entity.AccessToken = token;
                 }
+                var sit = new SitbackAndRelaxDialog();
+                var sitTask = sit.ShowAsync();
+                await InitUid();
+                sitTask.Cancel();
+                sit.Hide();
+                Frame.Navigate(typeof(MainPage));
             }
             catch (UriFormatException)
             {
@@ -83,16 +93,15 @@ namespace OpenWeen.UWP.View
                 await new MessageDialog("登陆失败").ShowAsync();
                 return;
             }
-            var sit = new SitbackAndRelaxDialog();
-            var sitTask = sit.ShowAsync();
-            await InitUid();
-            sitTask.Cancel();
-            sit.Hide();
-            Frame.Navigate(typeof(MainPage));
-            while (Frame.BackStack.Count > 0)
-            {
-                Frame.BackStack.RemoveAt(0);
-            }
+        }
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            Frame.BackStack.Clear();
+            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
+            var cahcesize = Frame.CacheSize;
+            Frame.CacheSize = 0;
+            Frame.CacheSize = cahcesize;
         }
 
         private async Task InitUid()

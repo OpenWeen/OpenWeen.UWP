@@ -14,5 +14,9 @@
         public const string IsMoreInfoNotifyEnable = nameof(IsMoreInfoNotifyEnable);
         public const string IsNightMode = nameof(IsNightMode);
         public const string IsOffImage = nameof(IsOffImage);
+        public const string SelectedUserIndex = nameof(SelectedUserIndex);
+        public const string LoadCount = nameof(LoadCount);
+        public const string IsMergeMentionAndComment = nameof(IsMergeMentionAndComment);
+        public const string EnableWaterFall = nameof(EnableWaterFall);
     }
 }

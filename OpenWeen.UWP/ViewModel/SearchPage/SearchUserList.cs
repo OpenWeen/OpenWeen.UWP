@@ -15,13 +15,13 @@ namespace OpenWeen.UWP.ViewModel.SearchPage
             _text = text;
             Refresh();
         }
-        protected override async Task<IEnumerable<UserModel>> LoadMoreOverride() => (await Core.Api.Search.Search.SearchUsers(_text, page: _pageCount++)).Users;
+        protected override async Task<IEnumerable<UserModel>> LoadMoreOverride() => (await Core.Api.Search.Search.SearchUsers(_text, page: _pageCount++, count: LoadCount)).Users;
 
         protected override async Task<Tuple<int, List<UserModel>>> RefreshOverride()
         {
             if (string.IsNullOrEmpty(_text))
                 return null;
-            return Tuple.Create(int.MaxValue, (await Core.Api.Search.Search.SearchUsers(_text, page: _pageCount++)).Users);//TODO:TotalNumber is wrong
+            return Tuple.Create(int.MaxValue, (await Core.Api.Search.Search.SearchUsers(_text, page: _pageCount++, count: LoadCount)).Users);//TODO:TotalNumber is wrong
         }
     }
 }

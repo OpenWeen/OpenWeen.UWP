@@ -30,12 +30,14 @@ namespace OpenWeen.UWP.ViewModel.MainPage
         public CommentMentionViewModel CommentMention { get; } = new CommentMentionViewModel();
         public FavorViewModel Favor { get; } = new FavorViewModel();
         public MessageUserListViewModel Message { get; } = new MessageUserListViewModel();
+        public MergeMessageViewModel MergeMessage { get; } = new MergeMessageViewModel();
         public UserModel User { get; private set; }
         public List<GroupModel> Groups { get; } = new List<GroupModel>()
         {
             new GroupModel() { ID = -1, Name = "全部分组" }
         };
         private int _groupSelectedIndex = 0;
+        private BackgroundTimer _timer;
 
         public int GroupSelectedIndex
         {
@@ -48,19 +50,17 @@ namespace OpenWeen.UWP.ViewModel.MainPage
         }
 
 
-        public List<HeaderModel> Header { get; } = new List<HeaderModel>()
-        {
-            new HeaderModel() { Icon = Symbol.Home, Text = "主页" },
-            new HeaderModel() { Icon = Symbol.Account, Text = "提及" },
-            new HeaderModel() { Icon = Symbol.Comment, Text = "评论" },
-            new HeaderModel() { Icon = Symbol.Comment, Text = "@评论" },
-            new HeaderModel() { Icon = Symbol.Favorite, Text = "收藏" },
-            new HeaderModel() { Icon = Symbol.Mail, Text = "私信" },
-        };
+        public List<HeaderModel> Header { get; private set; } 
 
-        public MainPageViewModel()
+        public static MainPageViewModel Instance { get; } = new MainPageViewModel();
+
+        private MainPageViewModel()
         {
-            if (Settings.NotifyDuration !=  NotifyDuration.Never)
+        }
+
+        internal void Initialization()
+        {
+            if (Settings.NotifyDuration != NotifyDuration.Never)
             {
                 var time = 1;
                 switch (Settings.NotifyDuration)
@@ -80,22 +80,59 @@ namespace OpenWeen.UWP.ViewModel.MainPage
                     default:
                         break;
                 }
-                var timer = new BackgroundTimer() { Interval = TimeSpan.FromMinutes(time) };
-                timer.Tick += Timer_Tick;
-                timer.Start();
+                if (_timer == null)
+                {
+                    _timer = new BackgroundTimer() { Interval = TimeSpan.FromMinutes(time) };
+                    _timer.Tick += Timer_Tick;
+                    _timer.Start();
+                }
             }
+            InitHeader();
             InitUser();
             InitAllList();
         }
 
-        private async void InitAllList()
+        internal void InitHeader()
+        {
+            if (Settings.IsMergeMentionAndComment)
+            {
+                Header = new List<HeaderModel>
+                {
+                    new HeaderModel() { Icon = Symbol.Home, Text = "主页" },
+                    new HeaderModel() { Icon = Symbol.Message, Text = "消息" },
+                    new HeaderModel() { Icon = Symbol.Favorite, Text = "收藏" },
+                    new HeaderModel() { Icon = Symbol.Mail, Text = "私信" },
+                };
+            }
+            else
+            {
+                Header = new List<HeaderModel>
+                {
+                    new HeaderModel() { Icon = Symbol.Home, Text = "主页" },
+                    new HeaderModel() { Icon = Symbol.Account, Text = "提及" },
+                    new HeaderModel() { Icon = Symbol.Comment, Text = "评论" },
+                    new HeaderModel() { Icon = Symbol.Comment, Text = "@评论" },
+                    new HeaderModel() { Icon = Symbol.Favorite, Text = "收藏" },
+                    new HeaderModel() { Icon = Symbol.Mail, Text = "私信" },
+                };
+            }
+        }
+
+        internal async void InitAllList()
         {
 #pragma warning disable CS4014 // 由于此调用不会等待，因此在调用完成前将继续执行当前方法
             GetUnreadCount();
             Timeline.Refresh();
-            Mention.Refresh();
-            Comment.Refresh();
-            CommentMention.Refresh();
+            if (Settings.IsMergeMentionAndComment)
+            {
+                MergeMessage.Refresh();
+            }
+            else
+            {
+                Mention.Refresh();
+                Comment.Refresh();
+                CommentMention.Refresh();
+            }
             Favor.Refresh();
             Message.Refresh();
 #pragma warning restore CS4014 // 由于此调用不会等待，因此在调用完成前将继续执行当前方法
@@ -146,32 +183,58 @@ namespace OpenWeen.UWP.ViewModel.MainPage
 
         public async void RefreshWithoutGetUnreadCount()
         {
-            switch (Header.FindIndex(item => item.IsActive))
+            if (Settings.IsMergeMentionAndComment)
             {
-                case 0:
-                    await Timeline.Refresh();
-                    break;
-                case 1:
-                    await Mention.Refresh();
-                    Header[1].UnreadCount = 0;
-                    break;
-                case 2:
-                    await Comment.Refresh();
-                    Header[2].UnreadCount = 0;
-                    break;
-                case 3:
-                    await CommentMention.Refresh();
-                    Header[3].UnreadCount = 0;
-                    break;
-                case 4:
-                    await Favor.Refresh();
-                    break;
-                case 5:
-                    await Message.Refresh();
-                    Header[5].UnreadCount = 0;
-                    break;
-                default:
-                    break;
+                switch (Header.FindIndex(item => item.IsActive))
+                {
+                    case 0:
+                        await Timeline.Refresh();
+                        break;
+                    case 1:
+                        await MergeMessage.Refresh();
+                        Header[1].UnreadCount = 0;
+                        break;
+                    case 2:
+                        await Favor.Refresh();
+                        Header[2].UnreadCount = 0;
+                        break;
+                    case 3:
+                        await Message.Refresh();
+                        Header[3].UnreadCount = 0;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+                switch (Header.FindIndex(item => item.IsActive))
+                {
+                    case 0:
+                        await Timeline.Refresh();
+                        break;
+                    case 1:
+                        await Mention.Refresh();
+                        Header[1].UnreadCount = 0;
+                        break;
+                    case 2:
+                        await Comment.Refresh();
+                        Header[2].UnreadCount = 0;
+                        break;
+                    case 3:
+                        await CommentMention.Refresh();
+                        Header[3].UnreadCount = 0;
+                        break;
+                    case 4:
+                        await Favor.Refresh();
+                        break;
+                    case 5:
+                        await Message.Refresh();
+                        Header[5].UnreadCount = 0;
+                        break;
+                    default:
+                        break;
+                }
             }
             UpdateUnreadHelper.Count = Header.Sum(item => item.UnreadCount);
         }
@@ -181,20 +244,40 @@ namespace OpenWeen.UWP.ViewModel.MainPage
             try
             {
                 var unread = await Core.Api.Remind.GetUnRead(StaticResource.Uid.ToString());
-                if (Settings.IsMentionNotify)
+                if (Settings.IsMergeMentionAndComment)
                 {
-                    Header[1].UnreadCount = unread.MentionStatus;
-                    Header[3].UnreadCount = unread.MentionCmt;
+                    Header[1].UnreadCount = 0;
+                    if (Settings.IsMentionNotify)
+                    {
+                        Header[1].UnreadCount += unread.MentionCmt += unread.MentionStatus;
+                    }
+                    if (Settings.IsCommentNotify)
+                    {
+                        Header[1].UnreadCount += unread.Cmt;
+                    }
+                    if (Settings.IsMessageNotify)
+                    {
+                        Header[3].UnreadCount = unread.Dm;
+                    }
+                    return unread;
                 }
-                if (Settings.IsCommentNotify)
+                else
                 {
-                    Header[2].UnreadCount = unread.Cmt;
+                    if (Settings.IsMentionNotify)
+                    {
+                        Header[1].UnreadCount = unread.MentionStatus;
+                        Header[3].UnreadCount = unread.MentionCmt;
+                    }
+                    if (Settings.IsCommentNotify)
+                    {
+                        Header[2].UnreadCount = unread.Cmt;
+                    }
+                    if (Settings.IsMessageNotify)
+                    {
+                        Header[5].UnreadCount = unread.Dm;
+                    }
+                    return unread;
                 }
-                if (Settings.IsMessageNotify)
-                {
-                    Header[5].UnreadCount = unread.Dm;
-                }
-                return unread;
             }
             catch (Exception e) when (e is WebException || e is HttpRequestException)
             {

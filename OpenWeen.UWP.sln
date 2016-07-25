@@ -11,6 +11,8 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "OpenWeen.UWP.Shared", "Open
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenWeen.UWP.ToastNotificationTask", "OpenWeen.UWP.ToastNotificationTask\OpenWeen.UWP.ToastNotificationTask.csproj", "{97AF04FB-17B4-49E7-B693-8FAC313D233A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenWeen.Core", "..\OpenWeen.Core\OpenWeen.Core\OpenWeen.Core.csproj", "{6ACABB58-681F-413F-B402-56A36E53263E}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		OpenWeen.UWP.Shared\OpenWeen.UWP.Shared.projitems*{5543aeb1-8b88-44c6-95c5-42e6808dd93f}*SharedItemsImports = 4
@@ -81,6 +83,22 @@ Global
 		{97AF04FB-17B4-49E7-B693-8FAC313D233A}.Release|x64.Build.0 = Release|x64
 		{97AF04FB-17B4-49E7-B693-8FAC313D233A}.Release|x86.ActiveCfg = Release|x86
 		{97AF04FB-17B4-49E7-B693-8FAC313D233A}.Release|x86.Build.0 = Release|x86
+		{6ACABB58-681F-413F-B402-56A36E53263E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6ACABB58-681F-413F-B402-56A36E53263E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6ACABB58-681F-413F-B402-56A36E53263E}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{6ACABB58-681F-413F-B402-56A36E53263E}.Debug|ARM.Build.0 = Debug|Any CPU
+		{6ACABB58-681F-413F-B402-56A36E53263E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6ACABB58-681F-413F-B402-56A36E53263E}.Debug|x64.Build.0 = Debug|Any CPU
+		{6ACABB58-681F-413F-B402-56A36E53263E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6ACABB58-681F-413F-B402-56A36E53263E}.Debug|x86.Build.0 = Debug|Any CPU
+		{6ACABB58-681F-413F-B402-56A36E53263E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6ACABB58-681F-413F-B402-56A36E53263E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6ACABB58-681F-413F-B402-56A36E53263E}.Release|ARM.ActiveCfg = Release|Any CPU
+		{6ACABB58-681F-413F-B402-56A36E53263E}.Release|ARM.Build.0 = Release|Any CPU
+		{6ACABB58-681F-413F-B402-56A36E53263E}.Release|x64.ActiveCfg = Release|Any CPU
+		{6ACABB58-681F-413F-B402-56A36E53263E}.Release|x64.Build.0 = Release|Any CPU
+		{6ACABB58-681F-413F-B402-56A36E53263E}.Release|x86.ActiveCfg = Release|Any CPU
+		{6ACABB58-681F-413F-B402-56A36E53263E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

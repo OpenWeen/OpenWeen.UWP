@@ -10,12 +10,12 @@ namespace OpenWeen.UWP.ViewModel.MainPage
 {
     public class FavorViewModel : WeiboListViewModelBase<MessageModel>
     {
-        protected override async Task<IEnumerable<MessageModel>> LoadMoreOverride() => (await Core.Api.Favorites.GetFavorList(page: _pageCount++)).Favorites.Select(item => item.Status);
+        protected override async Task<IEnumerable<MessageModel>> LoadMoreOverride() => (await Core.Api.Favorites.GetFavorList(page: _pageCount++, count: LoadCount)).Favorites.Select(item => item.Status);
 
 
         protected override async Task<Tuple<int, List<MessageModel>>> RefreshOverride()
         {
-            var item = await Core.Api.Favorites.GetFavorList(page: _pageCount++);
+            var item = await Core.Api.Favorites.GetFavorList(page: _pageCount++, count: LoadCount);
             return Tuple.Create(item.TotalNumber, item.Favorites.Select(favor => favor.Status).ToList());
         }
     }

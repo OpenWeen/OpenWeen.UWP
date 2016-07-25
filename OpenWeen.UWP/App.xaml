@@ -357,6 +357,8 @@
             <converter:FavorToColorConverter x:Key="FavorToColorConverter" />
             <converter:UnreadCountToVisibilityConverter x:Key="UnreadCountToVisibilityConverter" />
             <converter:ImageModeConverter x:Key="ImageModeConverter"/>
+            <converter:DeleteVisibilityConverter x:Key="DeleteVisibilityConverter"/>
+            <converter:IntDoubleConverter x:Key="IntDoubleConverter"/>
             <x:Double x:Key="PaneWidth">150</x:Double>
             <x:Double x:Key="UserImageSize">32</x:Double>
             <GridLength x:Key="UserImageGridLength">32</GridLength>

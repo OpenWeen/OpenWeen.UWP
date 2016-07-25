@@ -5,9 +5,100 @@
     xmlns:local="using:OpenWeen.UWP.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="using:OpenWeen.UWP.Model"
     mc:Ignorable="d">
+    <Page.Resources>
+        <MenuFlyout x:Key="UserListFlyout">
+            <MenuFlyoutItem Text="删除"/>
+        </MenuFlyout>
+    </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Pivot Title="设置" Style="{StaticResource PivotWithHeaderBackgroundStyle}">
+            <Pivot.ItemContainerStyle>
+                <Style TargetType="PivotItem">
+                    <Setter Property="Margin" Value="0"/>
+                </Style>
+            </Pivot.ItemContainerStyle>
+            <PivotItem Header="用户">
+                <ScrollViewer Padding="20">
+                    <StackPanel>
+                        <GridView x:Name="gridView" ItemsSource="{x:Bind UserList}" SelectedIndex="{x:Bind SelectedUserIndex,Mode=TwoWay}">
+                            <GridView.ItemTemplate>
+                                <DataTemplate x:DataType="model:UserListModel">
+                                    <Grid Width="75" Height="75">
+                                        <Ellipse Stroke="White">
+                                            <Ellipse.Fill>
+                                                <ImageBrush ImageSource="{x:Bind User.Result.AvatarLarge,Mode=OneWay}" />
+                                            </Ellipse.Fill>
+                                        </Ellipse>
+                                        <Grid RequestedTheme="Dark" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Background="Black" Opacity="0.75">
+                                            <TextBlock HorizontalAlignment="Center" MaxLines="1" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Margin="4" Text="{x:Bind User.Result.ScreenName,Mode=OneWay}"/>
+                                        </Grid>
+                                    </Grid>
+                                </DataTemplate>
+                            </GridView.ItemTemplate>
+                        </GridView>
+                        <Button HorizontalAlignment="Stretch" Content="添加用户" Margin="4" Click="{x:Bind AddUser}"/>
+                        <Button HorizontalAlignment="Stretch" Content="退出登录" Margin="4" Click="{x:Bind Logout}"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </PivotItem>
+            <PivotItem Header="通用" >
+                <ScrollViewer Padding="20">
+                    <StackPanel>
+                        <Slider Header="首页图片大小" Value="{x:Bind ImageSize,Mode=TwoWay}" Minimum="100" Maximum="300" />
+                        <Slider Header="每次载入数量" Value="{x:Bind LoadCount,Mode=TwoWay,Converter={StaticResource IntDoubleConverter}}" Minimum="20" Maximum="100"/>
+                        <ToggleSwitch Header="夜间模式（重启生效）" IsOn="{x:Bind IsNightMode,Mode=TwoWay}" Style="{StaticResource NotifyTypeSwitchStyle}"/>
+                        <ToggleSwitch Header="无图模式" IsOn="{x:Bind IsOffImage,Mode=TwoWay}" Style="{StaticResource NotifyTypeSwitchStyle}"/>
+                        <MenuFlyoutSeparator/>
+                        <TextBlock Text="实验性功能：" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                        <ToggleSwitch Header="合并提及与评论（重启生效）" IsOn="{x:Bind IsMergeMentionAndComment,Mode=TwoWay}" Style="{StaticResource NotifyTypeSwitchStyle}"/>
+                        <ToggleSwitch Header="开启大屏瀑布流" Style="{StaticResource NotifyTypeSwitchStyle}" IsOn="{x:Bind EnableWaterFall,Mode=TwoWay}"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </PivotItem>
+            <PivotItem Header="通知">
+                <ScrollViewer Padding="20">
+                    <StackPanel>
+                        <ComboBox Header="通知间隔（重启生效）" SelectedIndex="{x:Bind NotifyDurationIndex,Mode=TwoWay}" HorizontalAlignment="Stretch">
+                            <ComboBoxItem Content="1分钟"/>
+                            <ComboBoxItem Content="3分钟"/>
+                            <ComboBoxItem Content="5分钟"/>
+                            <ComboBoxItem Content="10分钟"/>
+                            <ComboBoxItem Content="30分钟"/>
+                            <ComboBoxItem Content="从不"/>
+                        </ComboBox>
+                        <ToggleSwitch Header="显示通知详细信息" IsOn="{x:Bind IsMoreInfoNotifyEnable,Mode=TwoWay}" Style="{StaticResource NotifyTypeSwitchStyle}"></ToggleSwitch>
+                        <ToggleSwitch Header="提及" IsOn="{x:Bind IsMentionNotify,Mode=TwoWay}" Style="{StaticResource NotifyTypeSwitchStyle}"></ToggleSwitch>
+                        <ToggleSwitch Header="评论" IsOn="{x:Bind IsCommentNotify,Mode=TwoWay}" Style="{StaticResource NotifyTypeSwitchStyle}"></ToggleSwitch>
+                        <ToggleSwitch Header="私信" IsOn="{x:Bind IsMessageNotify,Mode=TwoWay}" Style="{StaticResource NotifyTypeSwitchStyle}"></ToggleSwitch>
+                        <ToggleSwitch Header="粉丝" IsOn="{x:Bind IsFollowerNotify,Mode=TwoWay}" Style="{StaticResource NotifyTypeSwitchStyle}"></ToggleSwitch>
+                    </StackPanel>
+                </ScrollViewer>
+            </PivotItem>
+            <PivotItem Header="屏蔽">
+                <ScrollViewer Padding="20">
+                    <StackPanel>
+                        <TextBox Header="屏蔽关键词（以英文逗号分隔）" x:Name="BlockTextTB" TextWrapping="Wrap" Text="{x:Bind BlockText,Mode=TwoWay}" />
+                        <TextBox Header="屏蔽用户（UID，以英文逗号分隔）" x:Name="BlockUserTB" TextWrapping="Wrap" Text="{x:Bind BlockUser,Mode=TwoWay}" />
+                    </StackPanel>
+                </ScrollViewer>
+            </PivotItem>
+            <PivotItem Header="关于">
+                <ScrollViewer Padding="20">
+                    <StackPanel>
+                        <TextBlock Text="OpenWeen是一个开源的微博客户端" />
+                        <TextBlock Text="公测用户可以发送反馈来反馈" />
+                        <Button Click="Button_Click" Margin="4" Content="项目地址" HorizontalAlignment="Stretch" />
+                        <Button Click="Button_Click_1" Margin="4" Content="反馈" HorizontalAlignment="Stretch" />
+                        <Button Click="{x:Bind Crash}" Margin="4" Content="爆炸！" HorizontalAlignment="Stretch" />
+                    </StackPanel>
+                </ScrollViewer>
+            </PivotItem>
+        </Pivot>
+    </Grid>
+    <!--<Grid Visibility="Collapsed" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
@@ -47,5 +138,5 @@
                 <Button Click="{x:Bind Crash}" Margin="4" Content="爆炸！" HorizontalAlignment="Stretch" />
             </StackPanel>
         </ScrollViewer>
-    </Grid>
+    </Grid>-->
 </Page>

@@ -34,7 +34,7 @@ namespace OpenWeen.UWP.View
     partial class ExtendedSplash
     {
         internal Rect splashImageRect;
-        private SplashScreen splash;
+        private static SplashScreen splash;
         internal bool dismissed = false;
         internal Frame rootFrame = new Frame();
         private double ScaleFactor;
@@ -43,8 +43,11 @@ namespace OpenWeen.UWP.View
         {
             InitializeComponent();
             Window.Current.SizeChanged += ExtendedSplash_OnResize;
-            splash = splashscreen;
-
+            if (splash == null && splashscreen != null)
+            {
+                splash = splashscreen;
+            }
+            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
             ScaleFactor = DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel;
             if (splash != null)
             {
@@ -54,40 +57,10 @@ namespace OpenWeen.UWP.View
             }
             InitTransitions();
             RestoreStateAsync(loadState);
-            if (StaticResource.IsPhone)
+            if (splash == null)
             {
-                //var diff = StatusBar.GetForCurrentView().OccludedRect.Height;
-                //rootFrame.Margin = new Thickness(0, diff, 0, 0);
-                //DisplayInformation.GetForCurrentView().OrientationChanged += ExtendedSplash_OrientationChanged;
+                DismissExtendedSplash();
             }
-        }
-
-        private void ExtendedSplash_OrientationChanged(DisplayInformation sender, object args)
-        {
-            if ((Window.Current.Content as Frame) == null)
-            {
-                return;
-            }
-
-            //var rect = StatusBar.GetForCurrentView().OccludedRect;
-            //var height = rect.Height;
-            //var width = rect.Width;
-            //switch (sender.CurrentOrientation)
-            //{
-            //    case DisplayOrientations.None:
-            //    case DisplayOrientations.Portrait:
-            //    case DisplayOrientations.PortraitFlipped:
-            //        (Window.Current.Content as Frame).Margin = new Thickness(0, height, 0, 0);
-            //        break;
-            //    case DisplayOrientations.Landscape:
-            //        (Window.Current.Content as Frame).Margin = new Thickness(width, 0, 0, 0);
-            //        break;
-            //    case DisplayOrientations.LandscapeFlipped:
-            //        (Window.Current.Content as Frame).Margin = new Thickness(0, 0, width, 0);
-            //        break;
-            //    default:
-            //        break;
-            //}
         }
         
 
@@ -115,7 +88,7 @@ namespace OpenWeen.UWP.View
         {
             try
             {
-                Core.Api.Entity.AccessToken = SettingHelper.GetListSetting<string>(SettingNames.AccessToken, isThrowException: true).FirstOrDefault();
+                Core.Api.Entity.AccessToken = SettingHelper.GetListSetting<string>(SettingNames.AccessToken, isThrowException: true).ToList()[Settings.SelectedUserIndex];
                 if (string.IsNullOrEmpty(Core.Api.Entity.AccessToken))
                 {
                     throw new Core.Exception.InvalidAccessTokenException();
@@ -167,15 +140,6 @@ namespace OpenWeen.UWP.View
         private async void DismissedEventHandler(SplashScreen sender, object e)
         {
             dismissed = true;
-            await BackgroundHelper.Register<UpdateUnreadCountTask>(new TimeTrigger(15, false));
-            await BackgroundHelper.Register<ToastNotificationBackgroundTask>(new ToastNotificationActionTrigger());
-            await InitEmotion();
-            if (CheckForLogin())
-            {
-                await InitUid();
-            }
-
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
             await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
              {
@@ -188,9 +152,21 @@ namespace OpenWeen.UWP.View
             StaticResource.Uid = long.Parse(await Core.Api.User.Account.GetUid());
         }
 
-        private void DismissExtendedSplash()
+        private async void DismissExtendedSplash()
         {
             Window.Current.SizeChanged -= ExtendedSplash_OnResize;
+            await BackgroundHelper.Register<UpdateUnreadCountTask>(new TimeTrigger(15, false));
+            await BackgroundHelper.Register<ToastNotificationBackgroundTask>(new ToastNotificationActionTrigger());
+            await InitEmotion();
+            var cahcesize = rootFrame.CacheSize;
+            rootFrame.CacheSize = 0;
+            rootFrame.CacheSize = cahcesize;
+            if (CheckForLogin())
+            {
+                await InitUid();
+            }
+
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             if (CheckForLogin())
             {
                 rootFrame.Navigate(typeof(MainPage));

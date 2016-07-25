@@ -50,11 +50,6 @@ namespace OpenWeen.UWP.Shared.Common.Helpers
             return chackValue;
         }
 
-        internal static object GetListSetting<T>(object settingName)
-        {
-            throw new NotImplementedException();
-        }
-
         public static void SetListSetting<T>(string settingName, IEnumerable<T> values, SetListSettingOption option = SetListSettingOption.ReplaceExisting)
         {
             var settings = ApplicationData.Current.LocalSettings;
@@ -65,7 +60,6 @@ namespace OpenWeen.UWP.Shared.Common.Helpers
                     case SetListSettingOption.ReplaceExisting:
                         settings.Values.Remove(settingName);
                         break;
-
                     case SetListSettingOption.FailIfExists:
                         throw new SettingException($"{settingName} already exist");
                     case SetListSettingOption.AddIfExists:

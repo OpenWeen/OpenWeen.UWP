@@ -23,7 +23,7 @@
                 </Style>
             </Pivot.ItemContainerStyle>
             <PivotItem Header="微博">
-                <control:WeiboList Repost="{x:Bind ActionModel.Repost}" Comment="{x:Bind ActionModel.Comment}" ItemClick="{x:Bind ActionModel.ItemClick}" UserClick="{x:Bind ActionModel.UserClick}" PictureClick="{x:Bind ActionModel.PictureClick}" TopicClick="{x:Bind ActionModel.TopicClick}" Favor="{x:Bind ActionModel.Favor}"  ItemsSource="{x:Bind ViewModel.WeiboList.WeiboList,Mode=OneWay}" LoadMore="{x:Bind ViewModel.WeiboList.LoadMore}" IsLoading="{x:Bind ViewModel.WeiboList.IsLoading,Mode=OneWay}"/>
+                <control:WeiboListView Repost="{x:Bind ActionModel.Repost}" Comment="{x:Bind ActionModel.Comment}" ItemClick="{x:Bind ActionModel.ItemClick}" UserClick="{x:Bind ActionModel.UserClick}" PictureClick="{x:Bind ActionModel.PictureClick}" TopicClick="{x:Bind ActionModel.TopicClick}" Favor="{x:Bind ActionModel.Favor}"  ItemsSource="{x:Bind ViewModel.WeiboList.WeiboList,Mode=OneWay}" LoadMore="{x:Bind ViewModel.WeiboList.LoadMore}" IsLoading="{x:Bind ViewModel.WeiboList.IsLoading,Mode=OneWay}"/>
             </PivotItem>
             <PivotItem Header="用户">
                 <control:UserList UserClick="{x:Bind ActionModel.UserClick}"  ItemsSource="{x:Bind ViewModel.UserList.WeiboList,Mode=OneWay}" LoadMore="{x:Bind ViewModel.UserList.LoadMore}" IsLoading="{x:Bind ViewModel.UserList.IsLoading,Mode=OneWay}"/>

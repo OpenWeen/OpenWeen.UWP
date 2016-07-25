@@ -1,10 +1,13 @@
 ﻿{
   "dependencies": {
-    "HockeySDK.UWP": "4.1.2",
-    "Microsoft.NETCore.UniversalWindowsPlatform": "5.1.0",
+    "Fody": "1.29.4",
+    "HockeySDK.UWP": "4.1.3",
+    "Marduk.Controls": "1.0.1",
+    "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
     "Newtonsoft.Json": "9.0.1",
+    "Nito.AsyncEx": "3.0.1",
     "NotificationsExtensions.Win10": "14332.0.2",
-    "OpenWeen.Core": "1.3.0",
+    "PropertyChanged.Fody": "1.51.3",
     "WinRTXamlToolkit.Controls.DataVisualization": "2.0.0",
     "XamlAnimatedGif": "1.1.4"
   },

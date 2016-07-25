@@ -17,9 +17,9 @@ using Windows.UI.Xaml.Navigation;
 
 namespace OpenWeen.UWP.Common.Controls
 {
-    public sealed partial class WeiboList : UserControl
+    public sealed partial class WeiboWaterFall : UserControl
     {
-        public WeiboList()
+        public WeiboWaterFall()
         {
             this.InitializeComponent();
         }

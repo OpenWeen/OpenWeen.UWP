@@ -65,7 +65,7 @@ namespace OpenWeen.UWP.Model
             if (!(e.TargetItem is MessageModel))
                 throw new ArgumentException("TargetItem must be MessageModel");
             var item = e.TargetItem as MessageModel;
-            var list = sender as WeiboList;
+            var list = sender as WeiboListView;
             var favorIcon = MoreVisualTreeHelper.GetObjectByName<SymbolIcon>(list.ContainerFromItem(item), "FavorIcon");
             try
             {
@@ -106,9 +106,30 @@ namespace OpenWeen.UWP.Model
         {
             (Window.Current.Content as Frame).Navigate(typeof(MessagePage), new MessagePageViewModel(e.ClickedItem.User.ID, e.ClickedItem.User.ScreenName));
         }
-        public void Delete(object sender, WeiboMessageItemClickEventArgs e)
+        public async void Delete(object sender, WeiboActionEventArgs e)
         {
-            
+            try
+            {
+                await Core.Api.Statuses.PostWeibo.DeletePost(e.TargetItem.ID);
+                Notification.Show("删除成功");
+
+            }
+            catch
+            {
+                Notification.Show("删除失败");
+            }
+        }
+        public async void Like(object sender, WeiboActionEventArgs e)
+        {
+            try
+            {
+                await Core.Api.Attitudes.Like(e.TargetItem.ID);
+                Notification.Show("点赞成功");
+            }
+            catch
+            {
+                Notification.Show("点赞失败");
+            }
         }
     }
 }

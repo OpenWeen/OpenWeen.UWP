@@ -1,5 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
+using OpenWeen.UWP.Common;
+using OpenWeen.UWP.Model;
 using OpenWeen.UWP.Shared.Common;
 using OpenWeen.UWP.Shared.Common.Helpers;
 using Windows.System;
@@ -15,10 +20,21 @@ namespace OpenWeen.UWP.View
     /// </summary>
     public sealed partial class SettingPage : Page
     {
+        public ObservableCollection<UserListModel> UserList => new ObservableCollection<UserListModel>(Settings.AccessToken.Select((item) => new UserListModel(item)));
         public bool IsMoreInfoNotifyEnable
         {
             get { return Settings.IsMoreInfoNotifyEnable; }
             set { Settings.IsMoreInfoNotifyEnable = value; }
+        }
+        public int SelectedUserIndex
+        {
+            get { return Settings.SelectedUserIndex; }
+            set { Settings.SelectedUserIndex = value; Window.Current.Content = new ExtendedSplash(null, false); }
+        }
+        public bool EnableWaterFall
+        {
+            get { return Settings.EnableWaterFall; }
+            set { Settings.EnableWaterFall = value; }
         }
         public string BlockText
         {
@@ -122,6 +138,16 @@ namespace OpenWeen.UWP.View
             get { return Settings.IsOffImage; }
             set { Settings.IsOffImage = value; }
         }
+        public int LoadCount
+        {
+            get { return Settings.LoadCount; }
+            set { Settings.LoadCount = value; }
+        }
+        public bool IsMergeMentionAndComment
+        {
+            get { return Settings.IsMergeMentionAndComment; }
+            set { Settings.IsMergeMentionAndComment = value; }
+        }
         public SettingPage()
         {
             this.InitializeComponent();
@@ -139,6 +165,41 @@ namespace OpenWeen.UWP.View
         public void Crash()
         {
             throw new Exception("爆炸了！");
+        }
+        public void AddUser()
+        {
+            Frame.Navigate(typeof(LoginPage));
+        }
+        public void Logout()
+        {
+            var tokens = Settings.AccessToken.ToList();
+            tokens.RemoveAt(Settings.SelectedUserIndex);
+            Settings.AccessToken = tokens;
+            Settings.SelectedUserIndex = 0;
+            Window.Current.Content = new ExtendedSplash(null, false);
+        }
+
+        private async Task InitUid()
+        {
+            StaticResource.Uid = long.Parse(await Core.Api.User.Account.GetUid());
+        }
+
+        private bool CheckForLogin()
+        {
+            try
+            {
+                Core.Api.Entity.AccessToken = SettingHelper.GetListSetting<string>(SettingNames.AccessToken, isThrowException: true).ToList()[Settings.SelectedUserIndex];
+                if (string.IsNullOrEmpty(Core.Api.Entity.AccessToken))
+                {
+                    throw new Core.Exception.InvalidAccessTokenException();
+                }
+                return true;
+            }
+            catch (Exception e) when (e is Core.Exception.InvalidAccessTokenException || e is SettingException)
+            {
+                return false;
+            }
+
         }
     }
 }
