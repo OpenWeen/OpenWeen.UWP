@@ -15,26 +15,6 @@ namespace OpenWeen.UWP.Common.Controls
 {
     public sealed partial class WeiboListView : ItemsControl
     {
-        public event EventHandler<WeiboUserClickEventArgs> UserClick;
-
-        public event EventHandler<WeiboItemClickEventArgs> ItemClick;
-
-        public event EventHandler<WeiboPictureClickEventArgs> PictureClick;
-
-        public event EventHandler<WeiboTopicClickEventArgs> TopicClick;
-
-        public event EventHandler<WeiboActionEventArgs> Repost;
-
-        public event EventHandler<WeiboActionEventArgs> Comment;
-
-        public event EventHandler<WeiboActionEventArgs> Favor;
-
-        public event EventHandler<WeiboActionEventArgs> Delete;
-
-        public event EventHandler<WeiboActionEventArgs> Like;
-
-        public event EventHandler LoadMore;
-
         public event EventHandler<ScrollViewerViewChangedEventArgs> ViewChanged;
 
         public object Header
@@ -57,93 +37,13 @@ namespace OpenWeen.UWP.Common.Controls
         public static readonly DependencyProperty IsLoadingProperty =
             DependencyProperty.Register("IsLoading", typeof(bool), typeof(WeiboListView), new PropertyMetadata(false));
 
-        public bool IsRepostList
-        {
-            get { return WeiboListTemplateSelector.IsRepostList; }
-            set { WeiboListTemplateSelector.IsRepostList = value; }
-        }
-
-
         public WeiboListView()
         {
             this.InitializeComponent();
         }
-
-        private void Grid_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            var context = (e.OriginalSource as FrameworkElement).DataContext;
-            e.Handled = true;
-            if (context is UserModel)
-            {
-                UserClick?.Invoke(this, new WeiboUserClickEventArgs((context as UserModel).ID));
-            }
-            else if (context is MessageModel)
-            {
-                ItemClick?.Invoke(this, new WeiboItemClickEventArgs(context as MessageModel));
-            }
-            else if (context is CommentModel)
-            {
-                Comment?.Invoke(this, new WeiboActionEventArgs((e.OriginalSource as FrameworkElement).DataContext as CommentModel));
-            }
-        }
-
-        private void WeiboImageList_PictureClick(object sender, WeiboPictureClickEventArgs e)
-        {
-            e.DataContext = (sender as WeiboImageList).DataContext as MessageModel;
-            PictureClick?.Invoke(sender, e);
-        }
-
-        private void Reshare_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            e.Handled = true;
-            Repost?.Invoke(this, new WeiboActionEventArgs((e.OriginalSource as FrameworkElement).DataContext as BaseModel));
-        }
-
-        private void Comment_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            e.Handled = true;
-            Comment?.Invoke(this, new WeiboActionEventArgs((e.OriginalSource as FrameworkElement).DataContext as BaseModel));
-        }
-
-        private void Favor_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            e.Handled = true;
-            Favor?.Invoke(this, new WeiboActionEventArgs((e.OriginalSource as FrameworkElement).DataContext as BaseModel));
-        }
-
-        private void WeiboTextBlock_UserClick(object sender, WeiboUserClickEventArgs e)
-        {
-            UserClick?.Invoke(this, e);
-        }
-
-        private void WeiboTextBlock_TopicClick(object sender, WeiboTopicClickEventArgs e)
-        {
-            TopicClick?.Invoke(this, e);
-        }
-
         private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
-            var scrollViewer = sender as ScrollViewer;
             ViewChanged?.Invoke(sender, e);
-            var verticalOffsetValue = scrollViewer.VerticalOffset;
-            var maxVerticalOffsetValue = scrollViewer.ExtentHeight - scrollViewer.ViewportHeight;
-            if (maxVerticalOffsetValue < 0 || verticalOffsetValue == maxVerticalOffsetValue)
-            {
-                LoadMore?.Invoke(this, new EventArgs());
-            }
-        }
-
-        private void Delete_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            e.Handled = true;
-            (ItemsSource as IList).Remove((e.OriginalSource as FrameworkElement).DataContext);
-            Delete?.Invoke(this, new WeiboActionEventArgs((e.OriginalSource as FrameworkElement).DataContext as BaseModel));
-        }
-        
-        private void Like_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            e.Handled = true;
-            Like?.Invoke(this, new WeiboActionEventArgs((e.OriginalSource as FrameworkElement).DataContext as BaseModel));
         }
     }
 }

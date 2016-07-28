@@ -54,36 +54,23 @@ namespace OpenWeen.UWP.Model
             if (item != null)
                 (Window.Current.Content as Frame).Navigate(typeof(PostWeiboPage), new RepostData(item.ID, item.RetweetedStatus == null ? "" : $"//@{item.User.Name}:{item.Text}"));
         }
-
-        private bool _isFavoring;
-
+        
         public async void Favor(object sender, WeiboActionEventArgs e)
         {
-            if (_isFavoring)
-                return;
-            _isFavoring = true;
             if (!(e.TargetItem is MessageModel))
                 throw new ArgumentException("TargetItem must be MessageModel");
             var item = e.TargetItem as MessageModel;
-            var list = sender as WeiboListView;
-            var favorIcon = MoreVisualTreeHelper.GetObjectByName<SymbolIcon>(list.ContainerFromItem(item), "FavorIcon");
             try
             {
-                (list.ItemFromContainer(list.ContainerFromItem(item)) as MessageModel).Favorited = await FavorAndChangeSymbolIcon(item, favorIcon);
+                var state = item.Favorited ?
+                    (await Core.Api.Favorites.RemoveFavor(item.ID)).Status.Favorited :
+                    (await Core.Api.Favorites.AddFavor(item.ID)).Status.Favorited;
+                Notification.Show(state ? "收藏成功" : "取消收藏成功");
             }
-            catch (Exception ex) when (ex is HttpRequestException || ex is WebException)
+            catch
             {
+                Notification.Show("收藏失败");
             }
-            _isFavoring = false;
-        }
-
-        internal async Task<bool> FavorAndChangeSymbolIcon(MessageModel item, SymbolIcon favorIcon)
-        {
-            var state = item.Favorited ?
-                (await Core.Api.Favorites.RemoveFavor(item.ID)).Status.Favorited :
-                (await Core.Api.Favorites.AddFavor(item.ID)).Status.Favorited;
-            favorIcon.Foreground = state ? new SolidColorBrush(Colors.Red) : new SolidColorBrush(Colors.LightGray);
-            return state;
         }
 
         public async void PictureClick(object sender, WeiboPictureClickEventArgs e)

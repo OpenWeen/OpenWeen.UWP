@@ -6,6 +6,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-    <RichTextBlock IsTextSelectionEnabled="{x:Bind IsTextSelectionEnabled,Mode=OneWay}" Tapped="richTextBlock_Tapped" x:Name="richTextBlock">
+    <RichTextBlock MaxLines="{x:Bind MaxLines,Mode=OneWay}" IsTextSelectionEnabled="{x:Bind IsTextSelectionEnabled,Mode=OneWay}" Tapped="richTextBlock_Tapped" x:Name="richTextBlock">
     </RichTextBlock>
 </UserControl>

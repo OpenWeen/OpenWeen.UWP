@@ -4,9 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using NotificationsExtensions.Tiles;
 using OpenWeen.Core.Model;
 using OpenWeen.Core.Model.Status;
 using OpenWeen.Core.Model.User;
@@ -14,9 +12,7 @@ using OpenWeen.UWP.Common;
 using OpenWeen.UWP.Model;
 using OpenWeen.UWP.Shared.Common;
 using OpenWeen.UWP.Shared.Common.Helpers;
-using OpenWeen.UWP.ViewModel.MessagePage;
 using Windows.UI.Core;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using WinRTXamlToolkit.Tools;
 
@@ -249,7 +245,8 @@ namespace OpenWeen.UWP.ViewModel.MainPage
                     Header[1].UnreadCount = 0;
                     if (Settings.IsMentionNotify)
                     {
-                        Header[1].UnreadCount += unread.MentionCmt += unread.MentionStatus;
+                        Header[1].UnreadCount += unread.MentionStatus;
+                        Header[1].UnreadCount += unread.MentionCmt;
                     }
                     if (Settings.IsCommentNotify)
                     {

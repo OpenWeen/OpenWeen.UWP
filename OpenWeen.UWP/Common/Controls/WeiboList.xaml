@@ -5,11 +5,192 @@
     xmlns:local="using:OpenWeen.UWP.Common.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:selector="using:OpenWeen.UWP.Common.Selector"
+    xmlns:statusmodel="using:OpenWeen.Core.Model.Status"
+    xmlns:model="using:OpenWeen.Core.Model"
+    xmlns:common="using:OpenWeen.UWP.Common"
+    xmlns:commentModel="using:OpenWeen.Core.Model.Comment"
+    xmlns:controls="using:OpenWeen.UWP.Common.Controls"
+    xmlns:wtf="using:Marduk.Controls"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
+    <UserControl.Resources>
+        <DataTemplate x:Key="WaterFallViewTemplate" x:DataType="local:WeiboList">
+            <Grid>
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup>
+                        <VisualState>
+                            <VisualState.StateTriggers>
+                                <AdaptiveTrigger MinWindowWidth = "300" />
+                            </VisualState.StateTriggers>
+                            <VisualState.Setters>
+                                <Setter Target="wtf.StackCount" Value="1" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState>
+                            <VisualState.StateTriggers>
+                                <AdaptiveTrigger MinWindowWidth = "700" />
+                            </VisualState.StateTriggers>
+                            <VisualState.Setters>
+                                <Setter Target="wtf.StackCount" Value="2" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState>
+                            <VisualState.StateTriggers>
+                                <AdaptiveTrigger MinWindowWidth = "800" />
+                            </VisualState.StateTriggers>
+                            <VisualState.Setters>
+                                <Setter Target="wtf.StackCount" Value="3" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+                <ScrollViewer ViewChanged="ScrollViewer_ViewChanged" x:Name="ScrollViewer">
+                    <wtf:WaterfallFlowView Header="{x:Bind Header,Mode=OneWay}"  Spacing="0" x:Name="wtf" ItemTemplate="{StaticResource BaseTemplate}" ItemSource="{x:Bind ItemsSource,Mode=OneWay}" DelayMeasure="True">
+                        <wtf:WaterfallFlowView.ItemContainerStyle>
+                            <Style TargetType="ContentControl">
+                                <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+                            </Style>
+                        </wtf:WaterfallFlowView.ItemContainerStyle>
+                        <wtf:WaterfallFlowView.Footer>
+                            <ProgressBar Margin="16" Visibility="{x:Bind IsLoading, Mode=OneWay,Converter={StaticResource BoolToVisibilityConverter}}" IsIndeterminate="{x:Bind IsLoading, Mode=OneWay}"/>
+                        </wtf:WaterfallFlowView.Footer>
+                    </wtf:WaterfallFlowView>
+                </ScrollViewer>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="MessageTemplate" x:DataType="statusmodel:MessageModel">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Column="2" Padding="8,4,8,4">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <controls:WeiboImageList PictureClick="WeiboImageList_PictureClick" Visibility="{x:Bind Converter={StaticResource ImageModeConverter}}" ItemsSource="{x:Bind PicUrls}" />
+                    <controls:WeiboTextBlock UserClick="WeiboTextBlock_UserClick" TopicClick="WeiboTextBlock_TopicClick" Grid.Row="1" Text="{x:Bind Text}" />
+                </Grid>
+                <Grid DataContext="{x:Bind RetweetedStatus}" Margin="8,4" Padding="8,4" BorderBrush="{StaticResource SplitlineColor}" Grid.Row="1" Visibility="{x:Bind RetweetedStatus,Converter={StaticResource NullToVisibilityConverter}}" BorderThickness="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock DataContext="{x:Bind RetweetedStatus.User}" Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind RetweetedStatus.User.ScreenName}" FontWeight="Bold" />
+                    <controls:WeiboImageList PictureClick="WeiboImageList_PictureClick" Grid.Row="1" Visibility="{x:Bind Converter={StaticResource ImageModeConverter}}" ItemsSource="{x:Bind RetweetedStatus.PicUrls}" />
+                    <controls:WeiboTextBlock UserClick="WeiboTextBlock_UserClick" TopicClick="WeiboTextBlock_TopicClick"  Grid.Row="2" Text="{x:Bind RetweetedStatus.Text}" />
+                </Grid>
+                <Grid Padding="8,5,0,12" Grid.Row="2">
+                    <StackPanel Orientation="Horizontal">
+                        <SymbolIcon Tapped="Like_Tapped" Symbol="Like" Foreground="LightGray"/>
+                        <TextBlock Foreground="Gray" Padding="8,0,12,0" Text="{x:Bind AttitudesCount}"/>
+                        <SymbolIcon Tapped="Reshare_Tapped" Foreground="LightGray" Symbol="ReShare" />
+                        <TextBlock Foreground="Gray" Padding="8,0,12,0" Text="{x:Bind RepostsCount}" />
+                        <SymbolIcon Tapped="Comment_Tapped" Foreground="LightGray" Symbol="Comment" />
+                        <TextBlock Foreground="Gray" Padding="8,0,12,0" Text="{x:Bind CommentsCount}" />
+                        <SymbolIcon x:Name="FavorIcon" Tapped="Favor_Tapped" Foreground="{x:Bind Favorited,Mode=OneWay,Converter={StaticResource FavorToColorConverter}}" Symbol="Favorite" />
+                        <SymbolIcon Margin="12,0,12,0" Foreground="Gray" Visibility="{x:Bind User.ID,Converter={StaticResource DeleteVisibilityConverter}}" Tapped="Delete_Tapped" Symbol="Delete" />
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="CommentListTemplate" x:DataType="commentModel:CommentModel">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <Grid Padding="8,4,8,4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <local:WeiboTextBlock Text="{x:Bind Text}" />
+                    <SymbolIcon Grid.Column="1" Tapped="Comment_Tapped" Foreground="LightGray" Symbol="Comment" />
+                </Grid>
+                <Grid DataContext="{x:Bind Status}" Margin="8,4" Padding="8,4" BorderBrush="{StaticResource SplitlineColor}" Grid.Row="1" Visibility="{x:Bind Status,Converter={StaticResource NullToVisibilityConverter}}" BorderThickness="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.ColumnSpan="2" Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind Status.User.ScreenName}" FontWeight="Bold" />
+                    <!--<Image Grid.Row="1" Source="{Binding ThumbnailPic}" Visibility="{x:Bind Converter={StaticResource ImageModeConverter}}" Height="50" Width="50" Margin="8" />-->
+                    <local:WeiboTextBlock MaxLines="2" Grid.Column="1" Grid.Row="1" Text="{x:Bind Status.Text}" />
+                </Grid>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="RepostListTemplate" x:DataType="model:BaseModel">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <Grid Padding="8,4,8,9">
+                    <controls:WeiboTextBlock  UserClick="WeiboTextBlock_UserClick" TopicClick="WeiboTextBlock_TopicClick" Grid.Row="1" Text="{x:Bind Text}" />
+                </Grid>
+                <Grid Padding="8,5,0,12" Grid.Row="1">
+                    <StackPanel Orientation="Horizontal">
+                        <!--<SymbolIcon Symbol="Like" Foreground="LightGray"/>
+                        <TextBlock Foreground="Gray" Padding="8,0,12,0" Text="{x:Bind AttitudesCount}"/>-->
+                        <SymbolIcon Tapped="Reshare_Tapped" Margin="8,0,12,0" Foreground="LightGray" Symbol="ReShare" />
+                        <!--<TextBlock Foreground="Gray" Padding="8,0,12,0" Text="{x:Bind RepostsCount}" />-->
+                        <SymbolIcon Tapped="Comment_Tapped" Margin="8,0,12,0" Foreground="LightGray" Symbol="Comment" />
+                        <!--<TextBlock Foreground="Gray" Padding="8,0,12,0" Text="{x:Bind CommentsCount}" />-->
+                        <!--<SymbolIcon x:Name="FavorIcon" Tapped="Favor_Tapped" Foreground="{x:Bind Favorited,Mode=OneWay,Converter={StaticResource FavorToColorConverter}}" Symbol="Favorite" />-->
+                    </StackPanel>
+                </Grid>
 
-    <Grid>
-        
-    </Grid>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="BaseTemplate" x:DataType="model:BaseModel">
+            <Grid BorderBrush="{StaticResource SplitlineColor}" Visibility="{x:Bind Converter={StaticResource BlockToVisibilityConverter}}" Tapped="Grid_Tapped" Padding="8" BorderThickness="0,0,1,1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{StaticResource UserImageGridLength}" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.ColumnSpan="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="{StaticResource UserImageGridLength}" />
+                        <ColumnDefinition Width="8" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Ellipse DataContext="{x:Bind User}" Width="{StaticResource UserImageSize}" Height="{StaticResource UserImageSize}">
+                        <Ellipse.Fill>
+                            <ImageBrush ImageSource="{x:Bind User.ProfileImageUrl}" />
+                        </Ellipse.Fill>
+                    </Ellipse>
+                    <Grid Grid.Column="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <TextBlock FontSize="18" DataContext="{x:Bind User}" Style="{ThemeResource BodyTextBlockStyle}" Padding="8,4,0,0" Text="{x:Bind User.ScreenName}" FontWeight="Bold" />
+                        <TextBlock Style="{ThemeResource CaptionTextBlockStyle}"  Foreground="#CCCCCC" FontSize="15"  Grid.Row="1" Padding="8,4,0,0" Text="{x:Bind CreateTime,Converter={StaticResource TimeConverter}}" />
+                    </Grid>
+                </Grid>
+                <ContentControl HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="1" Grid.Column="2" Content="{Binding}" ContentTemplateSelector="{StaticResource WeiboListTemplateSelector}"/>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="WeiboListViewTemplate" x:DataType="local:WeiboList">
+            <local:WeiboListView ItemsSource="{x:Bind ItemsSource,Mode=OneWay}" Header="{x:Bind Header,Mode=OneWay}" IsLoading="{x:Bind IsLoading,Mode=OneWay}" ViewChanged="ScrollViewer_ViewChanged" ItemTemplate="{StaticResource BaseTemplate}"/>
+        </DataTemplate>
+        <common:WeiboListTemplateSelector RepostListTemplate="{StaticResource RepostListTemplate}" x:Name="WeiboListTemplateSelector" CommentTemplate="{StaticResource CommentListTemplate}" MessageTemplate="{StaticResource MessageTemplate}" x:Key="WeiboListTemplateSelector"/>
+        <selector:WeiboListSelector x:Key="WeiboListSelector" WeiboListView="{StaticResource WeiboListViewTemplate}" WaterFallView="{StaticResource WaterFallViewTemplate}"/>
+    </UserControl.Resources>
+    <ContentPresenter Content="{Binding}" ContentTemplateSelector="{StaticResource WeiboListSelector}"/>
 </UserControl>

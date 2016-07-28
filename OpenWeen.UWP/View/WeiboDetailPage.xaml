@@ -85,10 +85,10 @@
                 </ScrollViewer>
             </PivotItem>
             <PivotItem Header="转发">
-                <controls:WeiboListView IsRepostList="True" Repost="{x:Bind ActionModel.Repost}" Comment="{x:Bind ActionModel.Comment}" Favor="{x:Bind ActionModel.Favor}" IsLoading="{x:Bind ViewModel.Repost.IsLoading,Mode=OneWay}" LoadMore="{x:Bind ViewModel.Repost.LoadMore}" UserClick="{x:Bind ActionModel.UserClick}" ItemsSource="{x:Bind ViewModel.Repost.WeiboList,Mode=OneWay}" />
+                <controls:WeiboList IsRepostList="True" Repost="{x:Bind ActionModel.Repost}" Comment="{x:Bind ActionModel.Comment}" Favor="{x:Bind ActionModel.Favor}" IsLoading="{x:Bind ViewModel.Repost.IsLoading,Mode=OneWay}" LoadMore="{x:Bind ViewModel.Repost.LoadMore}" UserClick="{x:Bind ActionModel.UserClick}" ItemsSource="{x:Bind ViewModel.Repost.WeiboList,Mode=OneWay}" />
             </PivotItem>
             <PivotItem Header="评论">
-                <controls:WeiboListView IsRepostList="True" Repost="{x:Bind ActionModel.Repost}" Comment="{x:Bind ActionModel.Comment}" Favor="{x:Bind ActionModel.Favor}" IsLoading="{x:Bind ViewModel.Comment.IsLoading,Mode=OneWay}" LoadMore="{x:Bind ViewModel.Comment.LoadMore}" UserClick="{x:Bind ActionModel.UserClick}" ItemsSource="{x:Bind ViewModel.Comment.WeiboList,Mode=OneWay}" />
+                <controls:WeiboList IsRepostList="True" Repost="{x:Bind ActionModel.Repost}" Comment="{x:Bind ActionModel.Comment}" Favor="{x:Bind ActionModel.Favor}" IsLoading="{x:Bind ViewModel.Comment.IsLoading,Mode=OneWay}" LoadMore="{x:Bind ViewModel.Comment.LoadMore}" UserClick="{x:Bind ActionModel.UserClick}" ItemsSource="{x:Bind ViewModel.Comment.WeiboList,Mode=OneWay}" />
             </PivotItem>
         </Pivot>
     </Grid>

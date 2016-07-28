@@ -111,6 +111,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UpdateUnreadCountTask.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\OpenWeen.Core\OpenWeen.Core\OpenWeen.Core.csproj">
+      <Project>{6acabb58-681f-413f-b402-56a36e53263e}</Project>
+      <Name>OpenWeen.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="..\OpenWeen.UWP.Shared\OpenWeen.UWP.Shared.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

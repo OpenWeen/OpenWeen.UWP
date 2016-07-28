@@ -155,9 +155,6 @@
     <Compile Include="Common\Controls\WeiboVideoPlayer.xaml.cs">
       <DependentUpon>WeiboVideoPlayer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Common\Controls\WeiboWaterFall.xaml.cs">
-      <DependentUpon>WeiboWaterFall.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Common\Converter\BlockToVisibilityConverter.cs" />
     <Compile Include="Common\Converter\BoolToVisibilityConverter.cs" />
     <Compile Include="Common\Converter\DeleteVisibilityConverter.cs" />
@@ -175,9 +172,10 @@
     <Compile Include="Common\Helpers\BackgroundHelper.cs" />
     <Compile Include="Common\Helpers\MoreVisualTreeHelper.cs" />
     <Compile Include="Common\HockeyAppKey.cs" />
-    <Compile Include="Common\MessageDataTemplateSelector.cs" />
+    <Compile Include="Common\Selector\MessageDataTemplateSelector.cs" />
+    <Compile Include="Common\Selector\WeiboListSelector.cs" />
     <Compile Include="Common\StaticResource.cs" />
-    <Compile Include="Common\WeiboListTemplateSelector.cs" />
+    <Compile Include="Common\Selector\WeiboListTemplateSelector.cs" />
     <Compile Include="Model\FollowModel.cs" />
     <Compile Include="Model\HeaderModel.cs" />
     <Compile Include="Model\ImageModel.cs" />
@@ -2210,9 +2208,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Common\Controls\WeiboWaterFall.xaml">
+    <Page Include="Resource\Style.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
     <Page Include="View\ExtendedSplash.xaml">
       <SubType>Designer</SubType>
@@ -2256,6 +2255,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\GitHub\Marduk.Controls %28GitHub Desktop%29\Marduk.Controls\Marduk.Controls.vcxproj">
+      <Project>{dc1e8f30-9d0e-4f45-b688-cda89c53ca5b}</Project>
+      <Name>Marduk.Controls</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\OpenWeen.Core\OpenWeen.Core\OpenWeen.Core.csproj">
       <Project>{6acabb58-681f-413f-b402-56a36e53263e}</Project>
       <Name>OpenWeen.Core</Name>

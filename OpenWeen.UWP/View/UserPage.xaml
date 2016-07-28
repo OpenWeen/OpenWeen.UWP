@@ -16,8 +16,8 @@
         </MenuFlyout>
     </Page.Resources>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <controls:WeiboListView Like="{x:Bind ActionModel.Like}" Delete="{x:Bind ActionModel.Delete}" x:Name="weiboList" LoadMore="{x:Bind UserPageVM.UserTimeline.LoadMore}" IsLoading="{x:Bind UserPageVM.IsLoading,Mode=OneWay}" ItemClick="{x:Bind ActionModel.ItemClick}" TopicClick="{x:Bind ActionModel.TopicClick}" Favor="{x:Bind ActionModel.Favor}" PictureClick="{x:Bind ActionModel.PictureClick}" UserClick="{x:Bind ActionModel.UserClick}" Comment="{x:Bind ActionModel.Comment}" Repost="{x:Bind ActionModel.Repost}" ItemsSource="{x:Bind UserPageVM.UserTimeline.WeiboList,Mode=OneWay}">
-            <controls:WeiboListView.Header>
+        <controls:WeiboList Like="{x:Bind ActionModel.Like}" Delete="{x:Bind ActionModel.Delete}" x:Name="weiboList" LoadMore="{x:Bind UserPageVM.UserTimeline.LoadMore}" IsLoading="{x:Bind UserPageVM.IsLoading,Mode=OneWay}" ItemClick="{x:Bind ActionModel.ItemClick}" TopicClick="{x:Bind ActionModel.TopicClick}" Favor="{x:Bind ActionModel.Favor}" PictureClick="{x:Bind ActionModel.PictureClick}" UserClick="{x:Bind ActionModel.UserClick}" Comment="{x:Bind ActionModel.Comment}" Repost="{x:Bind ActionModel.Repost}" ItemsSource="{x:Bind UserPageVM.UserTimeline.WeiboList,Mode=OneWay}">
+            <controls:WeiboList.Header>
                 <Grid Background="{StaticResource AppTheme}" Visibility="{x:Bind UserPageVM.IsLoading,Mode=OneWay,Converter={StaticResource BoolToVisibilityConverter},ConverterParameter=true}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
@@ -59,7 +59,7 @@
                         </Button>
                     </Grid>
                 </Grid>
-            </controls:WeiboListView.Header>
-        </controls:WeiboListView>
+            </controls:WeiboList.Header>
+        </controls:WeiboList>
     </Grid>
 </Page>

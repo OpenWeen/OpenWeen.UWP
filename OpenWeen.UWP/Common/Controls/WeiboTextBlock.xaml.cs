@@ -57,6 +57,18 @@ namespace OpenWeen.UWP.Common.Controls
 
 
 
+        public int MaxLines
+        {
+            get { return (int)GetValue(MaxLinesProperty); }
+            set { SetValue(MaxLinesProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for MaxLines.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty MaxLinesProperty =
+            DependencyProperty.Register("MaxLines", typeof(int), typeof(WeiboTextBlock), new PropertyMetadata(0));
+
+
+
         public void TextChanged()
         {
             string text = "";

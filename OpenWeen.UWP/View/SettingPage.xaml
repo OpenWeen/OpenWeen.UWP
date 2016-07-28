@@ -53,8 +53,9 @@
                         <ToggleSwitch Header="无图模式" IsOn="{x:Bind IsOffImage,Mode=TwoWay}" Style="{StaticResource NotifyTypeSwitchStyle}"/>
                         <MenuFlyoutSeparator/>
                         <TextBlock Text="实验性功能：" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                        <TextBlock Text="注意：实验性功能尚未经过完全测试，对程序造成的不稳定等一系列问题请用户自行承担" TextWrapping="WrapWholeWords" Foreground="Red"/>
                         <ToggleSwitch Header="合并提及与评论（重启生效）" IsOn="{x:Bind IsMergeMentionAndComment,Mode=TwoWay}" Style="{StaticResource NotifyTypeSwitchStyle}"/>
-                        <ToggleSwitch Header="开启大屏瀑布流" Style="{StaticResource NotifyTypeSwitchStyle}" IsOn="{x:Bind EnableWaterFall,Mode=TwoWay}"/>
+                        <ToggleSwitch Header="开启大屏瀑布流（重启生效）" Style="{StaticResource NotifyTypeSwitchStyle}" IsOn="{x:Bind EnableWaterFall,Mode=TwoWay}"/>
                     </StackPanel>
                 </ScrollViewer>
             </PivotItem>

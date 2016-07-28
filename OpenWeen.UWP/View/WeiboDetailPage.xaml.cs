@@ -43,9 +43,9 @@ namespace OpenWeen.UWP.View
             ActionModel.Comment(sender, new WeiboActionEventArgs(ViewModel.Item.Result));
         }
 
-        private async void Favor_Tapped(object sender, TappedRoutedEventArgs e)
+        private void Favor_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            ViewModel.Item.Result.Favorited = await ActionModel.FavorAndChangeSymbolIcon(ViewModel.Item.Result, FavorIcon);
+            ActionModel.Favor(this, new WeiboActionEventArgs(ViewModel.Item.Result));
         }
 
         private void WeiboImageList_PictureClick(object sender, WeiboPictureClickEventArgs e)
