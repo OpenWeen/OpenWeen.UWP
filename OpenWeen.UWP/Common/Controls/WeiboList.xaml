@@ -47,7 +47,7 @@
                     </VisualStateGroup>
                 </VisualStateManager.VisualStateGroups>
                 <ScrollViewer ViewChanged="ScrollViewer_ViewChanged" x:Name="ScrollViewer">
-                    <wtf:WaterfallFlowView Header="{x:Bind Header,Mode=OneWay}"  Spacing="0" x:Name="wtf" ItemTemplate="{StaticResource BaseTemplate}" ItemSource="{x:Bind ItemsSource,Mode=OneWay}" DelayMeasure="True">
+                    <wtf:WaterfallFlowView Header="{x:Bind Header,Mode=OneWay}" Spacing="0" x:Name="wtf" ItemTemplate="{StaticResource BaseTemplate}" ItemSource="{x:Bind ItemsSource,Mode=OneWay}">
                         <wtf:WaterfallFlowView.ItemContainerStyle>
                             <Style TargetType="ContentControl">
                                 <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
@@ -95,7 +95,7 @@
                         <SymbolIcon Tapped="Comment_Tapped" Foreground="LightGray" Symbol="Comment" />
                         <TextBlock Foreground="Gray" Padding="8,0,12,0" Text="{x:Bind CommentsCount}" />
                         <SymbolIcon x:Name="FavorIcon" Tapped="Favor_Tapped" Foreground="{x:Bind Favorited,Mode=OneWay,Converter={StaticResource FavorToColorConverter}}" Symbol="Favorite" />
-                        <SymbolIcon Margin="12,0,12,0" Foreground="Gray" Visibility="{x:Bind User.ID,Converter={StaticResource DeleteVisibilityConverter}}" Tapped="Delete_Tapped" Symbol="Delete" />
+                        <SymbolIcon Margin="12,0,12,0" Foreground="LightGray" Visibility="{x:Bind User.ID,Converter={StaticResource DeleteVisibilityConverter}}" Tapped="Delete_Tapped" Symbol="Delete" />
                     </StackPanel>
                 </Grid>
             </Grid>

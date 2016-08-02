@@ -128,22 +128,6 @@ namespace OpenWeen.UWP.Common.Controls
         private string ReplaceHyperlink(string text)
         {
             var matches = Regex.Matches(text, "http(s)?://([a-zA-Z|\\d]+\\.)+[a-zA-Z|\\d]+(/[a-zA-Z|\\d|\\-|\\+|_./?%=]*)?");
-            //foreach (Match item in matches)
-            //{
-            //    var model = DataContext as BaseModel;
-            //    string innerText = null;
-            //    if (model != null)
-            //    {
-            //        innerText = model.UrlStruct?.Where(m => m.ShortUrl == item.Value)?.FirstOrDefault()?.UrlTitle;
-            //        var memodel = DataContext as MessageModel;
-            //        if (memodel != null && string.IsNullOrEmpty(innerText))
-            //        {
-            //            innerText = memodel.RetweetedStatus?.UrlStruct?.Where(m => m.ShortUrl == item.Value)?.FirstOrDefault()?.UrlTitle;
-            //        }
-            //    }
-            //    innerText = string.IsNullOrEmpty(innerText) ? "网页链接" : innerText;
-            //    text = text.Replace(item.Value, $@"<Hyperlink NavigateUri=""{item.Value}"">{innerText}</Hyperlink>");
-            //}
             var model = DataContext as MessageModel;
             var index = text.IndexOf("全文： http://m.weibo.cn/");
             if (index != -1)
@@ -151,13 +135,6 @@ namespace OpenWeen.UWP.Common.Controls
                 text = text.Remove(index);
                 text += @"<InlineUIContainer><TextBlock Foreground=""{ThemeResource HyperlinkForegroundThemeBrush}""><Underline>全文</Underline></TextBlock></InlineUIContainer>";
             }
-            //if (model?.IsLongText == true)
-            //{
-            //    var a = text.IndexOf("全文");
-            //    a = text.IndexOf("全文：");
-            //    text = text.Remove(text.IndexOf("全文") - 1);
-            //    //text = text.Replace($"全文： {matches[matches.Count - 1].Value}", @"<InlineUIContainer><TextBlock Foreground=""{ThemeResource HyperlinkForegroundThemeBrush}""><Underline>全文</Underline></TextBlock></InlineUIContainer>");
-            //}
             foreach (Match item in matches)
             {
                 text = text.Replace(item.Value, "<InlineUIContainer><TextBlock Foreground=\"{ThemeResource HyperlinkForegroundThemeBrush}\" Tag=\"" + item.Value + "\"><Underline>网页链接</Underline></TextBlock></InlineUIContainer>");
@@ -214,14 +191,15 @@ namespace OpenWeen.UWP.Common.Controls
                                         else if (item.AnnotationList?.FirstOrDefault()?.Item?.Stream?.Url != null)
                                             await new WeiboVideoPlayer(item?.UrlLong, item.AnnotationList?.FirstOrDefault()?.Item?.Stream?.Url).ShowAsync();
                                         else
-                                            throw new NotSupportedException();
+                                            await Launcher.LaunchUriAsync(new Uri(item.UrlLong));
                                     }
                                     else
-                                        throw new NotSupportedException();
+                                        await Launcher.LaunchUriAsync(new Uri(item.UrlLong));
                                 }
                                 break;
                             default:
-                                throw new NotSupportedException();
+                                await Launcher.LaunchUriAsync(new Uri(item.UrlLong));
+                                break;
                         }
                     }
                     catch
@@ -230,6 +208,36 @@ namespace OpenWeen.UWP.Common.Controls
                     }
                 }
             }
+        }
+
+        private string _clickedLink;
+
+        private void MenuFlyoutItem_Click(object sender, RoutedEventArgs e)
+        {
+            var content = new Windows.ApplicationModel.DataTransfer.DataPackage();
+            content.SetText(_clickedLink);
+            Windows.ApplicationModel.DataTransfer.Clipboard.SetContent(content);
+            _clickedLink = null;
+            Notification.Show("复制成功");
+        }
+
+        private void richTextBlock_RightTapped(object sender, RightTappedRoutedEventArgs e)
+        {
+            SetClickedLink(e.OriginalSource);
+        }
+
+        private void SetClickedLink(object originalSource)
+        {
+            if ((originalSource as TextBlock)?.Tag != null)
+            {
+                _clickedLink = (originalSource as TextBlock)?.Tag.ToString();
+                menuFlyout.ShowAt(originalSource as TextBlock);
+            }
+        }
+
+        private void richTextBlock_Holding(object sender, HoldingRoutedEventArgs e)
+        {
+            SetClickedLink(e.OriginalSource);
         }
     }
 }

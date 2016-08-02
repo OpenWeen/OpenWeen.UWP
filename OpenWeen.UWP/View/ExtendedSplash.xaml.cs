@@ -57,10 +57,6 @@ namespace OpenWeen.UWP.View
             }
             InitTransitions();
             RestoreStateAsync(loadState);
-            if (splash == null)
-            {
-                DismissExtendedSplash();
-            }
         }
         
 
@@ -184,8 +180,8 @@ namespace OpenWeen.UWP.View
         {
             if (rootFrame.CanGoBack)
             {
-                rootFrame.GoBack();
                 e.Handled = true;
+                rootFrame.GoBack();
             }
             else
             {
