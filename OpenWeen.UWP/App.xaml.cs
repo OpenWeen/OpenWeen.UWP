@@ -52,9 +52,9 @@ namespace OpenWeen.UWP
             HockeyClient.Current.Configure(HockeyAppKey.ApiKey);
             if (StaticResource.IsPhone)
             {
-                //StatusBar.GetForCurrentView().BackgroundColor = ((SolidColorBrush)Resources["AppTheme"]).Color;
-                //StatusBar.GetForCurrentView().BackgroundOpacity = 1d;
-                //StatusBar.GetForCurrentView().ForegroundColor = Colors.White;
+                StatusBar.GetForCurrentView().BackgroundColor = ((SolidColorBrush)Resources["AppTheme"]).Color;
+                StatusBar.GetForCurrentView().BackgroundOpacity = 1d;
+                StatusBar.GetForCurrentView().ForegroundColor = Colors.White;
             }
             else
             {
@@ -71,8 +71,10 @@ namespace OpenWeen.UWP
                 }
             }
             Window.Current.Activate();
+#if !DEBUG
             UnhandledException += App_UnhandledException;
-            RegisterExceptionHandlingSynchronizationContext();
+            RegisterExceptionHandlingSynchronizationContext(); 
+#endif
         }
         protected override void OnActivated(IActivatedEventArgs args)
         {

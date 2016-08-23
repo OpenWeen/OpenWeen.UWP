@@ -5,6 +5,7 @@ using OpenWeen.UWP.Common.Controls;
 using Nito.AsyncEx;
 using System.Threading.Tasks;
 using PropertyChanged;
+using System.Linq;
 
 namespace OpenWeen.UWP.ViewModel.DetailPage
 {
@@ -45,9 +46,10 @@ namespace OpenWeen.UWP.ViewModel.DetailPage
             sit.ShowAsync();
             try
             {
-                await Core.Api.Statuses.PostWeibo.Repost(Item.Result.ID, (Item.Result.RetweetedStatus == null ? $"{SendText}" : $"{SendText}//@{Item.Result.User.Name}:{Item.Result.Text}").Remove(139));
+                var text = Item.Result.RetweetedStatus == null ? $"{SendText}" : $"{SendText}//@{Item.Result.User.Name}:{Item.Result.Text}";
+                await Core.Api.Statuses.PostWeibo.Repost(Item.Result.ID, text.Length > 140 ? text.Remove(139) : text);
             }
-            catch { }
+            catch { Notification.Show("发送失败"); }
             sit.Hide();
             SendText = "";
         }
@@ -59,9 +61,9 @@ namespace OpenWeen.UWP.ViewModel.DetailPage
             sit.ShowAsync();
             try
             {
-                await Core.Api.Comments.PostComment(Item.Result.ID, SendText.Remove(139));
+                await Core.Api.Comments.PostComment(Item.Result.ID, SendText.Length > 140 ? SendText.Remove(139) : SendText);
             }
-            catch { }
+            catch { Notification.Show("发送失败"); }
             sit.Hide();
             SendText = "";
         }

@@ -239,5 +239,16 @@ namespace OpenWeen.UWP.Common.Controls
         {
             SetClickedLink(e.OriginalSource);
         }
+
+        private async void MenuFlyoutItem_Click_1(object sender, RoutedEventArgs e)
+        {
+            var item = await Core.Api.ShortUrl.Info(_clickedLink);
+            if (item?.Urls.FirstOrDefault()?.UrlLong == null) return;
+            var content = new Windows.ApplicationModel.DataTransfer.DataPackage();
+            content.SetText(item.Urls.FirstOrDefault().UrlLong);
+            Windows.ApplicationModel.DataTransfer.Clipboard.SetContent(content);
+            _clickedLink = null;
+            Notification.Show("复制成功");
+        }
     }
 }

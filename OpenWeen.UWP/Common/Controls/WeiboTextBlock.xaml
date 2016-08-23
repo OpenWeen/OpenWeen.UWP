@@ -9,6 +9,7 @@
     <UserControl.Resources>
         <MenuFlyout x:Key="menuFlyout" x:Name="menuFlyout">
             <MenuFlyoutItem Text="复制链接" Click="MenuFlyoutItem_Click"/>
+            <MenuFlyoutItem Text="复制原链接" Click="MenuFlyoutItem_Click_1"/>
         </MenuFlyout>
     </UserControl.Resources>
     <RichTextBlock MaxLines="{x:Bind MaxLines,Mode=OneWay}" RightTapped="richTextBlock_RightTapped" Holding="richTextBlock_Holding" IsTextSelectionEnabled="{x:Bind IsTextSelectionEnabled,Mode=OneWay}" Tapped="richTextBlock_Tapped" x:Name="richTextBlock">
