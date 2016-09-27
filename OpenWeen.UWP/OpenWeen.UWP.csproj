@@ -2255,10 +2255,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\GitHub\Marduk.Controls %28GitHub Desktop%29\Marduk.Controls\Marduk.Controls.vcxproj">
-      <Project>{dc1e8f30-9d0e-4f45-b688-cda89c53ca5b}</Project>
-      <Name>Marduk.Controls</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\OpenWeen.Core\OpenWeen.Core\OpenWeen.Core.csproj">
       <Project>{6acabb58-681f-413f-b402-56a36e53263e}</Project>
       <Name>OpenWeen.Core</Name>

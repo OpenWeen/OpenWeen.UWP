@@ -63,7 +63,7 @@ namespace OpenWeen.UWP.ViewModel
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WeiboList)));
                 }
             }
-            catch (Exception e) when (e is HttpRequestException || e is WebException || e is Newtonsoft.Json.JsonException || e is TaskCanceledException)
+            catch (Exception e) when (e is HttpRequestException || e is WebException || e is Newtonsoft.Json.JsonException || e is TaskCanceledException || e is ArgumentNullException)
             {
                 OnWebException(e);
             }
@@ -84,7 +84,7 @@ namespace OpenWeen.UWP.ViewModel
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WeiboList)));
                 }
             }
-            catch (Exception e) when (e is HttpRequestException || e is WebException || e is Newtonsoft.Json.JsonException || e is TaskCanceledException)
+            catch (Exception e) when (e is HttpRequestException || e is WebException || e is Newtonsoft.Json.JsonException || e is TaskCanceledException || e is ArgumentNullException)
             {
                 _pageCount--;
             }
@@ -93,7 +93,7 @@ namespace OpenWeen.UWP.ViewModel
 
         protected virtual void OnWebException(Exception e)
         {
-            Notification.Show($"网络错误 {e.Message}");
+            Notification.Show($"错误 {e.Message}");
         }
 
         protected abstract Task<IEnumerable<T>> LoadMoreOverride();

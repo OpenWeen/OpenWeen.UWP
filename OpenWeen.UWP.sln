@@ -13,8 +13,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenWeen.UWP.ToastNotificat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenWeen.Core", "..\OpenWeen.Core\OpenWeen.Core\OpenWeen.Core.csproj", "{6ACABB58-681F-413F-B402-56A36E53263E}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Marduk.Controls", "..\..\..\GitHub\Marduk.Controls (GitHub Desktop)\Marduk.Controls\Marduk.Controls.vcxproj", "{DC1E8F30-9D0E-4F45-B688-CDA89C53CA5B}"
-EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		OpenWeen.UWP.Shared\OpenWeen.UWP.Shared.projitems*{5543aeb1-8b88-44c6-95c5-42e6808dd93f}*SharedItemsImports = 4
@@ -101,20 +99,6 @@ Global
 		{6ACABB58-681F-413F-B402-56A36E53263E}.Release|x64.Build.0 = Release|Any CPU
 		{6ACABB58-681F-413F-B402-56A36E53263E}.Release|x86.ActiveCfg = Release|Any CPU
 		{6ACABB58-681F-413F-B402-56A36E53263E}.Release|x86.Build.0 = Release|Any CPU
-		{DC1E8F30-9D0E-4F45-B688-CDA89C53CA5B}.Debug|Any CPU.ActiveCfg = Debug|Win32
-		{DC1E8F30-9D0E-4F45-B688-CDA89C53CA5B}.Debug|ARM.ActiveCfg = Debug|ARM
-		{DC1E8F30-9D0E-4F45-B688-CDA89C53CA5B}.Debug|ARM.Build.0 = Debug|ARM
-		{DC1E8F30-9D0E-4F45-B688-CDA89C53CA5B}.Debug|x64.ActiveCfg = Debug|x64
-		{DC1E8F30-9D0E-4F45-B688-CDA89C53CA5B}.Debug|x64.Build.0 = Debug|x64
-		{DC1E8F30-9D0E-4F45-B688-CDA89C53CA5B}.Debug|x86.ActiveCfg = Debug|Win32
-		{DC1E8F30-9D0E-4F45-B688-CDA89C53CA5B}.Debug|x86.Build.0 = Debug|Win32
-		{DC1E8F30-9D0E-4F45-B688-CDA89C53CA5B}.Release|Any CPU.ActiveCfg = Release|Win32
-		{DC1E8F30-9D0E-4F45-B688-CDA89C53CA5B}.Release|ARM.ActiveCfg = Release|ARM
-		{DC1E8F30-9D0E-4F45-B688-CDA89C53CA5B}.Release|ARM.Build.0 = Release|ARM
-		{DC1E8F30-9D0E-4F45-B688-CDA89C53CA5B}.Release|x64.ActiveCfg = Release|x64
-		{DC1E8F30-9D0E-4F45-B688-CDA89C53CA5B}.Release|x64.Build.0 = Release|x64
-		{DC1E8F30-9D0E-4F45-B688-CDA89C53CA5B}.Release|x86.ActiveCfg = Release|Win32
-		{DC1E8F30-9D0E-4F45-B688-CDA89C53CA5B}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

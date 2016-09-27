@@ -110,7 +110,7 @@ namespace OpenWeen.UWP.Common.Controls
             var matches = Regex.Matches(text, @"#[^#]+#");
             foreach (Match item in matches)
             {
-                text = text.Replace(item.Value, @"<InlineUIContainer><TextBlock Foreground=""{ThemeResource HyperlinkForegroundThemeBrush}""><Underline>" + item.Value + "</Underline></TextBlock></InlineUIContainer>");
+                text = text.Replace(item.Value, @"<InlineUIContainer><TextBlock Foreground=""{ThemeResource HyperlinkForegroundThemeBrush}"">" + item.Value + "</TextBlock></InlineUIContainer>");
             }
             return text;
         }
@@ -120,7 +120,7 @@ namespace OpenWeen.UWP.Common.Controls
             var matches = Regex.Matches(text, @"@[^,，：:\s@]+").Cast<Match>().Distinct((item => item.Value));
             foreach (Match item in matches)
             {
-                text = text.Replace(item.Value, @"<InlineUIContainer><TextBlock Foreground=""{ThemeResource HyperlinkForegroundThemeBrush}""><Underline>" + item.Value + "</Underline></TextBlock></InlineUIContainer>");
+                text = text.Replace(item.Value, @"<InlineUIContainer><TextBlock Foreground=""{ThemeResource HyperlinkForegroundThemeBrush}"">" + item.Value + "</TextBlock></InlineUIContainer>");
             }
             return text;
         }
@@ -133,11 +133,11 @@ namespace OpenWeen.UWP.Common.Controls
             if (index != -1)
             {
                 text = text.Remove(index);
-                text += @"<InlineUIContainer><TextBlock Foreground=""{ThemeResource HyperlinkForegroundThemeBrush}""><Underline>全文</Underline></TextBlock></InlineUIContainer>";
+                text += @"<InlineUIContainer><TextBlock Foreground=""{ThemeResource HyperlinkForegroundThemeBrush}"">全文</TextBlock></InlineUIContainer>";
             }
             foreach (Match item in matches)
             {
-                text = text.Replace(item.Value, "<InlineUIContainer><TextBlock Foreground=\"{ThemeResource HyperlinkForegroundThemeBrush}\" Tag=\"" + item.Value + "\"><Underline>网页链接</Underline></TextBlock></InlineUIContainer>");
+                text = text.Replace(item.Value, "<InlineUIContainer><TextBlock Foreground=\"{ThemeResource HyperlinkForegroundThemeBrush}\" Tag=\"" + item.Value + "\">网页链接</TextBlock></InlineUIContainer>");
             }
             return text;
         }
