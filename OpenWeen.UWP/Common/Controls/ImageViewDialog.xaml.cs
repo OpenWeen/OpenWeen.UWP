@@ -93,7 +93,7 @@ namespace OpenWeen.UWP.Common.Controls
         {
             if (flipView?.SelectedItem == null && (flipView.SelectedItem as ImageModel).IsLoading)
                 return;
-            var scrollViewer = MoreVisualTreeHelper.GetObject<ScrollViewer>(flipView.ItemContainerGenerator.ContainerFromItem(flipView.SelectedItem));
+            var scrollViewer = MoreVisualTreeHelper.GetObject<ScrollViewer>(flipView.ContainerFromItem(flipView.SelectedItem));
             if (scrollViewer.ZoomFactor - 0.1f > scrollViewer.MinZoomFactor)
                 scrollViewer.ZoomToFactorWithAnimationAsync(scrollViewer.ZoomFactor - 0.1f, 0.5);
         }
@@ -117,7 +117,7 @@ namespace OpenWeen.UWP.Common.Controls
         {
             if (flipView?.SelectedItem == null && (flipView.SelectedItem as ImageModel).IsLoading)
                 return;
-            var scrollViewer = MoreVisualTreeHelper.GetObject<ScrollViewer>(flipView.ItemContainerGenerator.ContainerFromItem(flipView.SelectedItem));
+            var scrollViewer = MoreVisualTreeHelper.GetObject<ScrollViewer>(flipView.ContainerFromItem(flipView.SelectedItem));
             if (scrollViewer.ZoomFactor + 0.1f < scrollViewer.MaxZoomFactor)
                 scrollViewer.ZoomToFactorWithAnimationAsync(scrollViewer.ZoomFactor + 0.1f, 0.5);
         }
@@ -129,7 +129,7 @@ namespace OpenWeen.UWP.Common.Controls
         {
             if (!_isPointerPressed)
                 return;
-            var scrollViewer = MoreVisualTreeHelper.GetObject<ScrollViewer>(flipView.ItemContainerGenerator.ContainerFromItem(flipView.SelectedItem));
+            var scrollViewer = MoreVisualTreeHelper.GetObject<ScrollViewer>(flipView.ContainerFromItem(flipView.SelectedItem));
             var point = e.GetCurrentPoint(scrollViewer).Position;
             scrollViewer.ChangeView(scrollViewer.HorizontalOffset + (_prevPoint.X - point.X) * 15d, scrollViewer.VerticalOffset + (_prevPoint.Y - point.Y) * 15d, scrollViewer.ZoomFactor, false);
             _prevPoint = point;
@@ -138,7 +138,7 @@ namespace OpenWeen.UWP.Common.Controls
         private void ScrollViewer_PointerPressed(object sender, PointerRoutedEventArgs e)
         {
             _isPointerPressed = true;
-            var scrollViewer = MoreVisualTreeHelper.GetObject<ScrollViewer>(flipView.ItemContainerGenerator.ContainerFromItem(flipView.SelectedItem));
+            var scrollViewer = MoreVisualTreeHelper.GetObject<ScrollViewer>(flipView.ContainerFromItem(flipView.SelectedItem));
             _prevPoint = e.GetCurrentPoint(scrollViewer).Position;
         }
 

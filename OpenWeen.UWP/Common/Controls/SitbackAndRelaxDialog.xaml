@@ -12,7 +12,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBlock Text="坐和放宽，这不需要太久" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <ProgressBar IsIndeterminate="True" Grid.Row="1"/>
+        <TextBlock Text="{Binding DialogText,Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <ProgressBar IsIndeterminate="{Binding IsIndeterminate, Mode=OneWay}" Maximum="{Binding ProgressMaximum,Mode=OneWay}" Minimum="0" Value="{Binding ProgressValue, Mode=OneWay}" Grid.Row="1"/>
     </Grid>
 </ContentDialog>

@@ -1,7 +1,7 @@
 ﻿{
   "dependencies": {
     "Fody": "1.29.4",
-    "HockeySDK.UWP": "4.1.4",
+    "HockeySDK.UWP": "4.1.5",
     "Marduk.Controls": "1.0.2",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
     "Newtonsoft.Json": "9.0.1",
@@ -9,7 +9,7 @@
     "NotificationsExtensions.Win10": "14332.0.2",
     "PropertyChanged.Fody": "1.51.3",
     "WinRTXamlToolkit.Controls.DataVisualization": "2.0.0",
-    "XamlAnimatedGif": "1.1.5"
+    "XamlAnimatedGif": "1.1.6"
   },
   "frameworks": {
     "uap10.0": {}

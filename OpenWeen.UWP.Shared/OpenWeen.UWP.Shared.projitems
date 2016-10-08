@@ -9,6 +9,7 @@
     <Import_RootNamespace>OpenWeen.UWP.Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Common\Helpers\JsonHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\Helpers\SettingHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\Helpers\ToastNotificationHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\Helpers\UpdateUnreadHelper.cs" />

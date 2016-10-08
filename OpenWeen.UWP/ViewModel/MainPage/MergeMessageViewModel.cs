@@ -22,11 +22,11 @@ namespace OpenWeen.UWP.ViewModel.MainPage
 
         protected override async Task<Tuple<int, List<BaseModel>>> RefreshOverride()
         {
-            await Core.Api.Remind.ClearUnRead(Core.Api.RemindType.MentionStatus);
+            Core.Api.Remind.ClearUnRead(Core.Api.RemindType.MentionStatus);
             var mentions = await Core.Api.Statuses.Mentions.GetMentions(count: LoadCount);
-            await Core.Api.Remind.ClearUnRead(Core.Api.RemindType.Cmt);
+            Core.Api.Remind.ClearUnRead(Core.Api.RemindType.Cmt);
             var comments = await Core.Api.Comments.GetCommentToMe(count: LoadCount);
-            await Core.Api.Remind.ClearUnRead(Core.Api.RemindType.MentionCmt);
+            Core.Api.Remind.ClearUnRead(Core.Api.RemindType.MentionCmt);
             var commentMentions = await Core.Api.Comments.GetCommentMentions(count: LoadCount);
             return Tuple.Create(mentions.TotalNumber + comments.TotalNumber + commentMentions.TotalNumber, mentions.Statuses.Concat<BaseModel>(comments.Comments).Concat(commentMentions.Comments).OrderByDescending(item=>item.CreateTime).ToList());
         }

@@ -144,12 +144,13 @@ namespace OpenWeen.UWP.Common.Controls
 
         private string ReplaceEmotion(string text)
         {
+            if (string.IsNullOrEmpty(StaticResource.EmotionPattern))
+                return text;
             var matches = Regex.Matches(text, StaticResource.EmotionPattern);
             foreach (Match item in matches)
             {
                 text = text.Replace(item.Value, $@"<InlineUIContainer><Image Source=""{StaticResource.Emotions.FirstOrDefault(e => e.Value == item.Value).Url}"" Width=""15"" Height=""15""/></InlineUIContainer>");
             }
-
             return text;
         }
 

@@ -36,7 +36,7 @@ namespace OpenWeen.UWP.View
     {
         public ObservableCollection<ImageData> Images { get; } = new ObservableCollection<ImageData>();
         private IPostWeibo _data;
-        public bool AllowPicture { get; set; } = true;
+        public bool AllowMorePicture { get; set; } = true;
         private bool _isSending;
 
         public int TextCount
@@ -64,14 +64,17 @@ namespace OpenWeen.UWP.View
             }
         }
 
-        public List<IGrouping<string, EmotionModel>> Emojis => StaticResource.Emotions.GroupBy(item => string.IsNullOrEmpty(item.Category) ? "表情" : item.Category).ToList();
+        public List<IGrouping<string, EmotionModel>> Emojis => StaticResource.Emotions?.GroupBy(item => string.IsNullOrEmpty(item.Category) ? "表情" : item.Category).ToList();
 
         public PostWeiboPage()
         {
             this.InitializeComponent();
             Transitions = new TransitionCollection { new NavigationThemeTransition() { DefaultNavigationTransitionInfo = new SlideNavigationTransitionInfo() } };
-            cvs.Source = Emojis;
-            (semanticZoom.ZoomedOutView as ListViewBase).ItemsSource = cvs.View.CollectionGroups;
+            if (StaticResource.Emotions != null)
+            {
+                cvs.Source = Emojis;
+                (semanticZoom.ZoomedOutView as ListViewBase).ItemsSource = cvs.View.CollectionGroups;
+            }
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -80,8 +83,8 @@ namespace OpenWeen.UWP.View
             if (!(e.Parameter is IPostWeibo))
                 throw new ArgumentException("parameter must be IPostWeibo");
             _data = e.Parameter as IPostWeibo;
-            AllowPicture = _data.Type == PostWeiboType.NewPost;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AllowPicture)));
+            AllowMorePicture = _data.Type == PostWeiboType.NewPost;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AllowMorePicture)));
             if (_data is IPostWeiboData)
             {
                 var data = _data as IPostWeiboData;
@@ -104,7 +107,7 @@ namespace OpenWeen.UWP.View
 
         private async void RichEditBox_Paste(object sender, TextControlPasteEventArgs e)
         {
-            if (!AllowPicture || Images.Count >= 9)
+            if (Images.Count >= 9)
                 return;
             var dataPackageView = Windows.ApplicationModel.DataTransfer.Clipboard.GetContent();
             if (dataPackageView.Contains(Windows.ApplicationModel.DataTransfer.StandardDataFormats.Bitmap))
@@ -118,10 +121,11 @@ namespace OpenWeen.UWP.View
             {
                 e.Handled = true;
                 var files = (await dataPackageView.GetStorageItemsAsync()).Where(item => item is StorageFile && (item as StorageFile).ContentType.Contains("image")).ToList();
-                for (int i = 0; i < 9 && i < files.Count; i++)
-                {
-                    await AddImageDataFromFile(files[i] as StorageFile);
-                }
+                if (AllowMorePicture)
+                    for (int i = 0; i < 9 && i < files.Count; i++)
+                        await AddImageDataFromFile(files[i] as StorageFile);
+                else
+                    await AddImageDataFromFile(files[0] as StorageFile);
             }
         }
 
@@ -152,6 +156,8 @@ namespace OpenWeen.UWP.View
                 {
                     var b = new BitmapImage();
                     await b.SetSourceAsync(stream.AsRandomAccessStream());
+                    if (!AllowMorePicture && Images.Count > 0)
+                        Images.RemoveAt(0);
                     Images.Add(new ImageData() { Data = data, Image = b });
                 }
             }
@@ -224,7 +230,10 @@ namespace OpenWeen.UWP.View
                 var data = _data as ReplyCommentData;
                 try
                 {
-                    await Core.Api.Comments.Reply(data.ID, data.CID, Text);
+                    if (Images.Count > 0)
+                        await Core.Api.Comments.ReplyWithPic(data.ID, data.CID, Text, new MediaModel((await Core.Api.Statuses.PostWeibo.UploadPicture(Images.FirstOrDefault().Data)).PicID));
+                    else
+                        await Core.Api.Comments.Reply(data.ID, data.CID, Text);
                     return true;
                 }
                 catch (Exception e) when (e is WebException || e is System.Net.Http.HttpRequestException) 
@@ -237,7 +246,10 @@ namespace OpenWeen.UWP.View
                 var data = _data as CommentData;
                 try
                 {
-                    await Core.Api.Comments.PostComment(data.ID, Text);
+                    if (Images.Count > 0)
+                        await Core.Api.Comments.PostCommentWithPic(data.ID, Text, new MediaModel((await Core.Api.Statuses.PostWeibo.UploadPicture(Images.FirstOrDefault().Data)).PicID));
+                    else
+                        await Core.Api.Comments.PostComment(data.ID, Text);
                     return true;
 
                 }
@@ -254,7 +266,10 @@ namespace OpenWeen.UWP.View
             var data = _data as RepostData;
             try
             {
-                await Core.Api.Statuses.PostWeibo.Repost(data.ID, Text);
+                if (Images.Count > 0)
+                    await Core.Api.Statuses.PostWeibo.RepostWithPic(data.ID, Text, new MediaModel((await Core.Api.Statuses.PostWeibo.UploadPicture(Images.FirstOrDefault().Data)).PicID));
+                else
+                    await Core.Api.Statuses.PostWeibo.Repost(data.ID, Text);
                 return true;
 
             }
@@ -293,8 +308,6 @@ namespace OpenWeen.UWP.View
         
         private async void richEditBox_DragOver(object sender, DragEventArgs e)
         {
-            if (!AllowPicture)
-                return;
             var def = e.GetDeferral();
             e.Handled = true;
             if (e.DataView.Contains(Windows.ApplicationModel.DataTransfer.StandardDataFormats.Bitmap))
@@ -313,7 +326,7 @@ namespace OpenWeen.UWP.View
 
         private async void richEditBox_Drop(object sender, DragEventArgs e)
         {
-            if (!AllowPicture)
+            if (!AllowMorePicture)
                 return;
             var def = e.GetDeferral();
             e.Handled = true;
@@ -324,10 +337,11 @@ namespace OpenWeen.UWP.View
             else if (e.DataView.Contains(Windows.ApplicationModel.DataTransfer.StandardDataFormats.StorageItems))
             {
                 var files = (await e.DataView.GetStorageItemsAsync()).Where(item => item is StorageFile && (item as StorageFile).ContentType.Contains("image")).ToList();
-                for (int i = 0; i < 9 && i < files.Count; i++)
-                {
-                    await AddImageDataFromFile(files[i] as StorageFile);
-                }
+                if (AllowMorePicture)
+                    for (int i = 0; i < 9 && i < files.Count; i++)
+                        await AddImageDataFromFile(files[i] as StorageFile);
+                else
+                    await AddImageDataFromFile(files[0] as StorageFile);
             }
             def.Complete();
         }

@@ -44,7 +44,7 @@ namespace OpenWeen.UWP.Model
             else if (e.TargetItem is CommentModel)
             {
                 var data = e.TargetItem as CommentModel;
-                (Window.Current.Content as Frame).Navigate(typeof(PostWeiboPage), new ReplyCommentData(data.Status.ID, data.ID, $"回复@{data.User.ScreenName}:"));
+                (Window.Current.Content as Frame).Navigate(typeof(PostWeiboPage), new ReplyCommentData(data.Status.ID, data.ID, $"回复@{data.User.Name}:"));
             }
         }
 

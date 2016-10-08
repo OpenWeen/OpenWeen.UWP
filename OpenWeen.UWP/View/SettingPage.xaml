@@ -51,6 +51,8 @@
                         <Slider Header="每次载入数量" Value="{x:Bind LoadCount,Mode=TwoWay,Converter={StaticResource IntDoubleConverter}}" Minimum="20" Maximum="100"/>
                         <ToggleSwitch Header="夜间模式（重启生效）" IsOn="{x:Bind IsNightMode,Mode=TwoWay}" Style="{StaticResource NotifyTypeSwitchStyle}"/>
                         <ToggleSwitch Header="无图模式" IsOn="{x:Bind IsOffImage,Mode=TwoWay}" Style="{StaticResource NotifyTypeSwitchStyle}"/>
+                        <Button Content="下载/更新表情" HorizontalAlignment="Stretch" Click="{x:Bind DownloadEmotion}" Margin="0,4"/>
+                        <Button Content="删除表情" HorizontalAlignment="Stretch" Click="{x:Bind RemoveEmotion}" Margin="0,4"/>
                         <MenuFlyoutSeparator/>
                         <TextBlock Text="实验性功能：" Style="{ThemeResource SubtitleTextBlockStyle}"/>
                         <TextBlock Text="注意：实验性功能尚未经过完全测试，对程序造成的不稳定等一系列问题请用户自行承担" TextWrapping="WrapWholeWords" Foreground="Red"/>

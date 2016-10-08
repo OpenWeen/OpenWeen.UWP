@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,10 +15,12 @@ using OpenWeen.UWP.Common.Helpers;
 using OpenWeen.UWP.Shared.Common;
 using OpenWeen.UWP.Shared.Common.Helpers;
 using OpenWeen.UWP.ToastNotificationTask;
+using PropertyChanged;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Background;
 using Windows.Foundation;
 using Windows.Graphics.Display;
+using Windows.Storage;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -38,6 +42,11 @@ namespace OpenWeen.UWP.View
         internal bool dismissed = false;
         internal Frame rootFrame = new Frame();
         private double ScaleFactor;
+        public string StateText
+        {
+            get { return StateTextblock.Text; }
+            set { StateTextblock.Text = value; }
+        }
 
         public ExtendedSplash(SplashScreen splashscreen, bool loadState)
         {
@@ -74,24 +83,35 @@ namespace OpenWeen.UWP.View
 
         private async Task InitEmotion()
         {
-            var file = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFileAsync("assets\\emotion.json");
+            StateText = "正在初始化表情";
+            var file = await ApplicationData.Current.LocalFolder.TryGetItemAsync("emotion.json");
+            if (file == null)
+                return;
             var text = File.ReadAllText(file.Path);
-            StaticResource.Emotions = JsonConvert.DeserializeObject<IEnumerable<EmotionModel>>(text).ToList();
-            StaticResource.EmotionPattern = string.Join("|", StaticResource.Emotions.Select(item => item.Value)).Replace("[", @"\[").Replace("]", @"\]");
-        }
+            StaticResource.Emotions = JsonHelper.FromJson<List<EmotionModel>>(text);
+       }
 
-        private bool CheckForLogin()
+        private async Task<bool> CheckForLogin()
         {
             try
             {
-                Core.Api.Entity.AccessToken = SettingHelper.GetListSetting<string>(SettingNames.AccessToken, isThrowException: true).ToList()[Settings.SelectedUserIndex];
-                if (string.IsNullOrEmpty(Core.Api.Entity.AccessToken))
+                do
                 {
-                    throw new Core.Exception.InvalidAccessTokenException();
-                }
+                    Core.Api.Entity.AccessToken = SettingHelper.GetListSetting<string>(SettingNames.AccessToken, isThrowException: true).ToList()[Settings.SelectedUserIndex];
+                    if (string.IsNullOrEmpty(Core.Api.Entity.AccessToken))
+                        throw new Core.Exception.InvalidAccessTokenException();
+                    if (string.IsNullOrEmpty((await Core.Api.User.Account.GetLimitStatus()).Error))
+                        break;
+                    var list = SettingHelper.GetListSetting<string>(SettingNames.AccessToken, isThrowException: true).ToList();
+                    list.RemoveAt(Settings.SelectedUserIndex);
+                    Settings.SelectedUserIndex = 0;
+                    SettingHelper.SetListSetting(SettingNames.AccessToken, list);
+                    if (list.Count == 0)
+                        return false;
+                } while (true);
                 return true;
             }
-            catch (Exception e) when (e is Core.Exception.InvalidAccessTokenException || e is SettingException)
+            catch (Exception e)// when (e is Core.Exception.InvalidAccessTokenException || e is SettingException)
             {
                 return false;
             }
@@ -145,26 +165,24 @@ namespace OpenWeen.UWP.View
 
         private async Task InitUid()
         {
+            StateText = "正在初始化用户数据";
             StaticResource.Uid = long.Parse(await Core.Api.User.Account.GetUid());
         }
 
         private async void DismissExtendedSplash()
         {
             Window.Current.SizeChanged -= ExtendedSplash_OnResize;
+            StateText = "正在检查后台通知";
             await BackgroundHelper.Register<UpdateUnreadCountTask>(new TimeTrigger(15, false));
             await BackgroundHelper.Register<ToastNotificationBackgroundTask>(new ToastNotificationActionTrigger());
             await InitEmotion();
             var cahcesize = rootFrame.CacheSize;
             rootFrame.CacheSize = 0;
             rootFrame.CacheSize = cahcesize;
-            if (CheckForLogin())
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            if (await CheckForLogin())
             {
                 await InitUid();
-            }
-
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            if (CheckForLogin())
-            {
                 rootFrame.Navigate(typeof(MainPage));
             }
             else

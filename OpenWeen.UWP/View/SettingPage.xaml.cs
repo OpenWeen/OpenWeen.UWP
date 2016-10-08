@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using OpenWeen.UWP.Common;
+using OpenWeen.UWP.Common.Controls;
 using OpenWeen.UWP.Model;
 using OpenWeen.UWP.Shared.Common;
 using OpenWeen.UWP.Shared.Common.Helpers;
+using Windows.Storage;
 using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -179,27 +184,51 @@ namespace OpenWeen.UWP.View
             Window.Current.Content = new ExtendedSplash(null, false);
         }
 
-        private async Task InitUid()
+        public async void RemoveEmotion()
         {
-            StaticResource.Uid = long.Parse(await Core.Api.User.Account.GetUid());
+            var folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("emotion", CreationCollisionOption.OpenIfExists);
+            await folder.DeleteAsync();
+            var jsonFile = await ApplicationData.Current.LocalFolder.CreateFileAsync("emotion.json", CreationCollisionOption.ReplaceExisting);
+            await jsonFile.DeleteAsync();
+            StaticResource.Emotions = null;
         }
-
-        private bool CheckForLogin()
+        public async void DownloadEmotion()
         {
-            try
+            var dialog = new SitbackAndRelaxDialog()
             {
-                Core.Api.Entity.AccessToken = SettingHelper.GetListSetting<string>(SettingNames.AccessToken, isThrowException: true).ToList()[Settings.SelectedUserIndex];
-                if (string.IsNullOrEmpty(Core.Api.Entity.AccessToken))
+                DialogText = "正在获取表情列表...",
+                IsIndeterminate = true
+            };
+            dialog.ShowAsync();
+            var list = (await Core.Api.Statuses.Emotions.GetEmotions()).ToList();
+            dialog.DialogText = "正在下载表情图片...";
+            dialog.IsIndeterminate = false;
+            dialog.ProgressMaximum = list.Count;
+            var folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("emotion", CreationCollisionOption.OpenIfExists);
+            using (var client = new HttpClient())
+                for (int i = 0; i < list.Count; i++)
                 {
-                    throw new Core.Exception.InvalidAccessTokenException();
+                    var item = list[i];
+                    if (string.IsNullOrEmpty(item.Category))
+                        item.Category = "表情";
+                    var catfolder = await folder.CreateFolderAsync(item.Category, CreationCollisionOption.OpenIfExists);
+                    var fileName = $"{item.Value.Replace("[", "").Replace("]","")}.jpg";
+                    if (await catfolder.TryGetItemAsync(fileName) == null)
+                    {
+                        var file = await catfolder.CreateFileAsync(fileName);
+                        using (var fileStream = (await file.OpenAsync(FileAccessMode.ReadWrite)).AsStreamForWrite())
+                        using (var iconStream = (await client.GetStreamAsync(item.Url)))
+                            await iconStream.CopyToAsync(fileStream);
+                    }
+                    //can not load the image from localcache
+                    list[i].Url = $"ms-appdata:///local/emotion/{item.Category}/{fileName}";
+                    dialog.ProgressValue++;
                 }
-                return true;
-            }
-            catch (Exception e) when (e is Core.Exception.InvalidAccessTokenException || e is SettingException)
-            {
-                return false;
-            }
-
+            StaticResource.Emotions = list;
+            var jsonFile = await ApplicationData.Current.LocalFolder.CreateFileAsync("emotion.json", CreationCollisionOption.ReplaceExisting);
+            File.WriteAllText(jsonFile.Path, JsonHelper.ToJson(list), Encoding.UTF8);
+            dialog.Hide();
+            Notification.Show("下载完毕");
         }
     }
 }
