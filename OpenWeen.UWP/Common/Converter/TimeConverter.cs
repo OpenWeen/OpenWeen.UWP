@@ -8,7 +8,7 @@ namespace OpenWeen.UWP.Common.Converter
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             var date = DateTime.Parse(value.ToString());
-            var time = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("China Standard Time")) - date;
+            var time = DateTime.UtcNow - date.ToUniversalTime();
             if (time.Days != 0)
             {
                 if (time.Days > 7)
