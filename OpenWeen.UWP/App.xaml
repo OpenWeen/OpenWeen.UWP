@@ -13,10 +13,12 @@
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Light">
                     <SolidColorBrush x:Key="AppTheme" Color="#FF327AFF" />
+                    <SolidColorBrush x:Key="TitleBarColor" Color="#FF327AFF" />
                     <SolidColorBrush x:Key="SplitlineColor" Color="LightGray"/>
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="Dark">
                     <SolidColorBrush x:Key="AppTheme" Color="Black" />
+                    <SolidColorBrush x:Key="TitleBarColor" Color="#FF171717" />
                     <SolidColorBrush x:Key="SplitlineColor" Color="Gray" Opacity="0.5"/>
                     <Style TargetType="TextBlock">
                         <Setter Property="Foreground" Value="LightGray"/>
@@ -33,6 +35,7 @@
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
             <x:Double x:Key="EmotionSize">20</x:Double>
+            <converter:StringToBitmapImageConverter x:Key="StringToBitmapImageConverter"/>
             <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
             <converter:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
             <converter:TimeConverter x:Key="TimeConverter" />

@@ -86,5 +86,14 @@ namespace OpenWeen.UWP
             var menu = Resources["GroupFlout"] as Flyout;
             menu.Hide();
         }
+
+        private void pivot_Loaded(object sender, RoutedEventArgs e)
+        {
+            MoreVisualTreeHelper.GetObjectByName<ContentControl>(pivot, "HeaderClipper").Visibility = Visibility.Collapsed;
+            MoreVisualTreeHelper.GetObjectByName<ContentPresenter>(pivot, "LeftHeaderPresenter").Visibility = Visibility.Collapsed;
+            MoreVisualTreeHelper.GetObjectByName<Button>(pivot, "PreviousButton").Visibility = Visibility.Collapsed;
+            MoreVisualTreeHelper.GetObjectByName<Button>(pivot, "NextButton").Visibility = Visibility.Collapsed;
+            MoreVisualTreeHelper.GetObjectByName<ContentPresenter>(pivot, "RightHeaderPresenter").Visibility = Visibility.Collapsed;
+        }
     }
 }

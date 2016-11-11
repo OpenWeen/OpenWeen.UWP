@@ -91,7 +91,7 @@ namespace OpenWeen.UWP.Common.Controls
 
         public void ZoomOut()
         {
-            if (flipView?.SelectedItem == null && (flipView.SelectedItem as ImageModel).IsLoading)
+            if (flipView?.SelectedItem == null)
                 return;
             var scrollViewer = MoreVisualTreeHelper.GetObject<ScrollViewer>(flipView.ContainerFromItem(flipView.SelectedItem));
             if (scrollViewer.ZoomFactor - 0.1f > scrollViewer.MinZoomFactor)
@@ -115,7 +115,7 @@ namespace OpenWeen.UWP.Common.Controls
 
         public void ZoomIn()
         {
-            if (flipView?.SelectedItem == null && (flipView.SelectedItem as ImageModel).IsLoading)
+            if (flipView?.SelectedItem == null)
                 return;
             var scrollViewer = MoreVisualTreeHelper.GetObject<ScrollViewer>(flipView.ContainerFromItem(flipView.SelectedItem));
             if (scrollViewer.ZoomFactor + 0.1f < scrollViewer.MaxZoomFactor)

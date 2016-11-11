@@ -104,7 +104,7 @@
             <AppBarButton Icon="Send" Label="转发" Click="{x:Bind ViewModel.NewRepost}"/>
             <CommandBar.Content>
                 <Grid Margin="20,0,0,0">
-                    <TextBox Text="{x:Bind ViewModel.SendText,Mode=TwoWay}"/>
+                    <TextBox HorizontalAlignment="Stretch" Text="{x:Bind ViewModel.SendText,Mode=TwoWay}"/>
                 </Grid>
             </CommandBar.Content>
         </CommandBar>

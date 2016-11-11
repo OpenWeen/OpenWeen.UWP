@@ -1,33 +1,42 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.IO;
+using Windows.Foundation.Metadata;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace OpenWeen.UWP.Model
 {
     public class ImageModel : INotifyPropertyChanged
     {
-        public string SourceUri { get; }
-        public bool IsLoading { get; private set; } = true;
+        public string SourceUri { get; set; }
+        public BitmapImage Image { get; set; }
+        public int DownloadProgress { get; private set; }
+        public Visibility ProgressVisibility { get; private set; } = Visibility.Visible;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ImageModel(string source)
+        public ImageModel(string source, bool autoPlay = true)
         {
             SourceUri = source;
-        }
-        
-        public void Loaded()
-        {
-            IsLoading = false;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsLoading)));
+            Image = new BitmapImage(new Uri(source));
+            if (ApiInformation.IsPropertyPresent("Windows.UI.Xaml.Media.Imaging.BitmapImage", nameof(BitmapImage.IsAnimatedBitmap)))
+            {
+                Image.AutoPlay = autoPlay;
+            }
+            Image.DownloadProgress += Image_DownloadProgress;
         }
 
-        public void LoadFailed(object sender, object e)
+        private void Image_DownloadProgress(object sender, DownloadProgressEventArgs e)
         {
-            IsLoading = false;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsLoading)));
-            //var imageView = sender as ImageView;
-            //TODO: Draw an image
-            //imageView.UriSource = new Uri()
+            DownloadProgress = e.Progress;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DownloadProgress)));
+        }
+
+        public void Loaded(object sender, object e)
+        {
+            ProgressVisibility = Visibility.Collapsed;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ProgressVisibility)));
         }
     }
 }

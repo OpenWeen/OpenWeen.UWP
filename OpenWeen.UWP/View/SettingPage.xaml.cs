@@ -186,11 +186,19 @@ namespace OpenWeen.UWP.View
 
         public async void RemoveEmotion()
         {
-            var folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("emotion", CreationCollisionOption.OpenIfExists);
-            await folder.DeleteAsync();
-            var jsonFile = await ApplicationData.Current.LocalFolder.CreateFileAsync("emotion.json", CreationCollisionOption.ReplaceExisting);
-            await jsonFile.DeleteAsync();
-            StaticResource.Emotions = null;
+            try
+            {
+                var folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("emotion", CreationCollisionOption.OpenIfExists);
+                await folder.DeleteAsync(StorageDeleteOption.PermanentDelete);
+                var jsonFile = await ApplicationData.Current.LocalFolder.CreateFileAsync("emotion.json", CreationCollisionOption.ReplaceExisting);
+                await jsonFile.DeleteAsync(StorageDeleteOption.PermanentDelete);
+                StaticResource.Emotions = null;
+                Notification.Show("删除成功");
+            }
+            catch (UnauthorizedAccessException)
+            {
+                Notification.Show("删除失败");
+            }
         }
         public async void DownloadEmotion()
         {

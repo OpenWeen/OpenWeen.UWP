@@ -9,7 +9,6 @@
     BorderThickness="0"
     xmlns:Extensions="using:WinRTXamlToolkit.Controls.Extensions"
     SecondaryButtonText="关闭"
-    xmlns:gif="using:XamlAnimatedGif"
     RequestedTheme="Dark"
     RightTapped="ContentDialog_RightTapped"
     mc:Ignorable="d" FullSizeDesired="True" Background="#7F000000" Style="{StaticResource PopupStyle}">
@@ -19,9 +18,8 @@
                 <DataTemplate x:DataType="model:ImageModel">
                     <ScrollViewer MaxZoomFactor="50" PointerExited="ScrollViewer_PointerExited" PointerPressed="ScrollViewer_PointerPressed" PointerReleased="ScrollViewer_PointerReleased" PointerMoved="ScrollViewer_PointerMoved" HorizontalScrollBarVisibility="Auto" HorizontalScrollMode="Auto" ZoomMode="Enabled" HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" VerticalScrollBarVisibility="Auto">
                         <Grid>
-                            <ProgressRing Foreground="White" IsActive="{x:Bind IsLoading,Mode=OneWay}" />
-                            <Image  Tapped="Image_Tapped" ImageFailed="{x:Bind LoadFailed}" ImageOpened="{x:Bind Loaded}"  gif:AnimationBehavior.SourceUri="{Binding SourceUri}"/>
-                            <!--<imgcontrol:ImageView LoadingFailed="{x:Bind LoadFailed}" Margin="0,0,16,16" UriSource="{x:Bind SourceUri}" LoadingCompleted="{x:Bind Loaded}" />-->
+                            <ProgressBar Foreground="White" Visibility="{x:Bind ProgressVisibility,Mode=OneWay}" Value="{x:Bind DownloadProgress,Mode=OneWay}" Maximum="100" Minimum="0"/>
+                            <Image Tapped="Image_Tapped" ImageOpened="{x:Bind Loaded}" Source="{x:Bind Image}"/>
                         </Grid>
                     </ScrollViewer>
                 </DataTemplate>

@@ -105,7 +105,7 @@
                 </Grid>
             </SplitView.Pane>
             <SplitView.Content>
-                <Pivot x:Name="pivot" Style="{StaticResource PiovtWithoutHeaderStyle}">
+                <Pivot x:Name="pivot" Loaded="pivot_Loaded" >
                     <Pivot.ItemContainerStyle>
                         <Style TargetType="PivotItem">
                             <Setter Property="Margin" Value="0" />

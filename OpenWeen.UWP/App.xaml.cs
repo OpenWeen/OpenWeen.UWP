@@ -58,8 +58,8 @@ namespace OpenWeen.UWP
             }
             else
             {
-                ApplicationView.GetForCurrentView().TitleBar.BackgroundColor = ((SolidColorBrush)Resources["AppTheme"]).Color;
-                ApplicationView.GetForCurrentView().TitleBar.ButtonBackgroundColor = ((SolidColorBrush)Resources["AppTheme"]).Color;
+                ApplicationView.GetForCurrentView().TitleBar.BackgroundColor = ((SolidColorBrush)Resources["TitleBarColor"]).Color;
+                ApplicationView.GetForCurrentView().TitleBar.ButtonBackgroundColor = ((SolidColorBrush)Resources["TitleBarColor"]).Color;
             }
             Frame rootFrame = Window.Current.Content as Frame;
             if (rootFrame == null)

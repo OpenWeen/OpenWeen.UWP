@@ -76,7 +76,7 @@ namespace OpenWeen.UWP.Common.Controls
             string ortext = (model?.LongText != null) ? model.LongText.Content : Text;
             try
             {
-                text = ortext.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                text = ortext.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;").Replace("\n", "<LineBreak/>");
                 text = ReplaceUserName(text);
                 text = ReplaceTopic(text);
                 text = ReplaceHyperlink(text);
@@ -85,7 +85,7 @@ namespace OpenWeen.UWP.Common.Controls
             }
             catch
             {
-                text = ortext.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                text = ortext.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;").Replace("\n", "<LineBreak/>");
                 AddBlockFromText(text);
             }
         }

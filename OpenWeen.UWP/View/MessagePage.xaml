@@ -53,7 +53,7 @@
                     <GridView ItemClick="GridView_ItemClick" SelectionMode="None" ItemsSource="{Binding Source={StaticResource cvs}}" IsItemClickEnabled="True">
                         <GridView.ItemTemplate>
                             <DataTemplate>
-                                <Image Extensions:ImageExtensions.FadeInOnLoaded="True" Extensions:ImageExtensions.ImageLoadedTransitionType="FadeIn" Width="{StaticResource EmotionSize}" Height="{StaticResource EmotionSize}" Margin="4" Source="{Binding Url}" />
+                                <Image Extensions:ImageExtensions.FadeInOnLoaded="True" Extensions:ImageExtensions.ImageLoadedTransitionType="FadeIn" Width="{StaticResource EmotionSize}" Height="{StaticResource EmotionSize}" Margin="4" Source="{Binding Url,Converter={StaticResource StringToBitmapImageConverter},ConverterParameter=false}" />
                             </DataTemplate>
                         </GridView.ItemTemplate>
                         <GridView.GroupStyle>

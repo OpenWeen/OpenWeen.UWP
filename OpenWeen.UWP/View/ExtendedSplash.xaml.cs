@@ -15,7 +15,6 @@ using OpenWeen.UWP.Common.Helpers;
 using OpenWeen.UWP.Shared.Common;
 using OpenWeen.UWP.Shared.Common.Helpers;
 using OpenWeen.UWP.ToastNotificationTask;
-using PropertyChanged;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Background;
 using Windows.Foundation;
