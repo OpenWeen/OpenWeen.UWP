@@ -7,30 +7,28 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:OpenWeen.UWP.Model"
     mc:Ignorable="d"
-    VerticalAlignment="Center"
+    VerticalAlignment="Stretch"
     d:DesignHeight="300"
     d:DesignWidth="400">
-    <ItemsControl ItemsSource="{x:Bind ItemsSource}" DoubleTapped="ItemsControl_DoubleTapped" Tapped="ItemsControl_Tapped">
-        <ItemsControl.ItemsPanel>
-            <ItemsPanelTemplate>
-                <StackPanel Orientation="Horizontal" />
-            </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
-        <ItemsControl.ItemTemplate>
+    <local:AdaptiveGridView VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ItemHeight="48" DesiredWidth="{StaticResource UserImageSize}" OneRowModeEnabled="True" ItemsSource="{x:Bind ItemsSource}" DoubleTapped="ItemsControl_DoubleTapped" Tapped="ItemsControl_Tapped">
+        <local:AdaptiveGridView.ItemTemplate>
             <DataTemplate x:DataType="model:HeaderModel">
-                <Grid Opacity="{x:Bind Opacity,Mode=OneWay}" Margin="8">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                    </Grid.RowDefinitions>
-                    <SymbolIcon Symbol="{x:Bind Icon}" />
-                    <TextBlock Visibility="Collapsed" Grid.Row="1" Text="{x:Bind Text}" />
+                <Grid VerticalAlignment="Stretch">
+                    <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="4" Fill="{StaticResource AppTheme}" Visibility="{x:Bind IsActive,Converter={StaticResource BoolToVisibilityConverter},Mode=OneWay}" />
+                    <SymbolIcon Symbol="{x:Bind Icon}" Margin="8" Foreground="{StaticResource AppTheme}" Visibility="{x:Bind IsActive,Converter={StaticResource BoolToVisibilityConverter},Mode=OneWay}"/>
+                    <SymbolIcon Symbol="{x:Bind Icon}" Margin="8" Visibility="{x:Bind IsActive,Converter={StaticResource BoolToVisibilityConverter},ConverterParameter=true,Mode=OneWay}"/>
+                    <TextBlock Visibility="Collapsed" Grid.Row="1" Text="{x:Bind Text}"/>
                     <Grid Visibility="{x:Bind UnreadCount,Mode=OneWay,Converter={StaticResource UnreadCountToVisibilityConverter}}" Width="10" Height="10" HorizontalAlignment="Right" VerticalAlignment="Top">
                         <Ellipse Fill="Red" />
-                        <TextBlock FontSize="8" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{x:Bind UnreadCount,Mode=OneWay}" />
+                        <TextBlock FontSize="8" RequestedTheme="Dark" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{x:Bind UnreadCount,Mode=OneWay}" />
                     </Grid>
                 </Grid>
             </DataTemplate>
-        </ItemsControl.ItemTemplate>
-    </ItemsControl>
+        </local:AdaptiveGridView.ItemTemplate>
+        <local:AdaptiveGridView.ItemsPanel>
+            <ItemsPanelTemplate>
+                <ItemsWrapGrid/>
+            </ItemsPanelTemplate>
+        </local:AdaptiveGridView.ItemsPanel>
+    </local:AdaptiveGridView>
 </UserControl>

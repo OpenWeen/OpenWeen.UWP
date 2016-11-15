@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using OpenWeen.Core.Model;
 using OpenWeen.Core.Model.Status;
 using OpenWeen.Core.Model.User;
@@ -155,7 +156,7 @@ namespace OpenWeen.UWP.ViewModel.MainPage
                     UpdateUnreadHelper.UpdateUnread(unread);
                     UpdateUnreadHelper.Count = Header.Sum(item => item.UnreadCount);
                 }
-                catch (Exception ex) when (ex is WebException || ex is HttpRequestException || ex is TaskCanceledException)
+                catch (Exception ex) when (ex is WebException || ex is HttpRequestException || ex is TaskCanceledException || ex is JsonSerializationException)
                 {
 
                 }

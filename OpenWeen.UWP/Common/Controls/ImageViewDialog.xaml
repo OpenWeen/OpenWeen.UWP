@@ -8,6 +8,7 @@
     xmlns:model="using:OpenWeen.UWP.Model"
     BorderThickness="0"
     xmlns:Extensions="using:WinRTXamlToolkit.Controls.Extensions"
+    xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
     SecondaryButtonText="关闭"
     RequestedTheme="Dark"
     RightTapped="ContentDialog_RightTapped"
@@ -27,9 +28,10 @@
         </FlipView>
         <AppBarButton Background="#7F000000" Icon="Back" IsCompact="True" Click="{x:Bind HideEx}" />
         <StackPanel Background="#7F000000" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-            <AppBarButton Icon="Save" IsCompact="True" Click="{x:Bind Save}" />
-            <AppBarButton IsCompact="True" Click="{x:Bind ZoomOut}" Icon="ZoomOut" />
-            <AppBarButton IsCompact="True" Click="{x:Bind ZoomIn}" Icon="ZoomIn" />
+            <AppBarButton Icon="Save" Click="{x:Bind Save}" Label="保存" />
+            <AppBarButton Click="{x:Bind ZoomOut}" Label="缩小" Icon="ZoomOut" />
+            <AppBarButton Click="{x:Bind ZoomIn}" Label="放大" Icon="ZoomIn" />
+            <AppBarButton Visibility="Collapsed" Icon="Edit" Label="编辑" Click="{x:Bind EditImage}"/>
         </StackPanel>
     </Grid>
 </ContentDialog>

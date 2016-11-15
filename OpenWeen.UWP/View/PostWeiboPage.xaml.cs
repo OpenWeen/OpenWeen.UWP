@@ -12,6 +12,7 @@ using OpenWeen.Core.Model;
 using OpenWeen.Core.Model.Status;
 using OpenWeen.UWP.Common;
 using OpenWeen.UWP.Common.Entities;
+using Windows.Foundation.Metadata;
 using Windows.Graphics.Imaging;
 using Windows.Media.Capture;
 using Windows.Storage;
@@ -44,7 +45,6 @@ namespace OpenWeen.UWP.View
             get
             {
                 string value = "";
-                
                 richEditBox.Document.GetText(Windows.UI.Text.TextGetOptions.NoHidden, out value);
                 return 140 - Encoding.GetEncoding("gb2312").GetByteCount(value) / 2;
             }
@@ -63,16 +63,13 @@ namespace OpenWeen.UWP.View
                 richEditBox.Document.SetText(Windows.UI.Text.TextSetOptions.None, value);
             }
         }
-
-        public List<IGrouping<string, EmotionModel>> Emojis => StaticResource.Emotions?.GroupBy(item => string.IsNullOrEmpty(item.Category) ? "表情" : item.Category).ToList();
-
         public PostWeiboPage()
         {
             this.InitializeComponent();
             Transitions = new TransitionCollection { new NavigationThemeTransition() { DefaultNavigationTransitionInfo = new SlideNavigationTransitionInfo() } };
             if (StaticResource.Emotions != null)
             {
-                cvs.Source = Emojis;
+                cvs.Source = StaticResource.EmojiGroup;
                 (semanticZoom.ZoomedOutView as ListViewBase).ItemsSource = cvs.View.CollectionGroups;
             }
         }

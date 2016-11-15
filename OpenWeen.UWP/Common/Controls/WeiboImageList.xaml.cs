@@ -40,22 +40,11 @@ namespace OpenWeen.UWP.Common.Controls
                 url = url.Replace("/or180/", "/thumbnail/");
                 image.Source = new BitmapImage(new Uri(url));
             }
-        }
-
-    }
-
-    public static class BytesEx
-    {
-
-        public async static Task<ImageSource> ToImageSource(this byte[] source)
-        {
-            using (var stream = new MemoryStream(source))
+            else if (url.Contains("/or360/"))
             {
-                var bitmap = new BitmapImage();
-                await bitmap.SetSourceAsync(stream.AsRandomAccessStream());
-                return bitmap;
+                url = url.Replace("/or360/", "/bmiddle/");
+                image.Source = new BitmapImage(new Uri(url));
             }
         }
-
     }
 }

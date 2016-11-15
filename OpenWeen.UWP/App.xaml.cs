@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using Microsoft.HockeyApp;
+using Newtonsoft.Json;
 using OpenWeen.UWP.Common;
 using OpenWeen.UWP.Common.Controls;
 using OpenWeen.UWP.Shared.Common;
@@ -24,7 +25,7 @@ namespace OpenWeen.UWP
     /// </summary>
     sealed partial class App : Application
     {
-        
+        public static Color AppTheme => ((SolidColorBrush)App.Current.Resources["AppTheme"]).Color;
         /// <summary>
         /// 初始化单一实例应用程序对象。这是执行的创作代码的第一行，
         /// 已执行，逻辑上等同于 main() 或 WinMain()。
@@ -60,7 +61,9 @@ namespace OpenWeen.UWP
             {
                 ApplicationView.GetForCurrentView().TitleBar.BackgroundColor = ((SolidColorBrush)Resources["TitleBarColor"]).Color;
                 ApplicationView.GetForCurrentView().TitleBar.ButtonBackgroundColor = ((SolidColorBrush)Resources["TitleBarColor"]).Color;
+                ApplicationView.GetForCurrentView().SetPreferredMinSize(new Windows.Foundation.Size(350, 200));
             }
+            
             Frame rootFrame = Window.Current.Content as Frame;
             if (rootFrame == null)
             {
@@ -90,20 +93,27 @@ namespace OpenWeen.UWP
 
         private void SynchronizationContext_UnhandledException(object sender, Common.UnhandledExceptionEventArgs e)
         {
-            if (e.Exception is WebException || e.Exception is HttpRequestException)
+            e.Handled = HandleException(e.Exception);
+        }
+
+        private bool HandleException(Exception exception)
+        {
+            if (exception is WebException || exception is HttpRequestException)
             {
-                Notification.Show($"网络错误 {e.Exception.Message}");
-                e.Handled = true;
+                Notification.Show($"网络错误 {exception.Message}");
+                return true;
+            } 
+            else if (exception is JsonException)
+            {
+                Notification.Show($"Json错误 {exception.Message}");
+                return true;
             }
+            return false;
         }
 
         private void App_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
         {
-            if (e.Exception is WebException || e.Exception is HttpRequestException)
-            {
-                Notification.Show($"网络错误 {e.Exception.Message}");
-                e.Handled = true;
-            }
+            e.Handled = HandleException(e.Exception);
         }
 
         /// <summary>

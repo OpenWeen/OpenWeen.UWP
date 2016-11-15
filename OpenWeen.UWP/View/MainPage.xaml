@@ -6,7 +6,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:OpenWeen.UWP.Common.Controls"
-    xmlns:statusmodel="using:OpenWeen.Core.Model.Status"
+    xmlns:statusmodel="using:OpenWeen.Core.Model.Status"      
+    xmlns:pr="using:PullToRefresh.UWP"
     xmlns:view="using:OpenWeen.UWP.View"
     mc:Ignorable="d">
     <Page.Resources>
@@ -61,7 +62,7 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Grid Background="{StaticResource AppTheme}" RequestedTheme="Dark" x:Name="pivotHeader">
+        <Grid Background="{Binding PaneBackground, ElementName=splitView}" x:Name="pivotHeader">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="*" />
@@ -105,34 +106,36 @@
                 </Grid>
             </SplitView.Pane>
             <SplitView.Content>
-                <Pivot x:Name="pivot" Loaded="pivot_Loaded" >
-                    <Pivot.ItemContainerStyle>
-                        <Style TargetType="PivotItem">
-                            <Setter Property="Margin" Value="0" />
-                        </Style>
-                    </Pivot.ItemContainerStyle>
-                    <PivotItem>
-                        <controls:WeiboList Like="{x:Bind ActionModel.Like}" Delete="{x:Bind ActionModel.Delete}" IsLoading="{x:Bind ViewModel.Timeline.IsLoading,Mode=OneWay}" LoadMore="{x:Bind ViewModel.Timeline.LoadMore}" Repost="{x:Bind ActionModel.Repost}" Comment="{x:Bind ActionModel.Comment}" ItemClick="{x:Bind ActionModel.ItemClick}" UserClick="{x:Bind ActionModel.UserClick}" PictureClick="{x:Bind ActionModel.PictureClick}" TopicClick="{x:Bind ActionModel.TopicClick}" Favor="{x:Bind ActionModel.Favor}" ItemsSource="{x:Bind ViewModel.Timeline.WeiboList,Mode=OneWay}" />
-                    </PivotItem>
-                    <PivotItem>
-                        <controls:WeiboList Like="{x:Bind ActionModel.Like}" Delete="{x:Bind ActionModel.Delete}" IsLoading="{x:Bind ViewModel.MergeMessage.IsLoading,Mode=OneWay}" LoadMore="{x:Bind ViewModel.MergeMessage.LoadMore}" Repost="{x:Bind ActionModel.Repost}" Comment="{x:Bind ActionModel.Comment}" ItemClick="{x:Bind ActionModel.ItemClick}" UserClick="{x:Bind ActionModel.UserClick}" PictureClick="{x:Bind ActionModel.PictureClick}" TopicClick="{x:Bind ActionModel.TopicClick}" Favor="{x:Bind ActionModel.Favor}" ItemsSource="{x:Bind ViewModel.MergeMessage.WeiboList,Mode=OneWay}" />
-                    </PivotItem>
-                    <PivotItem>
-                        <controls:WeiboList Like="{x:Bind ActionModel.Like}" Delete="{x:Bind ActionModel.Delete}" IsLoading="{x:Bind ViewModel.Mention.IsLoading,Mode=OneWay}" LoadMore="{x:Bind ViewModel.Mention.LoadMore}" Repost="{x:Bind ActionModel.Repost}" Comment="{x:Bind ActionModel.Comment}" ItemClick="{x:Bind ActionModel.ItemClick}" UserClick="{x:Bind ActionModel.UserClick}" PictureClick="{x:Bind ActionModel.PictureClick}" TopicClick="{x:Bind ActionModel.TopicClick}" Favor="{x:Bind ActionModel.Favor}" ItemsSource="{x:Bind ViewModel.Mention.WeiboList,Mode=OneWay}" />
-                    </PivotItem>
-                    <PivotItem>
-                        <controls:WeiboList IsLoading="{x:Bind ViewModel.Comment.IsLoading,Mode=OneWay}" LoadMore="{x:Bind ViewModel.Comment.LoadMore}" UserClick="{x:Bind ActionModel.UserClick}" ItemClick="{x:Bind ActionModel.ItemClick}" Comment="{x:Bind ActionModel.Comment}" ItemsSource="{x:Bind ViewModel.Comment.WeiboList,Mode=OneWay}" />
-                    </PivotItem>
-                    <PivotItem>
-                        <controls:WeiboList IsLoading="{x:Bind ViewModel.CommentMention.IsLoading,Mode=OneWay}" LoadMore="{x:Bind ViewModel.CommentMention.LoadMore}" UserClick="{x:Bind ActionModel.UserClick}" ItemClick="{x:Bind ActionModel.ItemClick}" Comment="{x:Bind ActionModel.Comment}" ItemsSource="{x:Bind ViewModel.CommentMention.WeiboList,Mode=OneWay}" />
-                    </PivotItem>
-                    <PivotItem>
-                        <controls:WeiboList Like="{x:Bind ActionModel.Like}" Delete="{x:Bind ActionModel.Delete}" IsLoading="{x:Bind ViewModel.Favor.IsLoading,Mode=OneWay}" LoadMore="{x:Bind ViewModel.Favor.LoadMore}" Repost="{x:Bind ActionModel.Repost}" Comment="{x:Bind ActionModel.Comment}" ItemClick="{x:Bind ActionModel.ItemClick}" UserClick="{x:Bind ActionModel.UserClick}" PictureClick="{x:Bind ActionModel.PictureClick}" TopicClick="{x:Bind ActionModel.TopicClick}" Favor="{x:Bind ActionModel.Favor}" ItemsSource="{x:Bind ViewModel.Favor.WeiboList,Mode=OneWay}" />
-                    </PivotItem>
-                    <PivotItem>
-                        <controls:MessageUserList LoadMore="{x:Bind ViewModel.Message.LoadMore}" ItemClick="{x:Bind ActionModel.MessageClick}" ItemsSource="{x:Bind ViewModel.Message.WeiboList,Mode=OneWay}" />
-                    </PivotItem>
-                </Pivot>
+                <pr:PullToRefreshBox RefreshInvoked="{x:Bind ViewModel.Refresh}">
+                    <Pivot x:Name="pivot" Loaded="pivot_Loaded" >
+                        <Pivot.ItemContainerStyle>
+                            <Style TargetType="PivotItem">
+                                <Setter Property="Margin" Value="0" />
+                            </Style>
+                        </Pivot.ItemContainerStyle>
+                        <PivotItem>
+                            <controls:WeiboList Like="{x:Bind ActionModel.Like}" Delete="{x:Bind ActionModel.Delete}" IsLoading="{x:Bind ViewModel.Timeline.IsLoading,Mode=OneWay}" LoadMore="{x:Bind ViewModel.Timeline.LoadMore}" Repost="{x:Bind ActionModel.Repost}" Comment="{x:Bind ActionModel.Comment}" ItemClick="{x:Bind ActionModel.ItemClick}" UserClick="{x:Bind ActionModel.UserClick}" PictureClick="{x:Bind ActionModel.PictureClick}" TopicClick="{x:Bind ActionModel.TopicClick}" Favor="{x:Bind ActionModel.Favor}" ItemsSource="{x:Bind ViewModel.Timeline.WeiboList,Mode=OneWay}" />
+                        </PivotItem>
+                        <PivotItem>
+                            <controls:WeiboList Like="{x:Bind ActionModel.Like}" Delete="{x:Bind ActionModel.Delete}" IsLoading="{x:Bind ViewModel.MergeMessage.IsLoading,Mode=OneWay}" LoadMore="{x:Bind ViewModel.MergeMessage.LoadMore}" Repost="{x:Bind ActionModel.Repost}" Comment="{x:Bind ActionModel.Comment}" ItemClick="{x:Bind ActionModel.ItemClick}" UserClick="{x:Bind ActionModel.UserClick}" PictureClick="{x:Bind ActionModel.PictureClick}" TopicClick="{x:Bind ActionModel.TopicClick}" Favor="{x:Bind ActionModel.Favor}" ItemsSource="{x:Bind ViewModel.MergeMessage.WeiboList,Mode=OneWay}" />
+                        </PivotItem>
+                        <PivotItem>
+                            <controls:WeiboList Like="{x:Bind ActionModel.Like}" Delete="{x:Bind ActionModel.Delete}" IsLoading="{x:Bind ViewModel.Mention.IsLoading,Mode=OneWay}" LoadMore="{x:Bind ViewModel.Mention.LoadMore}" Repost="{x:Bind ActionModel.Repost}" Comment="{x:Bind ActionModel.Comment}" ItemClick="{x:Bind ActionModel.ItemClick}" UserClick="{x:Bind ActionModel.UserClick}" PictureClick="{x:Bind ActionModel.PictureClick}" TopicClick="{x:Bind ActionModel.TopicClick}" Favor="{x:Bind ActionModel.Favor}" ItemsSource="{x:Bind ViewModel.Mention.WeiboList,Mode=OneWay}" />
+                        </PivotItem>
+                        <PivotItem>
+                            <controls:WeiboList IsLoading="{x:Bind ViewModel.Comment.IsLoading,Mode=OneWay}" LoadMore="{x:Bind ViewModel.Comment.LoadMore}" UserClick="{x:Bind ActionModel.UserClick}" ItemClick="{x:Bind ActionModel.ItemClick}" Comment="{x:Bind ActionModel.Comment}" ItemsSource="{x:Bind ViewModel.Comment.WeiboList,Mode=OneWay}" />
+                        </PivotItem>
+                        <PivotItem>
+                            <controls:WeiboList IsLoading="{x:Bind ViewModel.CommentMention.IsLoading,Mode=OneWay}" LoadMore="{x:Bind ViewModel.CommentMention.LoadMore}" UserClick="{x:Bind ActionModel.UserClick}" ItemClick="{x:Bind ActionModel.ItemClick}" Comment="{x:Bind ActionModel.Comment}" ItemsSource="{x:Bind ViewModel.CommentMention.WeiboList,Mode=OneWay}" />
+                        </PivotItem>
+                        <PivotItem>
+                            <controls:WeiboList Like="{x:Bind ActionModel.Like}" Delete="{x:Bind ActionModel.Delete}" IsLoading="{x:Bind ViewModel.Favor.IsLoading,Mode=OneWay}" LoadMore="{x:Bind ViewModel.Favor.LoadMore}" Repost="{x:Bind ActionModel.Repost}" Comment="{x:Bind ActionModel.Comment}" ItemClick="{x:Bind ActionModel.ItemClick}" UserClick="{x:Bind ActionModel.UserClick}" PictureClick="{x:Bind ActionModel.PictureClick}" TopicClick="{x:Bind ActionModel.TopicClick}" Favor="{x:Bind ActionModel.Favor}" ItemsSource="{x:Bind ViewModel.Favor.WeiboList,Mode=OneWay}" />
+                        </PivotItem>
+                        <PivotItem>
+                            <controls:MessageUserList LoadMore="{x:Bind ViewModel.Message.LoadMore}" ItemClick="{x:Bind ActionModel.MessageClick}" ItemsSource="{x:Bind ViewModel.Message.WeiboList,Mode=OneWay}" />
+                        </PivotItem>
+                    </Pivot>
+                </pr:PullToRefreshBox>
             </SplitView.Content>
         </SplitView>
     </Grid>

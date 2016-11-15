@@ -6,7 +6,6 @@ using OpenWeen.UWP.Common.Helpers;
 using OpenWeen.UWP.Model;
 using Windows.Foundation;
 using Windows.Graphics.Display;
-using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -61,7 +60,12 @@ namespace OpenWeen.UWP.Common.Controls
             MinWidth = (Window.Current.Content as Frame).ActualWidth;
             await InitImageSize();
         }
-
+        public void EditImage()
+        {
+            if (flipView?.SelectedItem == null)
+                return;
+            var img = MoreVisualTreeHelper.GetObject<Image>(flipView.ContainerFromItem(flipView.SelectedItem));
+        }
         private async System.Threading.Tasks.Task InitImageSize()
         {
             await Window.Current.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
@@ -70,7 +74,7 @@ namespace OpenWeen.UWP.Common.Controls
                 if (img != null)
                 {
                     img.Width = (Window.Current.Content as Frame).ActualWidth;
-                    img.Height = (Window.Current.Content as Frame).ActualHeight;
+                    //img.Height = (Window.Current.Content as Frame).ActualHeight;
                 }
             });
         }
@@ -100,6 +104,8 @@ namespace OpenWeen.UWP.Common.Controls
 
         public async void Save()
         {
+            if (flipView?.SelectedItem == null)
+                return;
             var name = Path.GetFileName(Items[flipView.SelectedIndex].SourceUri.ToString());
             var picker = new FileSavePicker();
             picker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;

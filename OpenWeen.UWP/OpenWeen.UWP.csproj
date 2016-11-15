@@ -105,6 +105,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\Controls\AdaptiveGridView.cs" />
     <Compile Include="Common\Controls\Events\WeiboActionEventArgs.cs" />
     <Compile Include="Common\Controls\Events\WeiboItemClickEventArgs.cs" />
     <Compile Include="Common\Controls\Events\WeiboMessageItemClickEventArgs.cs" />
@@ -164,6 +165,7 @@
     <Compile Include="Common\Converter\StringToBitmapImageConverter.cs" />
     <Compile Include="Common\Converter\TimeConverter.cs" />
     <Compile Include="Common\Converter\UnreadCountToVisibilityConverter.cs" />
+    <Compile Include="Common\Converter\WeiboImageRelyOnNetwork.cs" />
     <Compile Include="Common\Entities\FollowState.cs" />
     <Compile Include="Common\Entities\PostWeiboType.cs" />
     <Compile Include="Common\ExceptionHandlingSynchronizationContext.cs" />

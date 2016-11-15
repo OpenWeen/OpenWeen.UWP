@@ -35,6 +35,7 @@
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
             <x:Double x:Key="EmotionSize">20</x:Double>
+            <converter:WeiboImageRelyOnNetwork x:Key="WeiboImageRelyOnNetwork"/>
             <converter:StringToBitmapImageConverter x:Key="StringToBitmapImageConverter"/>
             <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
             <converter:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />

@@ -27,12 +27,14 @@ namespace OpenWeen.UWP.View
     public sealed partial class MessagePage : Page
     {
         public MessagePageViewModel ViewModel { get; private set; }
-        public List<IGrouping<string, EmotionModel>> Emojis => StaticResource.Emotions.GroupBy(item => string.IsNullOrEmpty(item.Category) ? "表情" : item.Category).ToList();
         public MessagePage()
         {
             this.InitializeComponent();
-            cvs.Source = Emojis;
-            (semanticZoom.ZoomedOutView as ListViewBase).ItemsSource = cvs.View.CollectionGroups;
+            if (StaticResource.EmojiGroup != null)
+            {
+                cvs.Source = StaticResource.EmojiGroup;
+                (semanticZoom.ZoomedOutView as ListViewBase).ItemsSource = cvs.View.CollectionGroups;
+            }
         }
         
 
