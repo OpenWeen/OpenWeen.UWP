@@ -3,6 +3,10 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:OpenWeen.UWP"
+    xmlns:statusmodel="using:OpenWeen.Core.Model.Status"
+    xmlns:model="using:OpenWeen.Core.Model"
+    xmlns:common="using:OpenWeen.UWP.Common"
+    xmlns:commentModel="using:OpenWeen.Core.Model.Comment"
     xmlns:controls="using:OpenWeen.UWP.Common.Controls"
     xmlns:converter="using:OpenWeen.UWP.Common.Converter">
     <Application.Resources>
@@ -41,7 +45,6 @@
             <converter:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
             <converter:TimeConverter x:Key="TimeConverter" />
             <converter:BlockToVisibilityConverter x:Key="BlockToVisibilityConverter" />
-            <converter:ImageSizeConverter x:Key="ImageSizeConverter" />
             <converter:FavorToColorConverter x:Key="FavorToColorConverter" />
             <converter:UnreadCountToVisibilityConverter x:Key="UnreadCountToVisibilityConverter" />
             <converter:ImageModeConverter x:Key="ImageModeConverter"/>

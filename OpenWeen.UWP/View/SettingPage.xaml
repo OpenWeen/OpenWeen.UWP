@@ -47,7 +47,6 @@
             <PivotItem Header="通用" >
                 <ScrollViewer Padding="20">
                     <StackPanel>
-                        <Slider Header="首页图片大小" Value="{x:Bind ImageSize,Mode=TwoWay}" Minimum="50" Maximum="300" />
                         <Slider Header="每次载入数量" Value="{x:Bind LoadCount,Mode=TwoWay,Converter={StaticResource IntDoubleConverter}}" Minimum="20" Maximum="100"/>
                         <ToggleSwitch Header="夜间模式（重启生效）" IsOn="{x:Bind IsNightMode,Mode=TwoWay}" Style="{StaticResource NotifyTypeSwitchStyle}"/>
                         <ToggleSwitch Header="无图模式" IsOn="{x:Bind IsOffImage,Mode=TwoWay}" Style="{StaticResource NotifyTypeSwitchStyle}"/>

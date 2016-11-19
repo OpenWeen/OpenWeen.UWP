@@ -10,7 +10,9 @@ using System.Text;
 using System.Threading.Tasks;
 using OpenWeen.Core.Model;
 using OpenWeen.Core.Model.Status;
+using OpenWeen.Core.Model.Types;
 using OpenWeen.UWP.Common;
+using OpenWeen.UWP.Common.Controls;
 using OpenWeen.UWP.Common.Entities;
 using Windows.Foundation.Metadata;
 using Windows.Graphics.Imaging;
@@ -35,9 +37,41 @@ namespace OpenWeen.UWP.View
     /// </summary>
     public sealed partial class PostWeiboPage : Page, INotifyPropertyChanged
     {
+
+        public PostWeiboPage()
+        {
+            this.InitializeComponent();
+            Transitions = new TransitionCollection { new NavigationThemeTransition() { DefaultNavigationTransitionInfo = new SlideNavigationTransitionInfo() } };
+            if (StaticResource.Emotions != null)
+            {
+                cvs.Source = StaticResource.EmojiGroup;
+                (semanticZoom.ZoomedOutView as ListViewBase).ItemsSource = cvs.View.CollectionGroups;
+            }
+        }
+
         public ObservableCollection<ImageData> Images { get; } = new ObservableCollection<ImageData>();
         private IPostWeibo _data;
         public bool AllowMorePicture { get; set; } = true;
+        public WeiboVisibility WeiboVisibility { get; set; } = WeiboVisibility.All;
+        public SymbolIcon WeiboVisibilityIcon
+        {
+            get
+            {
+                switch (WeiboVisibility)
+                {
+                    case WeiboVisibility.All:
+                        return new SymbolIcon(Symbol.World);
+                    case WeiboVisibility.OnlyMe:
+                        return new SymbolIcon(Symbol.Contact);
+                    case WeiboVisibility.OnlyFriends:
+                        return new SymbolIcon(Symbol.People);
+                    case WeiboVisibility.SpecifiedGroup:
+                        return new SymbolIcon(Symbol.People);
+                    default:
+                        return new SymbolIcon(Symbol.Permissions);
+                }
+            }
+        }
         private bool _isSending;
 
         public int TextCount
@@ -63,22 +97,10 @@ namespace OpenWeen.UWP.View
                 richEditBox.Document.SetText(Windows.UI.Text.TextSetOptions.None, value);
             }
         }
-        public PostWeiboPage()
-        {
-            this.InitializeComponent();
-            Transitions = new TransitionCollection { new NavigationThemeTransition() { DefaultNavigationTransitionInfo = new SlideNavigationTransitionInfo() } };
-            if (StaticResource.Emotions != null)
-            {
-                cvs.Source = StaticResource.EmojiGroup;
-                (semanticZoom.ZoomedOutView as ListViewBase).ItemsSource = cvs.View.CollectionGroups;
-            }
-        }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            base.OnNavigatedTo(e);
-            if (!(e.Parameter is IPostWeibo))
-                throw new ArgumentException("parameter must be IPostWeibo");
+            if (!(e.Parameter is IPostWeibo)) return;
             _data = e.Parameter as IPostWeibo;
             AllowMorePicture = _data.Type == PostWeiboType.NewPost;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AllowMorePicture)));
@@ -89,14 +111,19 @@ namespace OpenWeen.UWP.View
                 {
                     Text = data.Data;
                     if (_data.Type == PostWeiboType.RePost)
-                    {
                         richEditBox.Document.Selection.StartPosition = 0;
-                    }
                     else
-                    {
                         richEditBox.Document.Selection.StartPosition = Text.Length;
-                    }
                 }
+            }
+            if (_data is SharedPostWeibo)
+            {
+                if ((_data as SharedPostWeibo).ImageData != null)
+                    await AddImageData((_data as SharedPostWeibo).ImageData);
+                else if ((_data as SharedPostWeibo).ImageFiles != null)
+                    foreach (var item in (_data as SharedPostWeibo).ImageFiles)
+                        if (item is StorageFile)
+                            await AddImageDataFromFile(item as StorageFile);
             }
         }
 
@@ -158,6 +185,8 @@ namespace OpenWeen.UWP.View
                     Images.Add(new ImageData() { Data = data, Image = b });
                 }
             }
+            else
+                Notification.Show("图片不能大于5MB");
         }
 
         public class ImageData
@@ -188,7 +217,7 @@ namespace OpenWeen.UWP.View
                 return;
             }
             _isSending = true;
-            var sardialog = new Common.Controls.SitbackAndRelaxDialog();
+            var sardialog = new SitbackAndRelaxDialog();
             sardialog.ShowAsync();
             bool isSuccess = false;
             switch (_data.Type)
@@ -211,12 +240,13 @@ namespace OpenWeen.UWP.View
             sardialog.Hide();
             if (isSuccess)
             {
-                Frame.GoBack();
+                if (_data is SharedPostWeibo)
+                    (_data as SharedPostWeibo).Operation.ReportCompleted();
+                else
+                    Frame.GoBack();
             }
             else
-            {
-                Common.Controls.Notification.Show("发送失败");
-            }
+                Notification.Show("发送失败");
             _isSending = false;
         }
 
@@ -287,12 +317,12 @@ namespace OpenWeen.UWP.View
                     {
                         pics.Add(await Core.Api.Statuses.PostWeibo.UploadPicture(item.Data));
                     }
-                    await Core.Api.Statuses.PostWeibo.PostWithMultiPics(Text?.Length > 0 ? Text : "分享图片", string.Join(",", pics.Select(item => item.PicID)));
+                    await Core.Api.Statuses.PostWeibo.PostWithMultiPics(Text?.Length > 0 ? Text : "分享图片", string.Join(",", pics.Select(item => item.PicID)), visible: WeiboVisibility);
                     return true;
                 }
                 else if (Text?.Length > 0)
                 {
-                    await Core.Api.Statuses.PostWeibo.Post(Text);
+                    await Core.Api.Statuses.PostWeibo.Post(Text, visible: WeiboVisibility);
                     return true;
                 }
             }
@@ -357,27 +387,15 @@ namespace OpenWeen.UWP.View
             }
             await AddImageData(data);
             if (deleteAfterUsed)
-            {
                 await file.DeleteAsync();
-            }
         }
 
         public void ShowEmoji()
         {
             if (Windows.UI.ViewManagement.InputPane.GetForCurrentView().Visible)
-            {
                 Windows.UI.ViewManagement.InputPane.GetForCurrentView().TryHide();
-            }
             else
-            {
                 Windows.UI.ViewManagement.InputPane.GetForCurrentView().TryShow();
-            }
-        }
-
-        public void AddImage(object sender, object e)
-        {
-            var menu = Resources["PictureFlyout"] as MenuFlyout;
-            menu.ShowAt(sender as FrameworkElement);
         }
 
         public void AddTopic()
@@ -462,16 +480,27 @@ namespace OpenWeen.UWP.View
         }
 
         private ImageData _clickData;
-        private void Image_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            _clickData = (sender as Image).DataContext as ImageData;
-            var menu = Resources["ImageTapFlyout"] as MenuFlyout;
-            menu.ShowAt(sender as FrameworkElement);
-        }
 
         private void DeletePicture(object sender, RoutedEventArgs e)
         {
             Images.Remove(_clickData);
+        }
+
+        private void GridView_ItemClick_1(object sender, ItemClickEventArgs e)
+        {
+            _clickData = e.ClickedItem as ImageData;
+            var menu = Resources["ImageTapFlyout"] as MenuFlyout;
+            menu.ShowAt(e.OriginalSource as FrameworkElement);
+        }
+
+        private void ChangeWeiboVisibility(object sender, RoutedEventArgs e)
+        {
+            var menu = sender as ToggleMenuFlyoutItem;
+            foreach (var item in WeiboVisibilityFlyout.Items)
+                (item as ToggleMenuFlyoutItem).IsChecked = false;
+            menu.IsChecked = true;
+            WeiboVisibility = (WeiboVisibility)Enum.Parse(typeof(WeiboVisibility), menu.Tag.ToString());
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WeiboVisibilityIcon)));
         }
     }
 }

@@ -1,15 +1,21 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
+using System.Runtime.InteropServices.WindowsRuntime;
 using Microsoft.HockeyApp;
 using Newtonsoft.Json;
 using OpenWeen.UWP.Common;
 using OpenWeen.UWP.Common.Controls;
 using OpenWeen.UWP.Shared.Common;
+using OpenWeen.UWP.Shared.Common.Helpers;
 using OpenWeen.UWP.View;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.DataTransfer;
+using Windows.ApplicationModel.DataTransfer.ShareTarget;
+using Windows.Storage.Streams;
 using Windows.UI;
 using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
@@ -51,38 +57,28 @@ namespace OpenWeen.UWP
             }
 #endif
             HockeyClient.Current.Configure(HockeyAppKey.ApiKey);
-            if (StaticResource.IsPhone)
-            {
-                StatusBar.GetForCurrentView().BackgroundColor = ((SolidColorBrush)Resources["AppTheme"]).Color;
-                StatusBar.GetForCurrentView().BackgroundOpacity = 1d;
-                StatusBar.GetForCurrentView().ForegroundColor = Colors.White;
-            }
-            else
-            {
-                ApplicationView.GetForCurrentView().TitleBar.BackgroundColor = ((SolidColorBrush)Resources["TitleBarColor"]).Color;
-                ApplicationView.GetForCurrentView().TitleBar.ButtonBackgroundColor = ((SolidColorBrush)Resources["TitleBarColor"]).Color;
-                ApplicationView.GetForCurrentView().SetPreferredMinSize(new Windows.Foundation.Size(350, 200));
-            }
-            
             Frame rootFrame = Window.Current.Content as Frame;
-            if (rootFrame == null)
+            if (rootFrame == null && e.PreviousExecutionState != ApplicationExecutionState.Running)
             {
-                if (e.PreviousExecutionState != ApplicationExecutionState.Running)
+                if (StaticResource.IsPhone)
                 {
-                    bool loadState = (e.PreviousExecutionState == ApplicationExecutionState.Terminated);
-                    Window.Current.Content = new ExtendedSplash(e.SplashScreen, loadState);
+                    StatusBar.GetForCurrentView().BackgroundColor = ((SolidColorBrush)Resources["AppTheme"]).Color;
+                    StatusBar.GetForCurrentView().BackgroundOpacity = 1d;
+                    StatusBar.GetForCurrentView().ForegroundColor = Colors.White;
                 }
+                else
+                {
+                    ApplicationView.GetForCurrentView().TitleBar.BackgroundColor = ((SolidColorBrush)Resources["TitleBarColor"]).Color;
+                    ApplicationView.GetForCurrentView().TitleBar.ButtonBackgroundColor = ((SolidColorBrush)Resources["TitleBarColor"]).Color;
+                    ApplicationView.GetForCurrentView().SetPreferredMinSize(new Windows.Foundation.Size(350, 200));
+                }
+                Window.Current.Content = new ExtendedSplash(e.SplashScreen);
             }
             Window.Current.Activate();
 #if !DEBUG
             UnhandledException += App_UnhandledException;
             RegisterExceptionHandlingSynchronizationContext(); 
 #endif
-        }
-        protected override void OnActivated(IActivatedEventArgs args)
-        {
-            base.OnActivated(args);
-            RegisterExceptionHandlingSynchronizationContext();
         }
         private void RegisterExceptionHandlingSynchronizationContext()
         {
@@ -131,13 +127,49 @@ namespace OpenWeen.UWP
         /// 无需知道应用程序会被终止还是会恢复，
         /// 并让内存内容保持不变。
         /// </summary>
-        /// <param name="sender">挂起的请求的源。</param>
+        /// <param name="sender">挂起的请求的源。</param>1
         /// <param name="e">有关挂起请求的详细信息。</param>
         private void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: 保存应用程序状态并停止任何后台活动
             deferral.Complete();
+        }
+
+        protected override async void OnShareTargetActivated(ShareTargetActivatedEventArgs args)
+        {
+            var frame = Window.Current.Content as Frame ?? new Frame();
+            Window.Current.Content = frame;
+            if (Core.Api.Entity.AccessToken == null)
+                Core.Api.Entity.AccessToken = SettingHelper.GetListSetting<string>(SettingNames.AccessToken).ToList()[Settings.SelectedUserIndex];
+            if (StaticResource.Emotions == null)
+                await StaticResource.InitEmotion();
+            frame.Navigate(typeof(PostWeiboPage), new Common.Entities.PostWeibo());
+            //ShareOperation shareOperation = args.ShareOperation;
+            //if (shareOperation.Data.Contains(StandardDataFormats.Text))
+            //{
+            //    string text = await shareOperation.Data.GetTextAsync();
+            //    frame.Navigate(typeof(PostWeiboPage), new Common.Entities.SharedPostWeibo() { Data = text, Operation = shareOperation });
+            //    shareOperation.ReportDataRetrieved();
+            //}
+            //else if (shareOperation.Data.Contains(StandardDataFormats.Bitmap))
+            //{
+            //    var bitmap = await shareOperation.Data.GetBitmapAsync();
+            //    using (var stream = await bitmap.OpenReadAsync())
+            //    {
+            //        byte[] bytes = new byte[stream.Size];
+            //        var buffer = await stream.ReadAsync(bytes.AsBuffer(), (uint)stream.Size, InputStreamOptions.None);
+            //        bytes = buffer.ToArray();
+            //        frame.Navigate(typeof(PostWeiboPage), new Common.Entities.SharedPostWeibo() { ImageData = bytes, Operation = shareOperation });
+            //    }
+            //    shareOperation.ReportDataRetrieved();
+            //}
+            //else if (shareOperation.Data.Contains(StandardDataFormats.StorageItems))
+            //{
+            //    var files = await shareOperation.Data.GetStorageItemsAsync();
+            //    frame.Navigate(typeof(PostWeiboPage), new Common.Entities.SharedPostWeibo() { Operation = shareOperation, ImageFiles = files });
+            //}
+            Window.Current.Activate();
         }
     }
 }

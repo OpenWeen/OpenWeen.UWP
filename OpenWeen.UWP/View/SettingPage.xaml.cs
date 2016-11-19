@@ -34,7 +34,7 @@ namespace OpenWeen.UWP.View
         public int SelectedUserIndex
         {
             get { return Settings.SelectedUserIndex; }
-            set { Settings.SelectedUserIndex = value; Window.Current.Content = new ExtendedSplash(null, false); }
+            set { Settings.SelectedUserIndex = value; Window.Current.Content = new ExtendedSplash(null); }
         }
         public bool EnableWaterFall
         {
@@ -77,18 +77,6 @@ namespace OpenWeen.UWP.View
                 Settings.NotifyDuration = (NotifyDuration)value;
             }
         }
-        public double ImageSize
-        {
-            get
-            {
-                return Settings.ImageSize;
-            }
-            set
-            {
-                Settings.ImageSize = value;
-            }
-        }
-
         public bool IsMentionNotify
         {
             get
@@ -181,7 +169,7 @@ namespace OpenWeen.UWP.View
             tokens.RemoveAt(Settings.SelectedUserIndex);
             Settings.AccessToken = tokens;
             Settings.SelectedUserIndex = 0;
-            Window.Current.Content = new ExtendedSplash(null, false);
+            Window.Current.Content = new ExtendedSplash(null);
         }
 
         public async void RemoveEmotion()

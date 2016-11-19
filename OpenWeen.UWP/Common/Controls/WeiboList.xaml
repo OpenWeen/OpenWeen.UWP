@@ -62,134 +62,87 @@
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="MessageTemplate" x:DataType="statusmodel:MessageModel">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                </Grid.RowDefinitions>
-                <Grid Grid.Column="2" Padding="8,4,8,4">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                    </Grid.RowDefinitions>
-                    <controls:WeiboImageList PictureClick="WeiboImageList_PictureClick" Visibility="{x:Bind Converter={StaticResource ImageModeConverter}}" ItemsSource="{x:Bind PicUrls}" />
-                    <controls:WeiboTextBlock UserClick="WeiboTextBlock_UserClick" TopicClick="WeiboTextBlock_TopicClick" Grid.Row="1" Text="{x:Bind Text}" />
-                </Grid>
-                <Grid DataContext="{x:Bind RetweetedStatus}" Margin="8,4" Padding="8,4" BorderBrush="{StaticResource SplitlineColor}" Grid.Row="1" Visibility="{x:Bind RetweetedStatus,Converter={StaticResource NullToVisibilityConverter}}" BorderThickness="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                    </Grid.RowDefinitions>
-                    <TextBlock DataContext="{x:Bind RetweetedStatus.User}" Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind RetweetedStatus.User.ScreenName}" FontWeight="Bold" />
-                    <controls:WeiboImageList PictureClick="WeiboImageList_PictureClick" Grid.Row="1" Visibility="{x:Bind Converter={StaticResource ImageModeConverter}}" ItemsSource="{x:Bind RetweetedStatus.PicUrls}" />
-                    <controls:WeiboTextBlock UserClick="WeiboTextBlock_UserClick" TopicClick="WeiboTextBlock_TopicClick"  Grid.Row="2" Text="{x:Bind RetweetedStatus.Text}" />
-                </Grid>
-                <Grid Padding="8,5,0,12" Grid.Row="2">
-                    <StackPanel Orientation="Horizontal">
-                        <SymbolIcon Tapped="Like_Tapped" Symbol="Like" Foreground="LightGray"/>
-                        <TextBlock Foreground="Gray" Padding="8,0,12,0" Text="{x:Bind AttitudesCount}"/>
-                        <SymbolIcon Tapped="Reshare_Tapped" Foreground="LightGray" Symbol="ReShare" />
-                        <TextBlock Foreground="Gray" Padding="8,0,12,0" Text="{x:Bind RepostsCount}" />
-                        <SymbolIcon Tapped="Comment_Tapped" Foreground="LightGray" Symbol="Comment" />
-                        <TextBlock Foreground="Gray" Padding="8,0,12,0" Text="{x:Bind CommentsCount}" />
-                        <SymbolIcon x:Name="FavorIcon" Tapped="Favor_Tapped" Foreground="{x:Bind Favorited,Mode=OneWay,Converter={StaticResource FavorToColorConverter}}" Symbol="Favorite" />
-                        <SymbolIcon Margin="12,0,12,0" Foreground="LightGray" Visibility="{x:Bind User.ID,Converter={StaticResource DeleteVisibilityConverter}}" Tapped="Delete_Tapped" Symbol="Delete" />
+            <StackPanel>
+                <controls:WeiboImageList PictureClick="WeiboImageList_PictureClick" Visibility="{x:Bind Converter={StaticResource ImageModeConverter}}" ItemsSource="{x:Bind PicUrls}" />
+                <controls:WeiboTextBlock UserClick="WeiboTextBlock_UserClick" TopicClick="WeiboTextBlock_TopicClick" Text="{x:Bind Text}" Margin="0,0,0,8" />
+                <Grid Visibility="{x:Bind IsRepostList,Converter={StaticResource BoolToVisibilityConverter},ConverterParameter=true}">
+                    <StackPanel Margin="0,0,0,8" Padding="8" HorizontalAlignment="Stretch" x:Name="RepostContainer" DataContext="{x:Bind RetweetedStatus}" BorderBrush="{StaticResource SplitlineColor}" Visibility="{x:Bind RetweetedStatus,Converter={StaticResource NullToVisibilityConverter}}" BorderThickness="1">
+                        <ContentControl HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Content="{Binding}" ContentTemplate="{StaticResource UserHeader}" x:Name="UserHeader"/>
+                        <controls:WeiboImageList Padding="8,0" x:Name="RepostImage" PictureClick="WeiboImageList_PictureClick" Visibility="{x:Bind Converter={StaticResource ImageModeConverter}}" ItemsSource="{x:Bind RetweetedStatus.PicUrls}" />
+                        <controls:WeiboTextBlock UserClick="WeiboTextBlock_UserClick" TopicClick="WeiboTextBlock_TopicClick"  Text="{x:Bind RetweetedStatus.Text}" />
                     </StackPanel>
                 </Grid>
-            </Grid>
+                <Grid >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Column="0" Tapped="Like_Tapped">
+                        <SymbolIcon Symbol="Like" Foreground="LightGray"/>
+                        <TextBlock Foreground="Gray" Padding="8,0,0,0" Text="{x:Bind AttitudesCount}"/>
+                    </StackPanel>
+                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Column="1" Tapped="Reshare_Tapped">
+                        <SymbolIcon Foreground="LightGray" Symbol="ReShare" />
+                        <TextBlock Foreground="Gray" Padding="8,0,0,0" Text="{x:Bind RepostsCount}" />
+                    </StackPanel>
+                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Column="2" Tapped="Comment_Tapped">
+                        <SymbolIcon Foreground="LightGray" Symbol="Comment" />
+                        <TextBlock Foreground="Gray" Padding="8,0,0,0" Text="{x:Bind CommentsCount}" />
+                    </StackPanel>
+                    <SymbolIcon HorizontalAlignment="Center" Grid.Column="3" x:Name="FavorIcon" Tapped="Favor_Tapped" Foreground="{x:Bind Favorited,Mode=OneWay,Converter={StaticResource FavorToColorConverter}}" Symbol="Favorite" />
+                </Grid>
+            </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="CommentListTemplate" x:DataType="commentModel:CommentModel">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                </Grid.RowDefinitions>
-                <Grid Padding="8,4,8,4">
+            <StackPanel Orientation="Vertical">
+                <Grid Padding="0,0,0,8">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
-                    <local:WeiboTextBlock Text="{x:Bind Text}" />
+                    <local:WeiboTextBlock Text="{x:Bind Text}"/>
                     <SymbolIcon Grid.Column="1" Tapped="Comment_Tapped" Foreground="LightGray" Symbol="Comment" />
                 </Grid>
-                <Grid DataContext="{x:Bind Status}" Margin="8,4" Padding="8,4" BorderBrush="{StaticResource SplitlineColor}" Grid.Row="1" Visibility="{x:Bind Status,Converter={StaticResource NullToVisibilityConverter}}" BorderThickness="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="auto" />
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.ColumnSpan="2" Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind Status.User.ScreenName}" FontWeight="Bold" />
-                    <!--<Image Grid.Row="1" Source="{Binding ThumbnailPic}" Visibility="{x:Bind Converter={StaticResource ImageModeConverter}}" Height="50" Width="50" Margin="8" />-->
-                    <local:WeiboTextBlock MaxLines="2" Grid.Column="1" Grid.Row="1" Text="{x:Bind Status.Text}" />
-                </Grid>
-            </Grid>
-        </DataTemplate>
-        <DataTemplate x:Key="RepostListTemplate" x:DataType="model:BaseModel">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                </Grid.RowDefinitions>
-                <Grid Padding="8,4,8,9">
-                    <controls:WeiboTextBlock  UserClick="WeiboTextBlock_UserClick" TopicClick="WeiboTextBlock_TopicClick" Grid.Row="1" Text="{x:Bind Text}" />
-                </Grid>
-                <Grid Padding="8,5,0,12" Grid.Row="1">
-                    <StackPanel Orientation="Horizontal">
-                        <!--<SymbolIcon Symbol="Like" Foreground="LightGray"/>
-                        <TextBlock Foreground="Gray" Padding="8,0,12,0" Text="{x:Bind AttitudesCount}"/>-->
-                        <SymbolIcon Tapped="Reshare_Tapped" Margin="8,0,12,0" Foreground="LightGray" Symbol="ReShare" />
-                        <!--<TextBlock Foreground="Gray" Padding="8,0,12,0" Text="{x:Bind RepostsCount}" />-->
-                        <SymbolIcon Tapped="Comment_Tapped" Margin="8,0,12,0" Foreground="LightGray" Symbol="Comment" />
-                        <!--<TextBlock Foreground="Gray" Padding="8,0,12,0" Text="{x:Bind CommentsCount}" />-->
-                        <!--<SymbolIcon x:Name="FavorIcon" Tapped="Favor_Tapped" Foreground="{x:Bind Favorited,Mode=OneWay,Converter={StaticResource FavorToColorConverter}}" Symbol="Favorite" />-->
+                <Grid Visibility="{x:Bind IsRepostList,Converter={StaticResource BoolToVisibilityConverter},ConverterParameter=true}">
+                    <StackPanel Padding="8" HorizontalAlignment="Stretch" x:Name="RepostContainer" DataContext="{x:Bind Status}" BorderBrush="{StaticResource SplitlineColor}" Visibility="{x:Bind Status,Converter={StaticResource NullToVisibilityConverter}}" BorderThickness="1">
+                        <ContentControl HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Content="{Binding}" ContentTemplate="{StaticResource UserHeader}" x:Name="UserHeader"/>
+                        <local:WeiboTextBlock MaxLines="2" Text="{x:Bind Status.Text}" />
                     </StackPanel>
                 </Grid>
-
-            </Grid>
+            </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="BaseTemplate" x:DataType="model:BaseModel">
-            <Grid BorderBrush="{StaticResource SplitlineColor}" Visibility="{x:Bind Converter={StaticResource BlockToVisibilityConverter}}" Tapped="Grid_Tapped" Padding="8" BorderThickness="0,0,1,1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="{StaticResource UserImageGridLength}" />
-                    <ColumnDefinition Width="8" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                </Grid.RowDefinitions>
-                <Grid Grid.ColumnSpan="3">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="{StaticResource UserImageGridLength}" />
-                        <ColumnDefinition Width="8" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Ellipse DataContext="{x:Bind User}" Width="{StaticResource UserImageSize}" Height="{StaticResource UserImageSize}">
-                        <Ellipse.Fill>
-                            <ImageBrush ImageSource="{x:Bind User.ProfileImageUrl}" />
-                        </Ellipse.Fill>
-                    </Ellipse>
-                    <Grid Grid.Column="2">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <TextBlock FontSize="18" DataContext="{x:Bind User}" Style="{ThemeResource BodyTextBlockStyle}" Padding="8,4,0,0" Text="{x:Bind User.ScreenName}" FontWeight="Bold" />
-                        <TextBlock Style="{ThemeResource CaptionTextBlockStyle}"  Foreground="#CCCCCC" FontSize="15"  Grid.Row="1" Padding="8,4,0,0" Text="{x:Bind CreateTime,Converter={StaticResource TimeConverter}}" />
-                    </Grid>
-                </Grid>
-                <ContentControl HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="1" Grid.Column="2" Content="{Binding}" ContentTemplateSelector="{StaticResource WeiboListTemplateSelector}"/>
+            <Grid Padding="8" BorderBrush="{StaticResource SplitlineColor}" Visibility="{x:Bind Converter={StaticResource BlockToVisibilityConverter}}" Tapped="Grid_Tapped" BorderThickness="0,0,1,1">
+                <SymbolIcon HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="4" Margin="8,0,0,0" Foreground="LightGray" Visibility="{x:Bind User.ID,Converter={StaticResource DeleteVisibilityConverter}}" Tapped="Delete_Tapped" Symbol="Delete" />
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
+                    <ContentControl HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Content="{Binding}" ContentTemplate="{StaticResource UserHeader}" x:Name="UserHeader"/>
+                    <ContentControl HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Content="{Binding}" ContentTemplateSelector="{StaticResource WeiboListTemplateSelector}" Margin="0,8,0,0"/>
+                </StackPanel>
             </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="UserHeader" x:DataType="model:BaseModel">
+            <RelativePanel HorizontalAlignment="Stretch">
+                <Ellipse RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True" x:Name="UserImage" DataContext="{x:Bind User}" Width="{StaticResource UserImageSize}" Height="{StaticResource UserImageSize}">
+                    <Ellipse.Fill>
+                        <ImageBrush ImageSource="{x:Bind User.ProfileImageUrl}" />
+                    </Ellipse.Fill>
+                </Ellipse>
+                <Grid RelativePanel.RightOf="UserImage" Padding="8,0,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <TextBlock MaxLines="1" DataContext="{x:Bind User}" Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind User.ScreenName}" />
+                    <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" FontSize="10" Foreground="#CCCCCC" Grid.Row="1" Text="{x:Bind CreateTime,Converter={StaticResource TimeConverter}}" />
+                </Grid>
+            </RelativePanel>
         </DataTemplate>
         <DataTemplate x:Key="WeiboListViewTemplate" x:DataType="local:WeiboList">
             <local:WeiboListView ItemsSource="{x:Bind ItemsSource,Mode=OneWay}" Header="{x:Bind Header,Mode=OneWay}" IsLoading="{x:Bind IsLoading,Mode=OneWay}" ViewChanged="ScrollViewer_ViewChanged" ItemTemplate="{StaticResource BaseTemplate}"/>
         </DataTemplate>
-        <common:WeiboListTemplateSelector RepostListTemplate="{StaticResource RepostListTemplate}" x:Name="WeiboListTemplateSelector" CommentTemplate="{StaticResource CommentListTemplate}" MessageTemplate="{StaticResource MessageTemplate}" x:Key="WeiboListTemplateSelector"/>
+        <selector:WeiboListTemplateSelector x:Name="WeiboListTemplateSelector" CommentTemplate="{StaticResource CommentListTemplate}" MessageTemplate="{StaticResource MessageTemplate}" x:Key="WeiboListTemplateSelector"/>
         <selector:WeiboListSelector x:Key="WeiboListSelector" WeiboListView="{StaticResource WeiboListViewTemplate}" WaterFallView="{StaticResource WaterFallViewTemplate}"/>
     </UserControl.Resources>
     <ContentPresenter Content="{Binding}" ContentTemplateSelector="{StaticResource WeiboListSelector}"/>

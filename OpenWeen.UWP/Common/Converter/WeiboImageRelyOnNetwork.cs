@@ -13,6 +13,10 @@ namespace OpenWeen.UWP.Common.Converter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
+            if (value == null)
+            {
+                return null;
+            }
             var item = value as PictureModel;
             var networkProfile = NetworkInformation.GetInternetConnectionProfile();
             if (networkProfile.IsWlanConnectionProfile || !networkProfile.IsWwanConnectionProfile)

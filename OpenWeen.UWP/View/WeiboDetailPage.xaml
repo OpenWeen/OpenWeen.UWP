@@ -16,71 +16,70 @@
                 </Style>
             </Pivot.ItemContainerStyle>
             <PivotItem Header="详情">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ScrollViewer VerticalScrollBarVisibility="Hidden">
                     <Grid>
                         <ProgressBar IsIndeterminate="{Binding ViewModel.Item.IsNotCompleted,Mode=OneWay}" Visibility="{Binding ViewModel.Item.IsNotCompleted,Mode=OneWay,Converter={StaticResource BoolToVisibilityConverter}}" Padding="16" Background="Transparent" VerticalAlignment="Top"/>
-                        <Grid Visibility="{Binding ViewModel.Item.IsNotCompleted,Mode=OneWay,Converter={StaticResource BoolToVisibilityConverter},ConverterParameter=true}" Tapped="Grid_Tapped">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="50" />
-                                <ColumnDefinition Width="8" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <Grid Padding="8" Background="{StaticResource AppTheme}" RequestedTheme="Dark"  Grid.ColumnSpan="3">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="50" />
-                                    <ColumnDefinition Width="8" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Ellipse DataContext="{x:Bind ViewModel.Item.Result.User,Mode=OneWay}" Width="50" Height="50">
+                        <StackPanel Visibility="{Binding ViewModel.Item.IsNotCompleted,Mode=OneWay,Converter={StaticResource BoolToVisibilityConverter},ConverterParameter=true}" Tapped="Grid_Tapped">
+                            <RelativePanel Padding="8" Background="{StaticResource AppTheme}" RequestedTheme="Dark" HorizontalAlignment="Stretch">
+                                <Ellipse RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True" x:Name="UserImage" DataContext="{x:Bind ViewModel.Item.Result.User,Mode=OneWay}" Width="{StaticResource UserImageSize}" Height="{StaticResource UserImageSize}">
                                     <Ellipse.Fill>
                                         <ImageBrush ImageSource="{x:Bind ViewModel.Item.Result.User.ProfileImageUrl,Mode=OneWay}" />
                                     </Ellipse.Fill>
                                 </Ellipse>
-                                <Grid Grid.Column="2">
+                                <Grid RelativePanel.RightOf="UserImage" Padding="8,0,0,0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*" />
                                         <RowDefinition Height="*" />
                                     </Grid.RowDefinitions>
-                                    <TextBlock DataContext="{x:Bind ViewModel.Item.Result.User,Mode=OneWay}" Style="{ThemeResource BodyTextBlockStyle}" Padding="8,4" Text="{x:Bind ViewModel.Item.Result.User.ScreenName,Mode=OneWay}" FontWeight="Bold" />
-                                    <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Foreground="LightGray" Grid.Row="1" Padding="8,4" Text="{x:Bind ViewModel.Item.Result.CreateTime,Mode=OneWay,Converter={StaticResource TimeConverter}}" />
+                                    <TextBlock MaxLines="1" DataContext="{x:Bind ViewModel.Item.Result.User,Mode=OneWay}" Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind ViewModel.Item.Result.User.ScreenName,Mode=OneWay}" />
+                                    <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" FontSize="10" Foreground="#CCCCCC" Grid.Row="1" Text="{x:Bind ViewModel.Item.Result.CreateTime,Mode=OneWay,Converter={StaticResource TimeConverter}}" />
                                 </Grid>
-                            </Grid>
-                            <Grid Grid.Column="2" Grid.Row="1" Padding="8,4,8,4">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto" />
-                                    <RowDefinition Height="auto" />
-                                </Grid.RowDefinitions>
+                            </RelativePanel>
+                            <StackPanel Padding="8,4,8,4">
                                 <controls:WeiboImageList PictureClick="WeiboImageList_PictureClick" Visibility="{x:Bind ViewModel.Item.Result.PicUrls,Mode=OneWay,Converter={StaticResource NullToVisibilityConverter}}" ItemsSource="{x:Bind ViewModel.Item.Result.PicUrls,Mode=OneWay}" />
                                 <controls:WeiboTextBlock IsTextSelectionEnabled="True" DataContext="{x:Bind ViewModel.Item,Mode=OneWay}" UserClick="{x:Bind ActionModel.UserClick}" TopicClick="{x:Bind ActionModel.TopicClick}" Grid.Row="1" Text="{x:Bind ViewModel.Item.Result.Text,Mode=OneWay}" />
-                            </Grid>
-                            <Grid DataContext="{x:Bind ViewModel.Item.Result.RetweetedStatus,Mode=OneWay}" Margin="8,4" Padding="8,4" Grid.Column="2" BorderBrush="{StaticResource SplitlineColor}" Grid.Row="2" Visibility="{x:Bind ViewModel.Item.Result.RetweetedStatus,Mode=OneWay,Converter={StaticResource NullToVisibilityConverter}}" BorderThickness="1">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto" />
-                                    <RowDefinition Height="auto" />
-                                    <RowDefinition Height="auto" />
-                                </Grid.RowDefinitions>
-                                <TextBlock DataContext="{x:Bind ViewModel.Item.Result.RetweetedStatus.User,Mode=OneWay}" Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind ViewModel.Item.Result.RetweetedStatus.User.ScreenName,Mode=OneWay}" FontWeight="Bold" />
+                            </StackPanel>
+                            <StackPanel DataContext="{x:Bind ViewModel.Item.Result.RetweetedStatus,Mode=OneWay}" Margin="8,4" Padding="8,4" Grid.Column="2" BorderBrush="{StaticResource SplitlineColor}" Grid.Row="2" Visibility="{x:Bind ViewModel.Item.Result.RetweetedStatus,Mode=OneWay,Converter={StaticResource NullToVisibilityConverter}}" BorderThickness="1">
+                                <RelativePanel Padding="8" HorizontalAlignment="Stretch">
+                                    <Ellipse RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True" x:Name="RepostUserImage" DataContext="{x:Bind ViewModel.Item.Result.RetweetedStatus.User,Mode=OneWay}" Width="{StaticResource UserImageSize}" Height="{StaticResource UserImageSize}">
+                                        <Ellipse.Fill>
+                                            <ImageBrush ImageSource="{x:Bind ViewModel.Item.Result.RetweetedStatus.User.ProfileImageUrl,Mode=OneWay}" />
+                                        </Ellipse.Fill>
+                                    </Ellipse>
+                                    <Grid RelativePanel.RightOf="RepostUserImage" Padding="8,0,0,0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock MaxLines="1" DataContext="{x:Bind ViewModel.Item.Result.RetweetedStatus.User,Mode=OneWay}" Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind ViewModel.Item.Result.RetweetedStatus.User.ScreenName,Mode=OneWay}" />
+                                        <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" FontSize="10" Foreground="#CCCCCC" Grid.Row="1" Text="{x:Bind ViewModel.Item.Result.RetweetedStatus.CreateTime,Mode=OneWay,Converter={StaticResource TimeConverter}}" />
+                                    </Grid>
+                                </RelativePanel>
                                 <controls:WeiboImageList PictureClick="WeiboImageList_PictureClick" Grid.Row="1" Visibility="{x:Bind ViewModel.Item.Result.RetweetedStatus.PicUrls,Mode=OneWay,Converter={StaticResource NullToVisibilityConverter}}" ItemsSource="{x:Bind ViewModel.Item.Result.RetweetedStatus.PicUrls,Mode=OneWay}" />
                                 <controls:WeiboTextBlock UserClick="{x:Bind ActionModel.UserClick}" TopicClick="{x:Bind ActionModel.TopicClick}"  Grid.Row="2" Text="{x:Bind ViewModel.Item.Result.RetweetedStatus.Text,Mode=OneWay}" />
-                            </Grid>
-                            <Grid Padding="8,4" Grid.Column="2" Grid.Row="3">
-                                <StackPanel Orientation="Horizontal">
+                            </StackPanel>
+                            <Grid >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Column="0" Tapped="Like_Tapped">
                                     <SymbolIcon Symbol="Like" Foreground="LightGray"/>
-                                    <TextBlock Foreground="Gray" Padding="8,0,12,0" Text="{x:Bind ViewModel.Item.Result.AttitudesCount,Mode=OneWay}"/>
-                                    <SymbolIcon Tapped="Reshare_Tapped" Foreground="LightGray" Symbol="ReShare" />
-                                    <TextBlock Foreground="DarkGray" Padding="8,0,12,0" Text="{x:Bind ViewModel.Item.Result.RepostsCount,Mode=OneWay}" />
-                                    <SymbolIcon Tapped="Comment_Tapped" Foreground="LightGray" Symbol="Comment" />
-                                    <TextBlock Foreground="DarkGray" Padding="8,0,12,0" Text="{x:Bind ViewModel.Item.Result.CommentsCount,Mode=OneWay}" />
-                                    <SymbolIcon x:Name="FavorIcon" Tapped="Favor_Tapped" Foreground="{x:Bind ViewModel.Item.Result.Favorited,Mode=OneWay,Converter={StaticResource FavorToColorConverter}}" Symbol="Favorite" />
+                                    <TextBlock Foreground="Gray" Padding="8,0,0,0" Text="{x:Bind ViewModel.Item.Result.AttitudesCount}"/>
                                 </StackPanel>
+                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Column="1" Tapped="Reshare_Tapped">
+                                    <SymbolIcon Foreground="LightGray" Symbol="ReShare" />
+                                    <TextBlock Foreground="Gray" Padding="8,0,0,0" Text="{x:Bind ViewModel.Item.Result.RepostsCount}" />
+                                </StackPanel>
+                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Column="2" Tapped="Comment_Tapped">
+                                    <SymbolIcon Foreground="LightGray" Symbol="Comment" />
+                                    <TextBlock Foreground="Gray" Padding="8,0,0,0" Text="{x:Bind ViewModel.Item.Result.CommentsCount}" />
+                                </StackPanel>
+                                <SymbolIcon HorizontalAlignment="Center" Grid.Column="3" x:Name="FavorIcon" Tapped="Favor_Tapped" Foreground="{x:Bind ViewModel.Item.Result.Favorited,Mode=OneWay,Converter={StaticResource FavorToColorConverter}}" Symbol="Favorite" />
                             </Grid>
-                        </Grid>
+                        </StackPanel>
                     </Grid>
                 </ScrollViewer>
             </PivotItem>

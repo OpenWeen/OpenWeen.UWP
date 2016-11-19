@@ -17,7 +17,7 @@ using Windows.UI.Xaml.Navigation;
 
 namespace OpenWeen.UWP.Common.Controls
 {
-    public sealed partial class SplitViewButton : UserControl
+    public sealed partial class SplitViewButton : Button
     {
         public string Label
         {
@@ -38,10 +38,7 @@ namespace OpenWeen.UWP.Common.Controls
         // Using a DependencyProperty as the backing store for Icon.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty IconProperty =
             DependencyProperty.Register("Icon", typeof(Symbol), typeof(SplitViewButton), new PropertyMetadata(Symbol.Emoji));
-
-
-
-
+        
         public SplitViewButton()
         {
             this.InitializeComponent();

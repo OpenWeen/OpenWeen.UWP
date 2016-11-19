@@ -50,7 +50,6 @@ namespace OpenWeen.UWP.View
 
         private void WeiboImageList_PictureClick(object sender, WeiboPictureClickEventArgs e)
         {
-            e.DataContext = ViewModel.Item.Result;
             ActionModel.PictureClick(sender, e);
         }
 
@@ -67,6 +66,11 @@ namespace OpenWeen.UWP.View
                 e.Handled = true;
                 ActionModel.ItemClick(this, new WeiboItemClickEventArgs(context as MessageModel));
             }
+        }
+
+        private void Like_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            ActionModel.Like(sender, new WeiboActionEventArgs(ViewModel.Item.Result));
         }
     }
 }

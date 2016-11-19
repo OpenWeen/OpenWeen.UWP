@@ -17,10 +17,10 @@
         <FlipView x:Name="flipView" SelectionChanged="flipView_SelectionChanged" Background="Transparent" ItemsSource="{x:Bind Items}" DataContextChanged="flipView_DataContextChanged">
             <FlipView.ItemTemplate>
                 <DataTemplate x:DataType="model:ImageModel">
-                    <ScrollViewer MaxZoomFactor="50" PointerExited="ScrollViewer_PointerExited" PointerPressed="ScrollViewer_PointerPressed" PointerReleased="ScrollViewer_PointerReleased" PointerMoved="ScrollViewer_PointerMoved" HorizontalScrollBarVisibility="Auto" HorizontalScrollMode="Auto" ZoomMode="Enabled" HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" VerticalScrollBarVisibility="Auto">
+                    <ScrollViewer MaxZoomFactor="50" HorizontalScrollBarVisibility="Auto" HorizontalScrollMode="Auto" ZoomMode="Enabled" HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" VerticalScrollBarVisibility="Auto">
                         <Grid>
                             <ProgressBar Foreground="White" Visibility="{x:Bind ProgressVisibility,Mode=OneWay}" Value="{x:Bind DownloadProgress,Mode=OneWay}" Maximum="100" Minimum="0"/>
-                            <Image Tapped="Image_Tapped" ImageOpened="{x:Bind Loaded}" Source="{x:Bind Image}"/>
+                            <Image CanDrag="True" Tapped="Image_Tapped" ImageOpened="{x:Bind Loaded}" Source="{x:Bind Image}"/>
                         </Grid>
                     </ScrollViewer>
                 </DataTemplate>

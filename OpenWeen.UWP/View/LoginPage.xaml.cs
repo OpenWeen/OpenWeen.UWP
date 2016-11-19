@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using System.Linq;
 using Windows.UI.Core;
+using OpenWeen.UWP.Common.Entities;
 
 // “空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=234238 上提供
 
@@ -70,13 +71,8 @@ namespace OpenWeen.UWP.View
                     SettingHelper.SetListSetting(SettingNames.AccessToken, new[] { token }, SetListSettingOption.AddIfExists);
                     Settings.SelectedUserIndex = Settings.AccessToken.Count() - 1;
                     Core.Api.Entity.AccessToken = token;
+                    Window.Current.Content = new ExtendedSplash(null);
                 }
-                var sit = new SitbackAndRelaxDialog();
-                var sitTask = sit.ShowAsync();
-                await InitUid();
-                sitTask.Cancel();
-                sit.Hide();
-                Frame.Navigate(typeof(MainPage));
             }
             catch (UriFormatException)
             {
@@ -102,11 +98,6 @@ namespace OpenWeen.UWP.View
             var cahcesize = Frame.CacheSize;
             Frame.CacheSize = 0;
             Frame.CacheSize = cahcesize;
-        }
-
-        private async Task InitUid()
-        {
-            StaticResource.Uid = long.Parse(await Core.Api.User.Account.GetUid());
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)

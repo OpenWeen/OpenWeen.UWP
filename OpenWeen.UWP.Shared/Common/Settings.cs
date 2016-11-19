@@ -23,17 +23,6 @@ namespace OpenWeen.UWP.Shared.Common
             get { return GetSetting(SettingNames.LoadCount, 20); }
             set { SetSetting(SettingNames.LoadCount, value); }
         }
-        public static double ImageSize
-        {
-            get
-            {
-                return GetSetting(SettingNames.ImageSize, 100d);
-            }
-            set
-            {
-                SetSetting(SettingNames.ImageSize, value);
-            }
-        }
         public static IEnumerable<long> BlockUser
         {
             get

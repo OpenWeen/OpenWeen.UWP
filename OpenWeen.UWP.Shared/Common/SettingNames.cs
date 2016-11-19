@@ -5,7 +5,6 @@
         public const string AccessToken = nameof(AccessToken);
         public const string BlockUser = nameof(BlockUser);
         public const string BlockText = nameof(BlockText);
-        public const string ImageSize = nameof(ImageSize);
         public const string NotifyDuration = nameof(NotifyDuration);
         public const string IsMentionNotify = nameof(IsMentionNotify);
         public const string IsCommentNotify = nameof(IsCommentNotify);

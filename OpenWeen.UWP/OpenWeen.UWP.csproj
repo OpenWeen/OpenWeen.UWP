@@ -159,7 +159,6 @@
     <Compile Include="Common\Converter\DeleteVisibilityConverter.cs" />
     <Compile Include="Common\Converter\FavorToColorConverter.cs" />
     <Compile Include="Common\Converter\ImageModeConverter.cs" />
-    <Compile Include="Common\Converter\ImageSizeConverter.cs" />
     <Compile Include="Common\Converter\IntDoubleConverter.cs" />
     <Compile Include="Common\Converter\NullToVisibilityConverter.cs" />
     <Compile Include="Common\Converter\StringToBitmapImageConverter.cs" />

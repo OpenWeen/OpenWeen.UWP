@@ -1,4 +1,4 @@
-﻿<UserControl
+﻿<Button
     x:Class="OpenWeen.UWP.Common.Controls.SplitViewButton"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -6,10 +6,13 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    Padding="0" 
+    HorizontalAlignment="Stretch" 
+    HorizontalContentAlignment="Left"
+    Style="{ThemeResource DateTimePickerFlyoutButtonStyle}"
     d:DesignHeight="300"
     d:DesignWidth="400">
-
-    <Button Padding="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Style="{ThemeResource DateTimePickerFlyoutButtonStyle}">
+    <Button.Content>
         <Grid x:Name="Root">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
@@ -18,5 +21,5 @@
             <SymbolIcon Width="48" Height="48"  x:Name="Content" AutomationProperties.AccessibilityView="Raw" Symbol="{x:Bind Icon}"/>
             <TextBlock x:Name="TextLabel" Text="{x:Bind Label}" VerticalAlignment="Center" Grid.Column="1" />
         </Grid>
-    </Button>
-</UserControl>
+    </Button.Content>
+</Button>

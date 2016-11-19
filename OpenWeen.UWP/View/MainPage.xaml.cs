@@ -48,9 +48,9 @@ namespace OpenWeen.UWP
                 {
                     pivot.Items.RemoveAt(1);
                 }
+                Frame.BackStack.Clear();
+                SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
             }
-            Frame.BackStack.Clear();
-            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
         }
         public void BackTop()
         {
@@ -73,12 +73,6 @@ namespace OpenWeen.UWP
         public void Search()
         {
             Frame.Navigate(typeof(SearchPage), new SearchPageViewModel());
-        }
-        public void ShowGroup(object sender, RoutedEventArgs e)
-        {
-            var menu = Resources["GroupFlout"] as Flyout;
-            menu.Placement = (Window.Current.Content as Frame).ActualWidth > 720 ? Windows.UI.Xaml.Controls.Primitives.FlyoutPlacementMode.Right : Windows.UI.Xaml.Controls.Primitives.FlyoutPlacementMode.Top;
-            menu.ShowAt(e.OriginalSource as FrameworkElement);
         }
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)

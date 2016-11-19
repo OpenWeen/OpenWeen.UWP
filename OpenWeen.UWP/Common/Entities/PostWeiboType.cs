@@ -1,4 +1,8 @@
-﻿namespace OpenWeen.UWP.Common.Entities
+﻿using System.Collections.Generic;
+using Windows.ApplicationModel.DataTransfer.ShareTarget;
+using Windows.Storage;
+
+namespace OpenWeen.UWP.Common.Entities
 {
     internal enum PostWeiboType
     {
@@ -12,7 +16,7 @@
         PostWeiboType Type { get; }
     }
 
-    internal interface IPostWeiboData
+    internal interface IPostWeiboData : IPostWeibo
     {
         string Data { get; set; }
     }
@@ -22,7 +26,16 @@
         public PostWeiboType Type => PostWeiboType.NewPost;
     }
 
-    internal class RepostData : IPostWeibo, IPostWeiboData
+    internal class SharedPostWeibo : IPostWeiboData
+    {
+        public PostWeiboType Type => PostWeiboType.NewPost;
+        public string Data { get; set; }
+        public byte[] ImageData { get; internal set; }
+        public ShareOperation Operation { get; internal set; }
+        public IReadOnlyList<IStorageItem> ImageFiles { get; internal set; }
+    }
+
+    internal class RepostData : IPostWeiboData
     {
         private RepostData()
         {
@@ -54,7 +67,7 @@
         public long ID { get; set; }
     }
 
-    internal class ReplyCommentData : IPostWeibo, IPostWeiboData
+    internal class ReplyCommentData : IPostWeiboData
     {
         private ReplyCommentData()
         {

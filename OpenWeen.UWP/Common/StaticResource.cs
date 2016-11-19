@@ -1,6 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using OpenWeen.Core.Model;
+using OpenWeen.UWP.Shared.Common;
+using OpenWeen.UWP.Shared.Common.Helpers;
+using Windows.Storage;
 
 namespace OpenWeen.UWP.Common
 {
@@ -28,5 +34,38 @@ namespace OpenWeen.UWP.Common
         //public static event EventHandler UpdateUnreadCountTaskComplete;
         public static bool IsPhone => Windows.Foundation.Metadata.ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar");
 
+        public static async Task InitEmotion()
+        {
+            var file = await ApplicationData.Current.LocalFolder.TryGetItemAsync("emotion.json");
+            if (file == null)
+                return;
+            var text = File.ReadAllText(file.Path);
+            Emotions = JsonHelper.FromJson<List<EmotionModel>>(text);
+        }
+        public static async Task<bool> CheckForLogin()
+        {
+            try
+            {
+                do
+                {
+                    Core.Api.Entity.AccessToken = SettingHelper.GetListSetting<string>(SettingNames.AccessToken, isThrowException: true).ToList()[Settings.SelectedUserIndex];
+                    if (string.IsNullOrEmpty(Core.Api.Entity.AccessToken))
+                        throw new Core.Exception.InvalidAccessTokenException();
+                    if (string.IsNullOrEmpty((await Core.Api.User.Account.GetLimitStatus()).Error))
+                        break;
+                    var list = SettingHelper.GetListSetting<string>(SettingNames.AccessToken, isThrowException: true).ToList();
+                    list.RemoveAt(Settings.SelectedUserIndex);
+                    Settings.SelectedUserIndex = 0;
+                    SettingHelper.SetListSetting(SettingNames.AccessToken, list);
+                    if (list.Count == 0)
+                        return false;
+                } while (true);
+                return true;
+            }
+            catch (Exception e)// when (e is Core.Exception.InvalidAccessTokenException || e is SettingException)
+            {
+                return false;
+            }
+        }
     }
 }

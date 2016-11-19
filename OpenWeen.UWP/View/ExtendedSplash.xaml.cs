@@ -47,7 +47,7 @@ namespace OpenWeen.UWP.View
             set { StateTextblock.Text = value; }
         }
 
-        public ExtendedSplash(SplashScreen splashscreen, bool loadState)
+        public ExtendedSplash(SplashScreen splashscreen)
         {
             InitializeComponent();
             Window.Current.SizeChanged += ExtendedSplash_OnResize;
@@ -64,7 +64,6 @@ namespace OpenWeen.UWP.View
                 PositionImage();
             }
             InitTransitions();
-            RestoreStateAsync(loadState);
         }
         
 
@@ -78,51 +77,6 @@ namespace OpenWeen.UWP.View
             theme.DefaultNavigationTransitionInfo = info;
             collection.Add(theme);
             rootFrame.ContentTransitions = collection;
-        }
-
-        private async Task InitEmotion()
-        {
-            StateText = "正在初始化表情";
-            var file = await ApplicationData.Current.LocalFolder.TryGetItemAsync("emotion.json");
-            if (file == null)
-                return;
-            var text = File.ReadAllText(file.Path);
-            StaticResource.Emotions = JsonHelper.FromJson<List<EmotionModel>>(text);
-       }
-
-        private async Task<bool> CheckForLogin()
-        {
-            try
-            {
-                do
-                {
-                    Core.Api.Entity.AccessToken = SettingHelper.GetListSetting<string>(SettingNames.AccessToken, isThrowException: true).ToList()[Settings.SelectedUserIndex];
-                    if (string.IsNullOrEmpty(Core.Api.Entity.AccessToken))
-                        throw new Core.Exception.InvalidAccessTokenException();
-                    if (string.IsNullOrEmpty((await Core.Api.User.Account.GetLimitStatus()).Error))
-                        break;
-                    var list = SettingHelper.GetListSetting<string>(SettingNames.AccessToken, isThrowException: true).ToList();
-                    list.RemoveAt(Settings.SelectedUserIndex);
-                    Settings.SelectedUserIndex = 0;
-                    SettingHelper.SetListSetting(SettingNames.AccessToken, list);
-                    if (list.Count == 0)
-                        return false;
-                } while (true);
-                return true;
-            }
-            catch (Exception e)// when (e is Core.Exception.InvalidAccessTokenException || e is SettingException)
-            {
-                return false;
-            }
-
-        }
-
-        private void RestoreStateAsync(bool loadState)
-        {
-            if (loadState)
-            {
-                // TODO: write code to load state
-            }
         }
 
         private void PositionImage()
@@ -164,7 +118,6 @@ namespace OpenWeen.UWP.View
 
         private async Task InitUid()
         {
-            StateText = "正在初始化用户数据";
             StaticResource.Uid = long.Parse(await Core.Api.User.Account.GetUid());
         }
 
@@ -174,12 +127,14 @@ namespace OpenWeen.UWP.View
             StateText = "正在检查后台通知";
             await BackgroundHelper.Register<UpdateUnreadCountTask>(new TimeTrigger(15, false));
             await BackgroundHelper.Register<ToastNotificationBackgroundTask>(new ToastNotificationActionTrigger());
-            await InitEmotion();
+            StateText = "正在初始化表情";
+            await StaticResource.InitEmotion();
             var cahcesize = rootFrame.CacheSize;
             rootFrame.CacheSize = 0;
             rootFrame.CacheSize = cahcesize;
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            if (await CheckForLogin())
+            StateText = "正在初始化用户数据";
+            if (await StaticResource.CheckForLogin())
             {
                 await InitUid();
                 rootFrame.Navigate(typeof(MainPage));

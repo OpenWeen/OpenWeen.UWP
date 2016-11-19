@@ -5,7 +5,6 @@
     xmlns:local="using:OpenWeen.UWP.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:Extensions="using:WinRTXamlToolkit.Controls.Extensions"
     mc:Ignorable="d">
     <Page.Resources>
         <CollectionViewSource x:Name="cvs" IsSourceGrouped="true" />
@@ -16,6 +15,11 @@
         </MenuFlyout>
         <MenuFlyout x:Key="ImageTapFlyout">
             <MenuFlyoutItem Text="删除" Click="DeletePicture" />
+        </MenuFlyout>
+        <MenuFlyout x:Key="WeiboVisibilityFlyout" x:Name="WeiboVisibilityFlyout">
+            <ToggleMenuFlyoutItem Tag="0" Text="公开" IsChecked="True" Click="ChangeWeiboVisibility"/>
+            <ToggleMenuFlyoutItem Tag="1" Text="仅自己可见" Click="ChangeWeiboVisibility"/>
+            <ToggleMenuFlyoutItem Tag="2" Text="好友圈可见" Click="ChangeWeiboVisibility"/>
         </MenuFlyout>
     </Page.Resources>
 
@@ -34,39 +38,13 @@
             <Grid Grid.Row="1">
                 <TextBlock HorizontalAlignment="Right" Text="{x:Bind TextCount,Mode=OneWay}" />
             </Grid>
-            <ItemsControl Grid.Row="2" ItemsSource="{x:Bind Images,Mode=OneWay}">
-                <ItemsControl.Style>
-                    <Style TargetType="ItemsControl">
-                        <Setter Property="ItemContainerTransitions">
-                            <Setter.Value>
-                                <TransitionCollection>
-                                    <AddDeleteThemeTransition />
-                                    <ContentThemeTransition />
-                                    <ReorderThemeTransition />
-                                    <EntranceThemeTransition IsStaggeringEnabled="False" />
-                                </TransitionCollection>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ItemsControl.Style>
-                <ItemsControl.ItemTemplate>
+            <GridView IsItemClickEnabled="True" ItemClick="GridView_ItemClick_1" SelectionMode="None" Grid.Row="2" ItemsSource="{x:Bind Images,Mode=OneWay}" CanReorderItems="True" CanDragItems="True" AllowDrop="True">
+                <GridView.ItemTemplate>
                     <DataTemplate>
-                        <Image Tapped="Image_Tapped" Extensions:ImageExtensions.FadeInOnLoaded="True" Extensions:ImageExtensions.ImageLoadedTransitionType="FadeIn" MaxHeight="100" MaxWidth="100" Margin="4" Source="{Binding Image}"/>
+                        <Image MaxHeight="100" MaxWidth="100" Margin="4" Source="{Binding Image}"/>
                     </DataTemplate>
-                </ItemsControl.ItemTemplate>
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <ItemsWrapGrid Orientation="Horizontal" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.Template>
-                    <ControlTemplate TargetType="ItemsControl">
-                        <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
-                            <ItemsPresenter />
-                        </ScrollViewer>
-                    </ControlTemplate>
-                </ItemsControl.Template>
-            </ItemsControl>
+                </GridView.ItemTemplate>
+            </GridView>
         </Grid>
         <Grid Grid.Row="1">
             <SemanticZoom x:Name="semanticZoom">
@@ -104,7 +82,7 @@
     </Grid>
     <Page.BottomAppBar>
         <CommandBar>
-            <AppBarButton Icon="Camera" Label="添加图片" Click="{x:Bind AddImage}" />
+            <AppBarButton Icon="Camera" Label="添加图片" Flyout="{StaticResource PictureFlyout}"/>
             <AppBarButton Icon="Emoji" Label="表情" Click="{x:Bind ShowEmoji}" />
             <AppBarButton Visibility="Collapsed" Icon="Account" Label="@好友" Click="{x:Bind AddFriend}" />
             <AppBarButton Click="{x:Bind AddTopic}" Label="添加话题">
@@ -112,6 +90,7 @@
                     <FontIcon FontFamily="Segoe UI" Glyph="#" FontSize="25" />
                 </AppBarButton.Icon>
             </AppBarButton>
+            <AppBarButton Icon="{x:Bind WeiboVisibilityIcon,Mode=OneWay}" Visibility="Collapsed" Label="微博可见性" Flyout="{StaticResource WeiboVisibilityFlyout}"/>
             <AppBarButton Icon="Send" Click="{x:Bind PostWeibo}" Label="发送" />
         </CommandBar>
     </Page.BottomAppBar>

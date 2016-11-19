@@ -97,11 +97,11 @@
                     </Grid>
                     <controls:SplitViewPaneList Refresh="{x:Bind ViewModel.RefreshWithoutGetUnreadCount}" Grid.Row="1" BackToTop="{x:Bind BackTop}" SelectedIndex="{Binding ElementName=pivot,Path=SelectedIndex,Mode=TwoWay}" ItemsSource="{x:Bind ViewModel.Header}" />
                     <StackPanel Orientation="Vertical" Grid.Row="2">
-                        <controls:SplitViewButton Tapped="{x:Bind ShowGroup}" Icon="ContactInfo" Label="分组"/>
-                        <controls:SplitViewButton Tapped="{x:Bind Search}" Icon="Find" Label="搜索" />
-                        <controls:SplitViewButton Tapped="{x:Bind ViewModel.Refresh}" Icon="Refresh" Label="刷新" />
-                        <controls:SplitViewButton Tapped="{x:Bind PostWeibo}" Icon="Edit" Label="发微博" />
-                        <controls:SplitViewButton Tapped="{x:Bind Setting}" Icon="Setting" Label="设置" />
+                        <controls:SplitViewButton Flyout="{StaticResource GroupFlout}" Icon="ContactInfo" Label="分组"/>
+                        <controls:SplitViewButton Click="{x:Bind Search}" Icon="Find" Label="搜索" />
+                        <controls:SplitViewButton Click="{x:Bind ViewModel.Refresh}" Icon="Refresh" Label="刷新" />
+                        <controls:SplitViewButton Click="{x:Bind PostWeibo}" Icon="Edit" Label="发微博" />
+                        <controls:SplitViewButton Click="{x:Bind Setting}" Icon="Setting" Label="设置" />
                     </StackPanel>
                 </Grid>
             </SplitView.Pane>
@@ -141,7 +141,7 @@
     </Grid>
     <Page.BottomAppBar>
         <CommandBar  x:Name="BottomCommandBar">
-            <AppBarButton Click="{x:Bind ShowGroup}" Icon="ContactInfo" Label="分组"/>
+            <AppBarButton Icon="ContactInfo" Label="分组" Flyout="{StaticResource GroupFlout}"/>
             <AppBarButton Click="{x:Bind Search}" Icon="Find" Label="搜索"/>
             <AppBarButton Click="{x:Bind ViewModel.Refresh}" Icon="Refresh" Label="刷新" />
             <AppBarButton Click="{x:Bind PostWeibo}" Icon="Edit" Label="发微博" />
