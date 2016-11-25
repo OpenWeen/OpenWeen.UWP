@@ -45,7 +45,7 @@ namespace OpenWeen.UWP.Common.Controls
                 }
                 else
                 {
-                    _scrollViewer.ChangeView(0, _scrollViewer.ScrollableHeight, 0);
+                    _scrollViewer.ChangeView(0, _scrollViewer.ScrollableHeight, 1);
                 }
             });
         }

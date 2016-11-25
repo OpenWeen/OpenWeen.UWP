@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using OpenWeen.Core.Model.User;
 using OpenWeen.UWP.Common;
+using OpenWeen.UWP.Common.Controls;
 using OpenWeen.UWP.Model;
 using OpenWeen.UWP.Shared.Common;
 using OpenWeen.UWP.Shared.Common.Helpers;
@@ -80,9 +81,9 @@ namespace OpenWeen.UWP.ViewModel.UserPage
                     throw new ArgumentException("parameter must be string or long");
                 }
             }
-            catch (WebException)
+            catch (Exception)
             {
-                await new MessageDialog("无效的用户").ShowAsync();
+                Notification.Show("载入错误");
             }
             await InitList();
             IsLoading = false;
@@ -90,8 +91,7 @@ namespace OpenWeen.UWP.ViewModel.UserPage
 
         private async System.Threading.Tasks.Task InitList()
         {
-            //Fuck weibo does not allow weico to check the block state
-            //IsBlocked = await Core.Api.Blocks.IsBlocked(User.ID);
+            IsBlocked = await Core.Api.Blocks.IsBlocked(User.ID);
             UserTimeline = new UserTimelineViewModel(User.ID);
             await UserTimeline.Refresh();
             //UserImageTimeline = new UserImageTimelineViewModel(User.ID);
@@ -126,25 +126,52 @@ namespace OpenWeen.UWP.ViewModel.UserPage
         {
             if (IsLoading || User == null) return;
             IsLoading = true;
-            if (User.Following)
+            if (IsBlocked)
+            {
+                var dialog = new MessageDialog("是否解除黑名单？");
+                dialog.Commands.Add(new UICommand("是", async (command) =>
+                {
+                    await Core.Api.Blocks.RemoveBlock(User.ID);
+                    IsBlocked = !IsBlocked;
+                    Follow.SetState(User.Following, User.FollowMe, IsBlocked);
+                    IsLoading = false;
+                }));
+                dialog.Commands.Add(new UICommand("否"));
+                await dialog.ShowAsync();
+            }
+            else if (User.Following)
             {
                 await Core.Api.Friendships.Friends.UnFollow(User.ID);
+                User.Following = !User.Following;
+                Follow.SetState(User.Following, User.FollowMe, IsBlocked);
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(User)));
+                IsLoading = false;
             }
             else
             {
                 await Core.Api.Friendships.Friends.Follow(User.ID);
+                User.Following = !User.Following;
+                Follow.SetState(User.Following, User.FollowMe, IsBlocked);
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(User)));
+                IsLoading = false;
             }
-            Follow.SetState(!User.Following, User.FollowMe, IsBlocked);
-            User.Following = !User.Following;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(User)));
-            IsLoading = false;
         }
 
         public async void AddWeiboBlock()
         {
-            if (User == null || IsMe)
+            if (User == null || IsMe || IsBlocked)
                 return;
-            await Core.Api.Blocks.AddBlock(User.ID);
+            try
+            {
+                await Core.Api.Blocks.AddBlock(User.ID);
+                Notification.Show("已丢进黑名单");
+                IsBlocked = !IsBlocked;
+                Follow.SetState(User.Following, User.FollowMe, IsBlocked);
+            }
+            catch (Exception)
+            {
+                Notification.Show("操作失败");
+            }
         }
     }
 }

@@ -14,8 +14,8 @@
         <local:AdaptiveGridView.ItemTemplate>
             <DataTemplate x:DataType="model:HeaderModel">
                 <Grid VerticalAlignment="Stretch">
-                    <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="4" Fill="{StaticResource AppTheme}" Visibility="{x:Bind IsActive,Converter={StaticResource BoolToVisibilityConverter},Mode=OneWay}" />
-                    <SymbolIcon Symbol="{x:Bind Icon}" Margin="8" Foreground="{StaticResource AppTheme}" Visibility="{x:Bind IsActive,Converter={StaticResource BoolToVisibilityConverter},Mode=OneWay}"/>
+                    <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="4" Fill="{StaticResource AppColor}" Visibility="{x:Bind IsActive,Converter={StaticResource BoolToVisibilityConverter},Mode=OneWay}" />
+                    <SymbolIcon Symbol="{x:Bind Icon}" Margin="8" Foreground="{StaticResource AppColor}" Visibility="{x:Bind IsActive,Converter={StaticResource BoolToVisibilityConverter},Mode=OneWay}"/>
                     <SymbolIcon Symbol="{x:Bind Icon}" Margin="8" Visibility="{x:Bind IsActive,Converter={StaticResource BoolToVisibilityConverter},ConverterParameter=true,Mode=OneWay}"/>
                     <TextBlock Visibility="Collapsed" Grid.Row="1" Text="{x:Bind Text}"/>
                     <Grid Visibility="{x:Bind UnreadCount,Mode=OneWay,Converter={StaticResource UnreadCountToVisibilityConverter}}" Width="10" Height="10" HorizontalAlignment="Right" VerticalAlignment="Top">

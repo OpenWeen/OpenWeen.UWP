@@ -140,6 +140,28 @@ namespace OpenWeen.UWP.Shared.Common
             get { return GetSetting(SettingNames.IsOffImage, false); }
             set { SetSetting(SettingNames.IsOffImage, value); }
         }
+        
+        public static bool IsAutoNightMode
+        {
+            get { return GetSetting(SettingNames.IsAutoNightMode, false); }
+            set { SetSetting(SettingNames.IsAutoNightMode, value); }
+        }
+
+        public static bool IsAutoOffImage
+        {
+            get { return GetSetting(SettingNames.IsAutoOffImage, false); }
+            set { SetSetting(SettingNames.IsAutoOffImage, value); }
+        }
+        public static TimeSpan AutoNightModeOnTime
+        {
+            get { return GetSetting(SettingNames.AutoNightModeOnTime, new TimeSpan(22, 00, 00)); }
+            set { SetSetting(SettingNames.AutoNightModeOnTime, value); }
+        }
+        public static TimeSpan AutoNightModeOffTime
+        {
+            get { return GetSetting(SettingNames.AutoNightModeOnTime, new TimeSpan(7, 00, 00)); }
+            set { SetSetting(SettingNames.AutoNightModeOnTime, value); }
+        }
     }
     internal enum NotifyDuration
     {

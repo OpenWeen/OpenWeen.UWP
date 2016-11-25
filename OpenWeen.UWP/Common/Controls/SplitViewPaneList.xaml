@@ -30,7 +30,7 @@
           PointerOverBackground="{ThemeResource SystemControlHighlightListLowBrush}"
                                 SelectedPointerOverBackground="{ThemeResource SystemControlHighlightListLowBrush}"
           PointerOverForeground="{ThemeResource SystemControlHighlightAltBaseHighBrush}"
-          SelectedForeground="{StaticResource AppTheme}"
+          SelectedForeground="{StaticResource AppColor}"
           PressedBackground="{ThemeResource SystemControlHighlightListMediumBrush}"
           DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
           DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
@@ -57,7 +57,7 @@
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Rectangle Width="4" HorizontalAlignment="Left" Fill="{StaticResource AppTheme}" Visibility="{x:Bind IsActive,Converter={StaticResource BoolToVisibilityConverter},Mode=OneWay}"/>
+                    <Rectangle Width="4" HorizontalAlignment="Left" Fill="{StaticResource AppColor}" Visibility="{x:Bind IsActive,Converter={StaticResource BoolToVisibilityConverter},Mode=OneWay}"/>
                     <SymbolIcon Width="48" Height="48" Symbol="{x:Bind Icon}" />
                     <TextBlock VerticalAlignment="Center" Grid.Column="1" Text="{x:Bind Text}" />
                     <Grid Margin="10" Visibility="{x:Bind UnreadCount,Mode=OneWay,Converter={StaticResource UnreadCountToVisibilityConverter}}" Width="10" Height="10" HorizontalAlignment="Right" VerticalAlignment="Top">

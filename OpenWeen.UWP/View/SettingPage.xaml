@@ -48,7 +48,11 @@
                 <ScrollViewer Padding="20">
                     <StackPanel>
                         <Slider Header="每次载入数量" Value="{x:Bind LoadCount,Mode=TwoWay,Converter={StaticResource IntDoubleConverter}}" Minimum="20" Maximum="100"/>
+                        <ToggleSwitch Header="自动夜间模式" IsOn="{x:Bind IsAutoNightMode,Mode=TwoWay}" Style="{StaticResource NotifyTypeSwitchStyle}"/>
+                        <TimePicker HorizontalAlignment="Stretch" Header="自动夜间模式开启时间" Time="{x:Bind AutoNightModeOnTime,Mode=TwoWay}"/>
+                        <TimePicker HorizontalAlignment="Stretch" Header="自动夜间模式关闭时间" Time="{x:Bind AutoNightModeOffTime,Mode=TwoWay}"/>
                         <ToggleSwitch Header="夜间模式（重启生效）" IsOn="{x:Bind IsNightMode,Mode=TwoWay}" Style="{StaticResource NotifyTypeSwitchStyle}"/>
+                        <ToggleSwitch Header="自动无图模式（移动网络下无图）" IsOn="{x:Bind IsAutoOffImage,Mode=TwoWay}" Style="{StaticResource NotifyTypeSwitchStyle}"/>
                         <ToggleSwitch Header="无图模式" IsOn="{x:Bind IsOffImage,Mode=TwoWay}" Style="{StaticResource NotifyTypeSwitchStyle}"/>
                         <Button Content="下载/更新表情" HorizontalAlignment="Stretch" Click="{x:Bind DownloadEmotion}" Margin="0,4"/>
                         <Button Content="删除表情" HorizontalAlignment="Stretch" Click="{x:Bind RemoveEmotion}" Margin="0,4"/>
@@ -100,45 +104,4 @@
             </PivotItem>
         </Pivot>
     </Grid>
-    <!--<Grid Visibility="Collapsed" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Grid Background="{StaticResource AppTheme}" Padding="16" RequestedTheme="Dark">
-            <TextBlock Text="设置" Style="{ThemeResource HeaderTextBlockStyle}"/>
-        </Grid>
-        <ScrollViewer Grid.Row="1" Padding="16,16,16,0">
-            <StackPanel Orientation="Vertical">
-                <TextBlock Text="通用" Style="{ThemeResource SubtitleTextBlockStyle}" />
-                <ToggleSwitch Header="夜间模式（重启生效）" IsOn="{x:Bind IsNightMode,Mode=TwoWay}" Style="{StaticResource NotifyTypeSwitchStyle}"/>
-                <ToggleSwitch Header="无图模式" IsOn="{x:Bind IsOffImage,Mode=TwoWay}" Style="{StaticResource NotifyTypeSwitchStyle}"/>
-                <TextBlock Text="通知" Style="{ThemeResource SubtitleTextBlockStyle}" />
-                <ComboBox Header="通知间隔（重启生效）" SelectedIndex="{x:Bind NotifyDurationIndex,Mode=TwoWay}" HorizontalAlignment="Stretch">
-                    <ComboBoxItem Content="1分钟"/>
-                    <ComboBoxItem Content="3分钟"/>
-                    <ComboBoxItem Content="5分钟"/>
-                    <ComboBoxItem Content="10分钟"/>
-                    <ComboBoxItem Content="30分钟"/>
-                    <ComboBoxItem Content="从不"/>
-                </ComboBox>
-                <ToggleSwitch Header="显示通知详细信息" IsOn="{x:Bind IsMoreInfoNotifyEnable,Mode=TwoWay}" Style="{StaticResource NotifyTypeSwitchStyle}"></ToggleSwitch>
-                <TextBlock Text="通知类型"/>
-                <ToggleSwitch Header="提及" IsOn="{x:Bind IsMentionNotify,Mode=TwoWay}" Style="{StaticResource NotifyTypeSwitchStyle}"></ToggleSwitch>
-                <ToggleSwitch Header="评论" IsOn="{x:Bind IsCommentNotify,Mode=TwoWay}" Style="{StaticResource NotifyTypeSwitchStyle}"></ToggleSwitch>
-                <ToggleSwitch Header="私信" IsOn="{x:Bind IsMessageNotify,Mode=TwoWay}" Style="{StaticResource NotifyTypeSwitchStyle}"></ToggleSwitch>
-                <ToggleSwitch Header="粉丝" IsOn="{x:Bind IsFollowerNotify,Mode=TwoWay}" Style="{StaticResource NotifyTypeSwitchStyle}"></ToggleSwitch>
-                <TextBlock Text="屏蔽" Style="{ThemeResource SubtitleTextBlockStyle}" />
-                <TextBox Header="屏蔽关键词（以英文逗号分隔）" x:Name="BlockTextTB" TextWrapping="Wrap" Text="{x:Bind BlockText,Mode=TwoWay}" />
-                <TextBox Header="屏蔽用户（UID，以英文逗号分隔）" x:Name="BlockUserTB" TextWrapping="Wrap" Text="{x:Bind BlockUser,Mode=TwoWay}" />
-                <Slider Header="首页图片大小" Value="{x:Bind ImageSize,Mode=TwoWay}" Minimum="100" Maximum="300" ></Slider>
-                <TextBlock Text="关于" Style="{ThemeResource SubtitleTextBlockStyle}" />
-                <TextBlock Text="OpenWeen是一个开源的微博客户端" />
-                <TextBlock Text="公测用户可以发送反馈来反馈" />
-                <Button Click="Button_Click" Margin="4" Content="项目地址" HorizontalAlignment="Stretch" />
-                <Button Click="Button_Click_1" Margin="4" Content="反馈" HorizontalAlignment="Stretch" />
-                <Button Click="{x:Bind Crash}" Margin="4" Content="爆炸！" HorizontalAlignment="Stretch" />
-            </StackPanel>
-        </ScrollViewer>
-    </Grid>-->
 </Page>

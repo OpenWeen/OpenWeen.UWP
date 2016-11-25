@@ -36,7 +36,7 @@
                                 </Grid>
                             </RelativePanel>
                             <StackPanel Padding="8,4,8,4">
-                                <controls:WeiboImageList PictureClick="WeiboImageList_PictureClick" Visibility="{x:Bind ViewModel.Item.Result.PicUrls,Mode=OneWay,Converter={StaticResource NullToVisibilityConverter}}" ItemsSource="{x:Bind ViewModel.Item.Result.PicUrls,Mode=OneWay}" />
+                                <controls:WeiboImageList DataContext="{x:Bind ViewModel.Item.Result,Mode=OneWay}" PictureClick="WeiboImageList_PictureClick" Visibility="{x:Bind ViewModel.Item.Result.PicUrls,Mode=OneWay,Converter={StaticResource NullToVisibilityConverter}}" ItemsSource="{x:Bind ViewModel.Item.Result.PicUrls,Mode=OneWay}" />
                                 <controls:WeiboTextBlock IsTextSelectionEnabled="True" DataContext="{x:Bind ViewModel.Item,Mode=OneWay}" UserClick="{x:Bind ActionModel.UserClick}" TopicClick="{x:Bind ActionModel.TopicClick}" Grid.Row="1" Text="{x:Bind ViewModel.Item.Result.Text,Mode=OneWay}" />
                             </StackPanel>
                             <StackPanel DataContext="{x:Bind ViewModel.Item.Result.RetweetedStatus,Mode=OneWay}" Margin="8,4" Padding="8,4" Grid.Column="2" BorderBrush="{StaticResource SplitlineColor}" Grid.Row="2" Visibility="{x:Bind ViewModel.Item.Result.RetweetedStatus,Mode=OneWay,Converter={StaticResource NullToVisibilityConverter}}" BorderThickness="1">
@@ -55,7 +55,7 @@
                                         <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" FontSize="10" Foreground="#CCCCCC" Grid.Row="1" Text="{x:Bind ViewModel.Item.Result.RetweetedStatus.CreateTime,Mode=OneWay,Converter={StaticResource TimeConverter}}" />
                                     </Grid>
                                 </RelativePanel>
-                                <controls:WeiboImageList PictureClick="WeiboImageList_PictureClick" Grid.Row="1" Visibility="{x:Bind ViewModel.Item.Result.RetweetedStatus.PicUrls,Mode=OneWay,Converter={StaticResource NullToVisibilityConverter}}" ItemsSource="{x:Bind ViewModel.Item.Result.RetweetedStatus.PicUrls,Mode=OneWay}" />
+                                <controls:WeiboImageList DataContext="{x:Bind ViewModel.Item.Result.RetweetedStatus,Mode=OneWay}" PictureClick="WeiboImageList_PictureClick" Grid.Row="1" Visibility="{x:Bind ViewModel.Item.Result.RetweetedStatus.PicUrls,Mode=OneWay,Converter={StaticResource NullToVisibilityConverter}}" ItemsSource="{x:Bind ViewModel.Item.Result.RetweetedStatus.PicUrls,Mode=OneWay}" />
                                 <controls:WeiboTextBlock UserClick="{x:Bind ActionModel.UserClick}" TopicClick="{x:Bind ActionModel.TopicClick}"  Grid.Row="2" Text="{x:Bind ViewModel.Item.Result.RetweetedStatus.Text,Mode=OneWay}" />
                             </StackPanel>
                             <Grid >
@@ -67,15 +67,15 @@
                                 </Grid.ColumnDefinitions>
                                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Column="0" Tapped="Like_Tapped">
                                     <SymbolIcon Symbol="Like" Foreground="LightGray"/>
-                                    <TextBlock Foreground="Gray" Padding="8,0,0,0" Text="{x:Bind ViewModel.Item.Result.AttitudesCount}"/>
+                                    <TextBlock Foreground="Gray" Padding="8,0,0,0" Text="{x:Bind ViewModel.Item.Result.AttitudesCount,Mode=OneWay}"/>
                                 </StackPanel>
                                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Column="1" Tapped="Reshare_Tapped">
                                     <SymbolIcon Foreground="LightGray" Symbol="ReShare" />
-                                    <TextBlock Foreground="Gray" Padding="8,0,0,0" Text="{x:Bind ViewModel.Item.Result.RepostsCount}" />
+                                    <TextBlock Foreground="Gray" Padding="8,0,0,0" Text="{x:Bind ViewModel.Item.Result.RepostsCount,Mode=OneWay}" />
                                 </StackPanel>
                                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Column="2" Tapped="Comment_Tapped">
                                     <SymbolIcon Foreground="LightGray" Symbol="Comment" />
-                                    <TextBlock Foreground="Gray" Padding="8,0,0,0" Text="{x:Bind ViewModel.Item.Result.CommentsCount}" />
+                                    <TextBlock Foreground="Gray" Padding="8,0,0,0" Text="{x:Bind ViewModel.Item.Result.CommentsCount,Mode=OneWay}" />
                                 </StackPanel>
                                 <SymbolIcon HorizontalAlignment="Center" Grid.Column="3" x:Name="FavorIcon" Tapped="Favor_Tapped" Foreground="{x:Bind ViewModel.Item.Result.Favorited,Mode=OneWay,Converter={StaticResource FavorToColorConverter}}" Symbol="Favorite" />
                             </Grid>

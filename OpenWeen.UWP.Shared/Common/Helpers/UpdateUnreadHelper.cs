@@ -39,7 +39,7 @@ namespace OpenWeen.UWP.Shared.Common.Helpers
             {
                 try
                 {
-                    //Core.Api.Remind.ClearUnRead(Core.Api.RemindType.MentionStatus);
+                    Core.Api.Remind.ClearUnRead(Core.Api.RemindType.MentionStatus);
                     var items = await Core.Api.Statuses.Mentions.GetMentions(count: unread.MentionStatus);
                     items.Statuses.ForEach(item => ToastNotificationHelper.SendToast(item));
                 }
@@ -52,7 +52,7 @@ namespace OpenWeen.UWP.Shared.Common.Helpers
             {
                 try
                 {
-                    //Core.Api.Remind.ClearUnRead(Core.Api.RemindType.Cmt);
+                    Core.Api.Remind.ClearUnRead(Core.Api.RemindType.Cmt);
                     var items = await Core.Api.Comments.GetCommentToMe(count: unread.Cmt);
                     items.Comments.ForEach(item => ToastNotificationHelper.SendToast(item));
                 }
@@ -65,7 +65,7 @@ namespace OpenWeen.UWP.Shared.Common.Helpers
             {
                 try
                 {
-                    //Core.Api.Remind.ClearUnRead(Core.Api.RemindType.MentionCmt);
+                    Core.Api.Remind.ClearUnRead(Core.Api.RemindType.MentionCmt);
                     var items = await Core.Api.Comments.GetCommentMentions(count: unread.MentionCmt);
                     items.Comments.ForEach(item => ToastNotificationHelper.SendToast(item));
                 }

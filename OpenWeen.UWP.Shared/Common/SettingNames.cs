@@ -17,5 +17,9 @@
         public const string LoadCount = nameof(LoadCount);
         public const string IsMergeMentionAndComment = nameof(IsMergeMentionAndComment);
         public const string EnableWaterFall = nameof(EnableWaterFall);
+        public const string IsAutoNightMode = nameof(IsAutoNightMode);
+        public const string IsAutoOffImage = nameof(IsAutoOffImage);
+        public const string AutoNightModeOnTime = nameof(AutoNightModeOnTime);
+        public const string AutoNightModeOffTime = nameof(AutoNightModeOffTime);
     }
 }

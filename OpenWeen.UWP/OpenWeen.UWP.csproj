@@ -172,6 +172,7 @@
     <Compile Include="Common\Helpers\BackgroundHelper.cs" />
     <Compile Include="Common\Helpers\MoreVisualTreeHelper.cs" />
     <Compile Include="Common\HockeyAppKey.cs" />
+    <Compile Include="Common\Selector\DataTemplateByVersionSelector.cs" />
     <Compile Include="Common\Selector\MessageDataTemplateSelector.cs" />
     <Compile Include="Common\Selector\WeiboListSelector.cs" />
     <Compile Include="Common\StaticResource.cs" />

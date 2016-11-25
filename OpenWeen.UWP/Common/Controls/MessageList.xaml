@@ -55,8 +55,8 @@
     <ItemsControl.Template>
         <ControlTemplate TargetType="ItemsControl">
             <Border>
-                <ScrollViewer ViewChanged="ScrollViewer_ViewChanged" x:Name="ScrollViewer" AutomationProperties.AccessibilityView="Raw" BringIntoViewOnFocusChange="True" IsDeferredScrollingEnabled="True">
-                    <ItemsPresenter>
+                <ScrollViewer ViewChanged="ScrollViewer_ViewChanged" x:Name="ScrollViewer" ZoomMode="Disabled" AutomationProperties.AccessibilityView="Raw" BringIntoViewOnFocusChange="True" IsDeferredScrollingEnabled="True">
+                    <ItemsPresenter HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                         <ItemsPresenter.Header>
                             <Button HorizontalAlignment="Stretch" Content="加载更多" Style="{ThemeResource DateTimePickerFlyoutButtonStyle}" Click="Button_Click"/>
                         </ItemsPresenter.Header>

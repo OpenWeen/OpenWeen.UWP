@@ -23,15 +23,15 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Image Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
-            <Image Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.Column="1" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
-            <Image Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.Column="2" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
-            <Image Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.Row="1" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
-            <Image Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.Row="1" Grid.Column="1" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
-            <Image Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.Row="1" Grid.Column="2" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
-            <Image Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.Row="2" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
-            <Image Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.Row="2" Grid.Column="1" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
-            <Image Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.Row="2" Grid.Column="2" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
+            <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
+            <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.Column="1" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
+            <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.Column="2" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
+            <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.Row="1" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
+            <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.Row="1" Grid.Column="1" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
+            <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.Row="1" Grid.Column="2" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
+            <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.Row="2" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
+            <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.Row="2" Grid.Column="1" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
+            <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.Row="2" Grid.Column="2" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
         </Grid>
         <Grid x:Name="SixGrid" Visibility="Collapsed">
             <Grid.RowDefinitions>
@@ -43,12 +43,12 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Image Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
-            <Image Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.Column="1" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
-            <Image Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.Column="2" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
-            <Image Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.Row="1" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
-            <Image Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.Row="1" Grid.Column="1" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
-            <Image Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.Row="1" Grid.Column="2" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
+            <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
+            <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.Column="1" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
+            <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.Column="2" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
+            <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.Row="1" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
+            <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.Row="1" Grid.Column="1" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
+            <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.Row="1" Grid.Column="2" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
         </Grid>
         <Grid x:Name="FourGird" Visibility="Collapsed">
             <Grid.RowDefinitions>
@@ -59,10 +59,10 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Image Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
-            <Image Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.Column="1" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
-            <Image Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.Row="1" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
-            <Image Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.Row="1" Grid.Column="1" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
+            <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
+            <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.Column="1" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
+            <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.Row="1" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
+            <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.Row="1" Grid.Column="1" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
         </Grid>
         <Grid x:Name="ThreeGrid" Visibility="Collapsed">
             <Grid.RowDefinitions>
@@ -73,20 +73,20 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Image Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.RowSpan="2" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
-            <Image Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.Column="1" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
-            <Image Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.Row="1" Grid.Column="1" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
+            <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.RowSpan="2" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
+            <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.Column="1" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
+            <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.Row="1" Grid.Column="1" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
         </Grid>
         <Grid x:Name="TwoGrid" Visibility="Collapsed">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Image Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
-            <Image Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.Column="1" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
+            <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
+            <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Grid.Column="1" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
         </Grid>
         <Grid x:Name="OneGrid" Visibility="Collapsed">
-            <Image Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
+            <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="{Binding DataContext,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource WeiboImageRelyOnNetwork}}" Tapped="Image_Tapped" ImageFailed="Image_ImageFailed" Margin="4" Stretch="UniformToFill" />
         </Grid>
     </Grid>
 </UserControl>

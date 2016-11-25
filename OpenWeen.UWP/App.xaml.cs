@@ -39,8 +39,15 @@ namespace OpenWeen.UWP
         public App()
         {
             this.InitializeComponent();
-            RequestedTheme = Settings.IsNightMode ? ApplicationTheme.Dark : ApplicationTheme.Light;
+            RequestedTheme = GetTheme();
             this.Suspending += OnSuspending;
+        }
+
+        private ApplicationTheme GetTheme()
+        {
+            if (Settings.IsAutoNightMode && (DateTime.Now.TimeOfDay > Settings.AutoNightModeOnTime || DateTime.Now.TimeOfDay < Settings.AutoNightModeOffTime))
+                return ApplicationTheme.Dark;
+            return Settings.IsNightMode ? ApplicationTheme.Dark : ApplicationTheme.Light;
         }
 
         /// <summary>

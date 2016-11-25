@@ -41,6 +41,26 @@ namespace OpenWeen.UWP.View
             get { return Settings.EnableWaterFall; }
             set { Settings.EnableWaterFall = value; }
         }
+        public bool IsAutoOffImage
+        {
+            get { return Settings.IsAutoOffImage; }
+            set { Settings.IsAutoOffImage = value; }
+        }
+        public bool IsAutoNightMode
+        {
+            get { return Settings.IsAutoNightMode; }
+            set { Settings.IsAutoNightMode = value; }
+        }
+        public TimeSpan AutoNightModeOnTime
+        {
+            get { return Settings.AutoNightModeOnTime; }
+            set { Settings.AutoNightModeOnTime = value; }
+        }
+        public TimeSpan AutoNightModeOffTime
+        {
+            get { return Settings.AutoNightModeOffTime; }
+            set { Settings.AutoNightModeOffTime = value; }
+        }
         public string BlockText
         {
             get

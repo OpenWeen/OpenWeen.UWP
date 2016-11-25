@@ -2,14 +2,19 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
+using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.Effects;
+using Microsoft.Graphics.Canvas.UI.Xaml;
 using OpenWeen.UWP.Common.Helpers;
 using OpenWeen.UWP.Model;
 using Windows.Foundation;
 using Windows.Graphics.Display;
 using Windows.Storage.Pickers;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media.Imaging;
 using WinRTXamlToolkit.Controls.Extensions;
 
 // “内容对话框”项模板在 http://go.microsoft.com/fwlink/?LinkId=234238 上进行了说明
@@ -60,11 +65,32 @@ namespace OpenWeen.UWP.Common.Controls
             MinWidth = (Window.Current.Content as Frame).ActualWidth;
             await InitImageSize();
         }
-        public void EditImage()
+        public async void InvertImage()
         {
             if (flipView?.SelectedItem == null)
                 return;
+            var uri = Items[flipView.SelectedIndex].SourceUri;
             var img = MoreVisualTreeHelper.GetObject<Image>(flipView.ContainerFromItem(flipView.SelectedItem));
+            if (img.Source is BitmapImage)
+            {
+                try
+                {
+                    CanvasDevice device = CanvasDevice.GetSharedDevice();
+                    var imageSource = new CanvasImageSource(device, (img.Source as BitmapImage).PixelWidth, (img.Source as BitmapImage).PixelHeight, 96);
+                    using (var session = imageSource.CreateDrawingSession(Colors.Transparent))
+                    {
+                        var image = new InvertEffect { Source = await CanvasBitmap.LoadAsync(device, new Uri(uri)) as ICanvasImage };
+                        session.DrawImage(image);
+                    }
+                    img.Source = imageSource;
+                }
+                catch (Exception)
+                {
+                    Notification.Show("反色失败");
+                }
+            }
+            else
+                img.Source = new BitmapImage(new Uri(uri));
         }
         private async System.Threading.Tasks.Task InitImageSize()
         {
@@ -106,7 +132,7 @@ namespace OpenWeen.UWP.Common.Controls
         {
             if (flipView?.SelectedItem == null)
                 return;
-            var name = Path.GetFileName(Items[flipView.SelectedIndex].SourceUri.ToString());
+            var name = Path.GetFileName(Items[flipView.SelectedIndex].SourceUri);
             var picker = new FileSavePicker();
             picker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
             picker.FileTypeChoices.Add("Image file", new List<string>() { ".jpg", ".png", ".gif" });

@@ -82,7 +82,7 @@ namespace OpenWeen.UWP.Common.Controls
                 var img = VisualTreeHelper.GetChild(grid, i) as FrameworkElement;
                 img.DataContext = item;
             }
-            //InitSize(grid, ActualWidth);
+            InitSize(grid, ActualWidth < 720 ? ActualWidth : 720);
         }
 
         public WeiboImageList()
@@ -96,17 +96,17 @@ namespace OpenWeen.UWP.Common.Controls
         {
             var grid = root.Children.Where(item => item.Visibility == Visibility.Visible).FirstOrDefault() as Grid;
             if (grid != null)
-                InitSize(grid, ActualWidth);
+                InitSize(grid, ActualWidth < 720 ? ActualWidth : 720);
         }
 
         private void WeiboImageList_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            if (e.PreviousSize.Width != e.NewSize.Width && e.NewSize.Width < 720 && ItemsSource?.Count > 0)
+            if (e.PreviousSize.Width != e.NewSize.Width && ItemsSource?.Count > 0)
             {
                 var width = e.NewSize.Width;
                 var grid = root.Children.Where(item => item.Visibility == Visibility.Visible).FirstOrDefault() as Grid;
                 if (grid != null)
-                    InitSize(grid, width);
+                    InitSize(grid, width < 720 ? width : 720);
             }
         }
 
@@ -114,6 +114,9 @@ namespace OpenWeen.UWP.Common.Controls
         {
             switch (ItemsSource.Count)
             {
+                case 1:
+                    grid.MinHeight = width > 480 ? width / 3 : width;
+                    break;
                 case 2:
                     grid.MinHeight = width / 3;
                     break;
@@ -122,7 +125,6 @@ namespace OpenWeen.UWP.Common.Controls
                 case 6:
                     grid.MinHeight = width / 3 * 2;
                     break;
-                case 1:
                 case 3:
                 case 7:
                 case 8:

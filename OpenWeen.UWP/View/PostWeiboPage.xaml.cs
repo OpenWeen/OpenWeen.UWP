@@ -8,21 +8,27 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.Effects;
+using Microsoft.Graphics.Canvas.UI.Xaml;
 using OpenWeen.Core.Model;
 using OpenWeen.Core.Model.Status;
 using OpenWeen.Core.Model.Types;
 using OpenWeen.UWP.Common;
 using OpenWeen.UWP.Common.Controls;
 using OpenWeen.UWP.Common.Entities;
+using PropertyChanged;
 using Windows.Foundation.Metadata;
 using Windows.Graphics.Imaging;
 using Windows.Media.Capture;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
+using Windows.UI;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Media.Imaging;
@@ -188,10 +194,11 @@ namespace OpenWeen.UWP.View
             else
                 Notification.Show("图片不能大于5MB");
         }
-
+        [ImplementPropertyChanged]
         public class ImageData
         {
             public BitmapImage Image { get; set; }
+            [DoNotNotify]
             public byte[] Data { get; set; }
         }
 
@@ -278,7 +285,6 @@ namespace OpenWeen.UWP.View
                     else
                         await Core.Api.Comments.PostComment(data.ID, Text);
                     return true;
-
                 }
                 catch (Exception e) when (e is WebException || e is System.Net.Http.HttpRequestException)
                 {
@@ -314,9 +320,7 @@ namespace OpenWeen.UWP.View
                 {
                     var pics = new List<PictureModel>();
                     foreach (var item in Images)
-                    {
                         pics.Add(await Core.Api.Statuses.PostWeibo.UploadPicture(item.Data));
-                    }
                     await Core.Api.Statuses.PostWeibo.PostWithMultiPics(Text?.Length > 0 ? Text : "分享图片", string.Join(",", pics.Select(item => item.PicID)), visible: WeiboVisibility);
                     return true;
                 }
@@ -338,9 +342,7 @@ namespace OpenWeen.UWP.View
             var def = e.GetDeferral();
             e.Handled = true;
             if (e.DataView.Contains(Windows.ApplicationModel.DataTransfer.StandardDataFormats.Bitmap))
-            {
                 e.AcceptedOperation = Windows.ApplicationModel.DataTransfer.DataPackageOperation.Copy;
-            }
             else if (e.DataView.Contains(Windows.ApplicationModel.DataTransfer.StandardDataFormats.StorageItems))
             {
                 var files = (await e.DataView.GetStorageItemsAsync()).Where(item => item is StorageFile && (item as StorageFile).ContentType.Contains("image")).ToList();
@@ -358,9 +360,7 @@ namespace OpenWeen.UWP.View
             var def = e.GetDeferral();
             e.Handled = true;
             if (e.DataView.Contains(Windows.ApplicationModel.DataTransfer.StandardDataFormats.Bitmap))
-            {
                 await AddImageDataFromFile(await GetFileFromBitmap(await e.DataView.GetBitmapAsync()));
-            }
             else if (e.DataView.Contains(Windows.ApplicationModel.DataTransfer.StandardDataFormats.StorageItems))
             {
                 var files = (await e.DataView.GetStorageItemsAsync()).Where(item => item is StorageFile && (item as StorageFile).ContentType.Contains("image")).ToList();
@@ -377,13 +377,11 @@ namespace OpenWeen.UWP.View
         {
             byte[] data;
             using (var stream = await file.OpenReadAsync())
+            using (DataReader dataReader = new DataReader(stream))
             {
-                using (DataReader dataReader = new DataReader(stream))
-                {
-                    data = new byte[stream.Size];
-                    await dataReader.LoadAsync((uint)stream.Size);
-                    dataReader.ReadBytes(data);
-                }
+                data = new byte[stream.Size];
+                await dataReader.LoadAsync((uint)stream.Size);
+                dataReader.ReadBytes(data);
             }
             await AddImageData(data);
             if (deleteAfterUsed)
@@ -421,29 +419,25 @@ namespace OpenWeen.UWP.View
         {
             var picker = new FileOpenPicker();
             picker.FileTypeFilter.Add(".jpg");
+            picker.FileTypeFilter.Add(".bmp");
             picker.FileTypeFilter.Add(".png");
             picker.FileTypeFilter.Add(".gif");
             var files = await picker.PickMultipleFilesAsync();
             if (files != null)
-            {
                 for (int i = 0; i < 9 && i < files.Count; i++)
-                {
                     await AddImageDataFromFile(files[i]);
-                }
-            }
         }
 
         private async void AddSingleImage(object sender, RoutedEventArgs e)
         {
             var picker = new FileOpenPicker();
             picker.FileTypeFilter.Add(".jpg");
+            picker.FileTypeFilter.Add(".bmp");
             picker.FileTypeFilter.Add(".png");
             picker.FileTypeFilter.Add(".gif");
             var file = await picker.PickSingleFileAsync();
             if (file != null)
-            {
                 await AddImageDataFromFile(file);
-            }
         }
 
         private async void TakePhoto(object sender, RoutedEventArgs e)
@@ -452,9 +446,7 @@ namespace OpenWeen.UWP.View
             camera.PhotoSettings.Format = CameraCaptureUIPhotoFormat.Jpeg;
             var file = await camera.CaptureFileAsync(CameraCaptureUIMode.Photo);
             if (file != null)
-            {
                 await AddImageDataFromFile(file);
-            }
         }
 
         private bool _isCtrlDown;
@@ -462,21 +454,15 @@ namespace OpenWeen.UWP.View
         private void richEditBox_KeyDown(object sender, KeyRoutedEventArgs e)
         {
             if (e.Key == Windows.System.VirtualKey.Control)
-            {
                 _isCtrlDown = true;
-            };
             if (_isCtrlDown && e.Key == Windows.System.VirtualKey.Enter)
-            {
                 PostWeibo();
-            }
         }
 
         private void richEditBox_KeyUp(object sender, KeyRoutedEventArgs e)
         {
             if (e.Key == Windows.System.VirtualKey.Control)
-            {
                 _isCtrlDown = false;
-            }
         }
 
         private ImageData _clickData;
@@ -485,14 +471,7 @@ namespace OpenWeen.UWP.View
         {
             Images.Remove(_clickData);
         }
-
-        private void GridView_ItemClick_1(object sender, ItemClickEventArgs e)
-        {
-            _clickData = e.ClickedItem as ImageData;
-            var menu = Resources["ImageTapFlyout"] as MenuFlyout;
-            menu.ShowAt(e.OriginalSource as FrameworkElement);
-        }
-
+        
         private void ChangeWeiboVisibility(object sender, RoutedEventArgs e)
         {
             var menu = sender as ToggleMenuFlyoutItem;
@@ -501,6 +480,35 @@ namespace OpenWeen.UWP.View
             menu.IsChecked = true;
             WeiboVisibility = (WeiboVisibility)Enum.Parse(typeof(WeiboVisibility), menu.Tag.ToString());
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WeiboVisibilityIcon)));
+        }
+
+        private void Image_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            _clickData = (sender as FrameworkElement).DataContext as ImageData;
+            FlyoutBase.ShowAttachedFlyout(sender as FrameworkElement);
+        }
+
+        private async void InvertImage(object sender, RoutedEventArgs e)
+        {
+            CanvasDevice device = CanvasDevice.GetSharedDevice();
+            CanvasRenderTarget target = new CanvasRenderTarget(device, _clickData.Image.PixelWidth, _clickData.Image.PixelHeight, 96);
+            using (CanvasDrawingSession session = target.CreateDrawingSession())
+            using (var stream = new MemoryStream(_clickData.Data).AsRandomAccessStream())
+            {
+                session.Clear(Colors.Transparent);
+                session.DrawImage(new InvertEffect { Source = await CanvasBitmap.LoadAsync(device, stream) as ICanvasImage });
+            }
+            using (var stream = new InMemoryRandomAccessStream())
+            {
+                await target.SaveAsync(stream, CanvasBitmapFileFormat.Jpeg);
+                var bytes = new byte[stream.Size];
+                await stream.AsStream().ReadAsync(bytes, 0, bytes.Length);
+                var bitmap = new BitmapImage();
+                stream.Seek(0);
+                await bitmap.SetSourceAsync(stream);
+                Images[Images.IndexOf(_clickData)].Data = bytes;
+                Images[Images.IndexOf(_clickData)].Image = bitmap;
+            }
         }
     }
 }

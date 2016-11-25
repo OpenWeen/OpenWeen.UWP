@@ -15,6 +15,7 @@
         </MenuFlyout>
         <MenuFlyout x:Key="ImageTapFlyout">
             <MenuFlyoutItem Text="删除" Click="DeletePicture" />
+            <MenuFlyoutItem Text="反色" Click="InvertImage" />
         </MenuFlyout>
         <MenuFlyout x:Key="WeiboVisibilityFlyout" x:Name="WeiboVisibilityFlyout">
             <ToggleMenuFlyoutItem Tag="0" Text="公开" IsChecked="True" Click="ChangeWeiboVisibility"/>
@@ -38,10 +39,10 @@
             <Grid Grid.Row="1">
                 <TextBlock HorizontalAlignment="Right" Text="{x:Bind TextCount,Mode=OneWay}" />
             </Grid>
-            <GridView IsItemClickEnabled="True" ItemClick="GridView_ItemClick_1" SelectionMode="None" Grid.Row="2" ItemsSource="{x:Bind Images,Mode=OneWay}" CanReorderItems="True" CanDragItems="True" AllowDrop="True">
+            <GridView SelectionMode="None" Grid.Row="2" ItemsSource="{x:Bind Images,Mode=OneWay}" CanReorderItems="True" CanDragItems="True" AllowDrop="True">
                 <GridView.ItemTemplate>
                     <DataTemplate>
-                        <Image MaxHeight="100" MaxWidth="100" Margin="4" Source="{Binding Image}"/>
+                        <Image Tapped="Image_Tapped" FlyoutBase.AttachedFlyout="{StaticResource ImageTapFlyout}" MaxHeight="100" MaxWidth="100" Margin="4" Source="{Binding Image}"/>
                     </DataTemplate>
                 </GridView.ItemTemplate>
             </GridView>
