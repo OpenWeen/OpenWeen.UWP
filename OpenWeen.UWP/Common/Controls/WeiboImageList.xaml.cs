@@ -75,6 +75,8 @@ namespace OpenWeen.UWP.Common.Controls
                     grid = NineGrid;
                     break;
             }
+            foreach (Image item in grid.Children)
+                item.DataContext = null;
             grid.Visibility = Visibility.Visible;
             for (int i = 0; i < Math.Min(9, list.Count); i++)
             {

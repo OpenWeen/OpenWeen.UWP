@@ -28,7 +28,7 @@ namespace OpenWeen.UWP.ViewModel.DetailPage
 
         private async Task<MessageModel> Init(MessageModel item)
         {
-            if (item.Text.IndexOf("全文： http://m.weibo.cn/") != -1)
+            if (item.Text.Contains("全文： http://m.weibo.cn/") || item.Text.Contains("http://m.weibo.cn/client/version"))
             {
                 var status = await Core.Api.Statuses.Query.GetStatus(item.ID, true);
                 status.Text = status.LongText.Content;

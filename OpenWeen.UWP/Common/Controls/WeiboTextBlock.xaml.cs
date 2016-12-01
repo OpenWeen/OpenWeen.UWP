@@ -129,7 +129,7 @@ namespace OpenWeen.UWP.Common.Controls
         {
             var matches = Regex.Matches(text, "http(s)?://([a-zA-Z|\\d]+\\.)+[a-zA-Z|\\d]+(/[a-zA-Z|\\d|\\-|\\+|_./?%=]*)?");
             var model = DataContext as MessageModel;
-            var index = text.IndexOf("全文： http://m.weibo.cn/");
+            var index = Math.Max(text.IndexOf("全文： http://m.weibo.cn/"), text.IndexOf("http://m.weibo.cn/client/version"));
             if (index != -1)
             {
                 text = text.Remove(index);
