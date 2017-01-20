@@ -23,6 +23,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using System.Threading.Tasks;
 
 namespace OpenWeen.UWP
 {
@@ -109,6 +110,11 @@ namespace OpenWeen.UWP
             else if (exception is JsonException)
             {
                 Notification.Show($"Json错误 {exception.Message}");
+                return true;
+            }
+            else if (exception is TaskCanceledException)
+            {
+                Notification.Show("超时");
                 return true;
             }
             return false;

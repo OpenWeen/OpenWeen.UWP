@@ -21,6 +21,12 @@ namespace OpenWeen.UWP.Common.Controls
 {
     public sealed partial class WeiboTextBlock : UserControl
     {
+        private const string AT = "@[^,\uff0c\uff1a:\\s@]+";
+        private const string TOPIC = "#[^#]+#";
+        private const string EMOJI = "\\[[\\w]+\\]";
+        private const string URL = "http://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
+        private readonly string REGEX = $"({AT})|({TOPIC})|({EMOJI})|({URL})";
+
         public event EventHandler<WeiboTopicClickEventArgs> TopicClick;
 
         public event EventHandler<WeiboUserClickEventArgs> UserClick;
@@ -74,19 +80,44 @@ namespace OpenWeen.UWP.Common.Controls
             string text = "";
             var model = DataContext as MessageModel;
             string ortext = (model?.LongText != null) ? model.LongText.Content : Text;
+            text = ortext.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;").Replace("\n", "<LineBreak/>");
+            var index = Math.Max(text.IndexOf("全文： http://m.weibo.cn/"), text.IndexOf("http://m.weibo.cn/client/version"));
+            if (index != -1)
+            {
+                text = text.Remove(index);
+                text += @"<InlineUIContainer><TextBlock Foreground=""{ThemeResource HyperlinkForegroundThemeBrush}"">全文</TextBlock></InlineUIContainer>";
+            }
+            var matches = Regex.Matches(text, REGEX).Cast<Match>().Distinct((item => item.Value));
+            foreach (var item in matches)
+            {
+                var at = item.Groups[1];
+                var topic = item.Groups[2];
+                var emoji = item.Groups[3];
+                var url = item.Groups[4];
+                if (at.Success)
+                {
+                    text = text.Replace(at.Value, @"<InlineUIContainer><TextBlock Foreground=""{ThemeResource HyperlinkForegroundThemeBrush}"">" + at.Value + "</TextBlock></InlineUIContainer>");
+                }
+                if (topic.Success)
+                {
+                    text = text.Replace(topic.Value, @"<InlineUIContainer><TextBlock Foreground=""{ThemeResource HyperlinkForegroundThemeBrush}"">" + topic.Value + "</TextBlock></InlineUIContainer>");
+                }
+                if (emoji.Success && StaticResource.Emotions.Any(e => e.Value == emoji.Value))
+                {
+                    text = text.Replace(emoji.Value, $@"<InlineUIContainer><Image Source=""{StaticResource.Emotions.FirstOrDefault(e => e.Value == emoji.Value).Url}"" Width=""15"" Height=""15""/></InlineUIContainer>");
+                }
+                if (url.Success)
+                {
+                    text = text.Replace(url.Value, "<InlineUIContainer><TextBlock Foreground=\"{ThemeResource HyperlinkForegroundThemeBrush}\" Tag=\"" + url.Value + "\">网页链接</TextBlock></InlineUIContainer>");
+                }
+            }
             try
             {
-                text = ortext.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;").Replace("\n", "<LineBreak/>");
-                text = ReplaceUserName(text);
-                text = ReplaceTopic(text);
-                text = ReplaceHyperlink(text);
-                text = ReplaceEmotion(text);
                 AddBlockFromText(text);
             }
-            catch
+            catch (Exception)
             {
-                text = ortext.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;").Replace("\n", "<LineBreak/>");
-                AddBlockFromText(text);
+                AddBlockFromText(ortext.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;").Replace("\n", "<LineBreak/>"));
             }
         }
 
@@ -101,59 +132,10 @@ namespace OpenWeen.UWP.Common.Controls
             richTextBlock.Blocks.Add((Paragraph)XamlReader.Load(xaml));
         }
 
-        private bool CheckIsTopic(string text) => Regex.IsMatch(text, @"#[^#]+#");
+        private bool CheckIsTopic(string text) => Regex.IsMatch(text, TOPIC);
 
-        private bool CheckIsUserName(string text) => Regex.IsMatch(text, @"@[^,，：:\s@]+");
-
-        private string ReplaceTopic(string text)
-        {
-            var matches = Regex.Matches(text, @"#[^#]+#");
-            foreach (Match item in matches)
-            {
-                text = text.Replace(item.Value, @"<InlineUIContainer><TextBlock Foreground=""{ThemeResource HyperlinkForegroundThemeBrush}"">" + item.Value + "</TextBlock></InlineUIContainer>");
-            }
-            return text;
-        }
-
-        private string ReplaceUserName(string text)
-        {
-            var matches = Regex.Matches(text, @"@[^,，：:\s@]+").Cast<Match>().Distinct((item => item.Value));
-            foreach (Match item in matches)
-            {
-                text = text.Replace(item.Value, @"<InlineUIContainer><TextBlock Foreground=""{ThemeResource HyperlinkForegroundThemeBrush}"">" + item.Value + "</TextBlock></InlineUIContainer>");
-            }
-            return text;
-        }
-
-        private string ReplaceHyperlink(string text)
-        {
-            var matches = Regex.Matches(text, "http(s)?://([a-zA-Z|\\d]+\\.)+[a-zA-Z|\\d]+(/[a-zA-Z|\\d|\\-|\\+|_./?%=]*)?");
-            var model = DataContext as MessageModel;
-            var index = Math.Max(text.IndexOf("全文： http://m.weibo.cn/"), text.IndexOf("http://m.weibo.cn/client/version"));
-            if (index != -1)
-            {
-                text = text.Remove(index);
-                text += @"<InlineUIContainer><TextBlock Foreground=""{ThemeResource HyperlinkForegroundThemeBrush}"">全文</TextBlock></InlineUIContainer>";
-            }
-            foreach (Match item in matches)
-            {
-                text = text.Replace(item.Value, "<InlineUIContainer><TextBlock Foreground=\"{ThemeResource HyperlinkForegroundThemeBrush}\" Tag=\"" + item.Value + "\">网页链接</TextBlock></InlineUIContainer>");
-            }
-            return text;
-        }
-
-        private string ReplaceEmotion(string text)
-        {
-            if (string.IsNullOrEmpty(StaticResource.EmotionPattern))
-                return text;
-            var matches = Regex.Matches(text, StaticResource.EmotionPattern);
-            foreach (Match item in matches)
-            {
-                text = text.Replace(item.Value, $@"<InlineUIContainer><Image Source=""{StaticResource.Emotions.FirstOrDefault(e => e.Value == item.Value).Url}"" Width=""15"" Height=""15""/></InlineUIContainer>");
-            }
-            return text;
-        }
-
+        private bool CheckIsUserName(string text) => Regex.IsMatch(text, AT);
+        
         private async void richTextBlock_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if (e.OriginalSource is TextBlock)
