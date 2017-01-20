@@ -9,10 +9,9 @@
     "NotificationsExtensions.Win10": "14332.0.2",
     "PropertyChanged.Fody": "1.52.1",
     "PullToRefresh.UWP": "0.3.4",
-    "Win2D.uwp": "1.19.0",
+    "System.ValueTuple": "4.3.0",
+    "Win2D.uwp": "1.20.0",
     "WinRTXamlToolkit.UWP": "2.0.0",
-    "Xamarin.FFImageLoading": "2.2.5",
-    "Xamarin.FFImageLoading.Transformations": "2.2.5",
     "XamlAnimatedGif": "1.1.6"
   },
   "frameworks": {

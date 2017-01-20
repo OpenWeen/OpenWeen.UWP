@@ -33,6 +33,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
+using OpenWeen.Core.Exception;
 
 // “空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=234238 上提供
 
@@ -174,7 +175,6 @@ namespace OpenWeen.UWP.View
                     pixels.DetachPixelData());
                 await encoder.FlushAsync();
             }
-
             return file;
         }
 
@@ -214,7 +214,7 @@ namespace OpenWeen.UWP.View
             if (TextCount < 0)
             {
                 var dialog = new MessageDialog("超出140字限制", "错误");
-                dialog.Commands.Add(new UICommand("删除超出部分并发送", (command)=> 
+                dialog.Commands.Add(new UICommand("删除超出部分并发送", (command) =>
                 {
                     Text = Text.Remove(139);
                     PostWeibo();
@@ -226,19 +226,19 @@ namespace OpenWeen.UWP.View
             _isSending = true;
             var sardialog = new SitbackAndRelaxDialog();
             sardialog.ShowAsync();
-            bool isSuccess = false;
+            var (isSuccess, message) = (false, "");
             switch (_data.Type)
             {
                 case PostWeiboType.NewPost:
-                    isSuccess = await NewPost();
+                    (isSuccess, message) = await NewPost();
                     break;
 
                 case PostWeiboType.RePost:
-                    isSuccess = await RePost();
+                    (isSuccess, message) = await RePost();
                     break;
 
                 case PostWeiboType.Comment:
-                    isSuccess = await Comment();
+                    (isSuccess, message) = await Comment();
                     break;
 
                 default:
@@ -253,11 +253,11 @@ namespace OpenWeen.UWP.View
                     Frame.GoBack();
             }
             else
-                Notification.Show("发送失败");
+                Notification.Show(message);
             _isSending = false;
         }
 
-        private async Task<bool> Comment()
+        private async Task<(bool, string)> Comment()
         {
             if (_data is ReplyCommentData)
             {
@@ -268,11 +268,19 @@ namespace OpenWeen.UWP.View
                         await Core.Api.Comments.ReplyWithPic(data.ID, data.CID, Text, new MediaModel((await Core.Api.Statuses.PostWeibo.UploadPicture(Images.FirstOrDefault().Data)).PicID));
                     else
                         await Core.Api.Comments.Reply(data.ID, data.CID, Text);
-                    return true;
+                    return (true, "");
                 }
                 catch (Exception e) when (e is WebException || e is System.Net.Http.HttpRequestException) 
                 {
-                    return false;
+                    return (false, "发送失败，请检查网络");
+                }
+                catch (WeiboException e)
+                {
+                    return (false, e.Message);
+                }
+                catch (TaskCanceledException)
+                {
+                    return (false, "发送超时");
                 }
             }
             else if (_data is CommentData)
@@ -284,17 +292,25 @@ namespace OpenWeen.UWP.View
                         await Core.Api.Comments.PostCommentWithPic(data.ID, Text, new MediaModel((await Core.Api.Statuses.PostWeibo.UploadPicture(Images.FirstOrDefault().Data)).PicID));
                     else
                         await Core.Api.Comments.PostComment(data.ID, Text);
-                    return true;
+                    return (true, "");
                 }
                 catch (Exception e) when (e is WebException || e is System.Net.Http.HttpRequestException)
                 {
-                    return false;
+                    return (false, "发送失败，请检查网络");
+                }
+                catch (WeiboException e)
+                {
+                    return (false, e.Message);
+                }
+                catch (TaskCanceledException)
+                {
+                    return (false, "发送超时");
                 }
             }
-            return false;
+            return (false, "发送失败");
         }
 
-        private async Task<bool> RePost()
+        private async Task<(bool, string)> RePost()
         {
             var data = _data as RepostData;
             try
@@ -303,16 +319,23 @@ namespace OpenWeen.UWP.View
                     await Core.Api.Statuses.PostWeibo.RepostWithPic(data.ID, Text, new MediaModel((await Core.Api.Statuses.PostWeibo.UploadPicture(Images.FirstOrDefault().Data)).PicID));
                 else
                     await Core.Api.Statuses.PostWeibo.Repost(data.ID, Text);
-                return true;
-
+                return (true, "");
             }
             catch (Exception e) when (e is WebException || e is System.Net.Http.HttpRequestException)
             {
-                return false;
+                return (false, "发送失败，请检查网络");
+            }
+            catch (WeiboException e)
+            {
+                return (false, e.Message);
+            }
+            catch (TaskCanceledException)
+            {
+                return (false, "发送超时");
             }
         }
 
-        private async Task<bool> NewPost()
+        private async Task<(bool, string)> NewPost()
         {
             try
             {
@@ -322,19 +345,27 @@ namespace OpenWeen.UWP.View
                     foreach (var item in Images)
                         pics.Add(await Core.Api.Statuses.PostWeibo.UploadPicture(item.Data));
                     await Core.Api.Statuses.PostWeibo.PostWithMultiPics(Text?.Length > 0 ? Text : "分享图片", string.Join(",", pics.Select(item => item.PicID)), visible: WeiboVisibility);
-                    return true;
+                    return (true, "");
                 }
                 else if (Text?.Length > 0)
                 {
                     await Core.Api.Statuses.PostWeibo.Post(Text, visible: WeiboVisibility);
-                    return true;
+                    return (true, "");
                 }
             }
             catch (Exception e) when (e is WebException || e is System.Net.Http.HttpRequestException)
             {
-
+                return (false, "发送失败，请检查网络");
             }
-            return false;
+            catch (WeiboException e)
+            {
+                return (false, e.Message);
+            }
+            catch (TaskCanceledException)
+            {
+                return (false, "发送超时");
+            }
+            return (false, "发送失败");
         }
         
         private async void richEditBox_DragOver(object sender, DragEventArgs e)

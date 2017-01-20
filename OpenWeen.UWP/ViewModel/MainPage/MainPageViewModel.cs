@@ -156,7 +156,7 @@ namespace OpenWeen.UWP.ViewModel.MainPage
                     UpdateUnreadHelper.UpdateUnread(unread);
                     UpdateUnreadHelper.Count = Header.Sum(item => item.UnreadCount);
                 }
-                catch (Exception ex) when (ex is WebException || ex is HttpRequestException || ex is TaskCanceledException || ex is JsonSerializationException)
+                catch (Exception)
                 {
 
                 }
