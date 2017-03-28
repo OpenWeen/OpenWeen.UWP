@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:OpenWeen.UWP.View"
+    xmlns:model="using:OpenWeen.Core.Model"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
@@ -63,8 +64,12 @@
                 <SemanticZoom.ZoomedInView>
                     <GridView ItemClick="GridView_ItemClick" SelectionMode="None" ItemsSource="{Binding Source={StaticResource cvs}}" IsItemClickEnabled="True">
                         <GridView.ItemTemplate>
-                            <DataTemplate>
-                                <Image Width="{StaticResource EmotionSize}" Height="{StaticResource EmotionSize}" Margin="4" Source="{Binding Url,Converter={StaticResource StringToBitmapImageConverter},ConverterParameter=false}"/>
+                            <DataTemplate x:DataType="model:EmotionModel">
+                                <Image Width="{StaticResource EmotionSize}" Height="{StaticResource EmotionSize}" Margin="4" >
+                                    <Image.Source>
+                                        <BitmapImage UriSource="{x:Bind Url}" AutoPlay="False"/>
+                                    </Image.Source>
+                                </Image>
                             </DataTemplate>
                         </GridView.ItemTemplate>
                         <GridView.GroupStyle>

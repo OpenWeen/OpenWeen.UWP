@@ -19,14 +19,11 @@ namespace OpenWeen.UWP.Model
         public ImageModel(string source, bool autoPlay = true)
         {
             SourceUri = source;
-            if (ApiInformation.IsPropertyPresent("Windows.UI.Xaml.Media.Imaging.BitmapImage", nameof(BitmapImage.IsAnimatedBitmap)))
+            Image = new BitmapImage(new Uri(source))
             {
-                Image = new BitmapImage(new Uri(source));
-                Image.AutoPlay = autoPlay;
-                Image.DownloadProgress += Image_DownloadProgress;
-            }
-            else
-                ProgressVisibility = Visibility.Collapsed;
+                AutoPlay = autoPlay
+            };
+            Image.DownloadProgress += Image_DownloadProgress;
         }
 
         private void Image_DownloadProgress(object sender, DownloadProgressEventArgs e)

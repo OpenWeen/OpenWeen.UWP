@@ -11,7 +11,6 @@
     xmlns:selector="using:OpenWeen.UWP.Common.Selector"
     RequestedTheme="Dark"
     RightTapped="ContentDialog_RightTapped"
-    xmlns:gif="using:XamlAnimatedGif"
     mc:Ignorable="d" FullSizeDesired="True" Background="#7F000000" Style="{StaticResource PopupStyle}">
     <ContentDialog.Resources>
         <DataTemplate x:DataType="model:ImageModel" x:Key="AfterAnniversary">
@@ -22,19 +21,9 @@
                 </Grid>
             </ScrollViewer>
         </DataTemplate>
-        <DataTemplate x:Key="BeforeAnniversary" x:DataType="model:ImageModel">
-            <ScrollViewer MaxZoomFactor="50" HorizontalScrollBarVisibility="Auto" HorizontalScrollMode="Auto" ZoomMode="Enabled" HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" VerticalScrollBarVisibility="Auto">
-                <Grid>
-                    <ProgressRing Foreground="White" Visibility="{x:Bind ProgressVisibility,Mode=OneWay}" IsActive="True"/>
-                    <Image CanDrag="True" Tapped="Image_Tapped" gif:AnimationBehavior.SourceUri="{Binding SourceUri}"/>
-                </Grid>
-            </ScrollViewer>
-        </DataTemplate>
-        <selector:DataTemplateByVersionSelector x:Key="DataTemplateByVersionSelector" AfterAnniversary="{StaticResource AfterAnniversary}" BeforeAnniversary="{StaticResource BeforeAnniversary}"/>
     </ContentDialog.Resources>
     <Grid>
-        <FlipView x:Name="flipView" SelectionChanged="flipView_SelectionChanged" Background="Transparent" ItemsSource="{x:Bind Items}" DataContextChanged="flipView_DataContextChanged" ItemTemplateSelector="{StaticResource DataTemplateByVersionSelector}"/>
-
+        <FlipView x:Name="flipView" SelectionChanged="flipView_SelectionChanged" Background="Transparent" ItemsSource="{x:Bind Items}" DataContextChanged="flipView_DataContextChanged" ItemTemplate="{StaticResource AfterAnniversary}"/>
         <AppBarButton Background="#7F000000" Icon="Back" IsCompact="True" Click="{x:Bind HideEx}" />
         <StackPanel Background="#7F000000" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
             <AppBarButton Icon="Save" Click="{x:Bind Save}" Label="保存" />

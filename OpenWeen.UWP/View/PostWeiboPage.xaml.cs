@@ -85,8 +85,7 @@ namespace OpenWeen.UWP.View
         {
             get
             {
-                string value = "";
-                richEditBox.Document.GetText(Windows.UI.Text.TextGetOptions.NoHidden, out value);
+                richEditBox.Document.GetText(Windows.UI.Text.TextGetOptions.NoHidden, out var value);
                 return 140 - Encoding.GetEncoding("gb2312").GetByteCount(value) / 2;
             }
         }
@@ -95,8 +94,7 @@ namespace OpenWeen.UWP.View
         {
             get
             {
-                string value = "";
-                richEditBox.Document.GetText(Windows.UI.Text.TextGetOptions.NoHidden, out value);
+                richEditBox.Document.GetText(Windows.UI.Text.TextGetOptions.NoHidden, out string value);
                 return value;
             }
             set

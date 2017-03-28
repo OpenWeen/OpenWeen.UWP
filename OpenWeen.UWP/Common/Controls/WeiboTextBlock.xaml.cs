@@ -102,7 +102,7 @@ namespace OpenWeen.UWP.Common.Controls
                 {
                     text = text.Replace(topic.Value, @"<InlineUIContainer><TextBlock Foreground=""{ThemeResource HyperlinkForegroundThemeBrush}"">" + topic.Value + "</TextBlock></InlineUIContainer>");
                 }
-                if (emoji.Success && StaticResource.Emotions.Any(e => e.Value == emoji.Value))
+                if (emoji.Success && StaticResource.Emotions?.Any(e => e.Value == emoji.Value) == true)
                 {
                     text = text.Replace(emoji.Value, $@"<InlineUIContainer><Image Source=""{StaticResource.Emotions.FirstOrDefault(e => e.Value == emoji.Value).Url}"" Width=""15"" Height=""15""/></InlineUIContainer>");
                 }
@@ -156,32 +156,32 @@ namespace OpenWeen.UWP.Common.Controls
                     e.Handled = true;
                     try
                     {
-                        var item = (await Core.Api.ShortUrl.Info((e.OriginalSource as TextBlock).Tag.ToString())).Urls.FirstOrDefault();
-                        switch (item.Type)
+                        var item = (await Core.Api.ShortUrl.InfoByWeico(StaticResource.Uid.ToString(), (e.OriginalSource as TextBlock).Tag.ToString())).urls.FirstOrDefault();
+                        switch (item.type)
                         {
                             case 39:
                                 {
-                                    var picid = item.AnnotationList?.FirstOrDefault()?.Item?.PicIds?.FirstOrDefault();
+                                    var picid = item.annotations?.FirstOrDefault()?._object?.pic_ids?.FirstOrDefault();
                                     if (!string.IsNullOrEmpty(picid))
                                     {
                                         var items = new List<ImageModel> { new ImageModel($"http://ww1.sinaimg.cn/large/{picid}.jpg") };//TODO: better way to get image url
                                         await new ImageViewDialog(items).ShowAsync();
                                     }
-                                    else if (item.AnnotationList?.FirstOrDefault()?.Item?.ObjectType == "video")
+                                    else if (item.annotations?.FirstOrDefault()?.object_type == "video")
                                     {
-                                        if (item.AnnotationList?.FirstOrDefault()?.Item?.OriginalUrl != null)
-                                            await new WeiboVideoPlayer(item?.UrlLong, item.AnnotationList?.FirstOrDefault().Item.OriginalUrl).ShowAsync();
-                                        else if (item.AnnotationList?.FirstOrDefault()?.Item?.Stream?.Url != null)
-                                            await new WeiboVideoPlayer(item?.UrlLong, item.AnnotationList?.FirstOrDefault()?.Item?.Stream?.Url).ShowAsync();
+                                        if (item.annotations?.FirstOrDefault()?._object?.stream?.hd_url != null)
+                                            await new WeiboVideoPlayer(item?.url_long, item.annotations?.FirstOrDefault()?._object?.stream?.hd_url).ShowAsync();
+                                        else if (item.annotations?.FirstOrDefault()?._object?.stream?.url != null)
+                                            await new WeiboVideoPlayer(item?.url_long, item.annotations?.FirstOrDefault()?._object?.stream?.url).ShowAsync();
                                         else
-                                            await Launcher.LaunchUriAsync(new Uri(item.UrlLong));
+                                            await Launcher.LaunchUriAsync(new Uri(item.url_long));
                                     }
                                     else
-                                        await Launcher.LaunchUriAsync(new Uri(item.UrlLong));
+                                        await Launcher.LaunchUriAsync(new Uri(item.url_long));
                                 }
                                 break;
                             default:
-                                await Launcher.LaunchUriAsync(new Uri(item.UrlLong));
+                                await Launcher.LaunchUriAsync(new Uri(item.url_long));
                                 break;
                         }
                     }

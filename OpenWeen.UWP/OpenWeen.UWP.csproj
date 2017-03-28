@@ -12,14 +12,14 @@
     <DefaultLanguage>zh-CN</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
+    <TargetPlatformMinVersion>10.0.14393.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <PackageCertificateKeyFile>OpenWeen.UWP_StoreKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>OpenWeen.UWP_TemporaryKey.pfx</PackageCertificateKeyFile>
     <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
-    <PackageCertificateThumbprint>126559E006A14707084A7D13B935653CAA541F12</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>6E5808D42766CA0F082D02057442CD38A38F0CAF</PackageCertificateThumbprint>
     <AppxBundle>Always</AppxBundle>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
@@ -161,7 +161,6 @@
     <Compile Include="Common\Converter\ImageModeConverter.cs" />
     <Compile Include="Common\Converter\IntDoubleConverter.cs" />
     <Compile Include="Common\Converter\NullToVisibilityConverter.cs" />
-    <Compile Include="Common\Converter\StringToBitmapImageConverter.cs" />
     <Compile Include="Common\Converter\TimeConverter.cs" />
     <Compile Include="Common\Converter\UnreadCountToVisibilityConverter.cs" />
     <Compile Include="Common\Converter\WeiboImageRelyOnNetwork.cs" />
@@ -172,7 +171,6 @@
     <Compile Include="Common\Helpers\BackgroundHelper.cs" />
     <Compile Include="Common\Helpers\MoreVisualTreeHelper.cs" />
     <Compile Include="Common\HockeyAppKey.cs" />
-    <Compile Include="Common\Selector\DataTemplateByVersionSelector.cs" />
     <Compile Include="Common\Selector\MessageDataTemplateSelector.cs" />
     <Compile Include="Common\Selector\WeiboListSelector.cs" />
     <Compile Include="Common\StaticResource.cs" />

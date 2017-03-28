@@ -19,12 +19,13 @@ namespace OpenWeen.UWP.Common.Helpers
             var allowed = BackgroundExecutionManager.GetAccessStatus();
             switch (allowed)
             {
-                case BackgroundAccessStatus.AllowedWithAlwaysOnRealTimeConnectivity:
-                case BackgroundAccessStatus.AllowedMayUseActiveRealTimeConnectivity:
+                case BackgroundAccessStatus.AlwaysAllowed:
+                case BackgroundAccessStatus.AllowedSubjectToSystemPolicy:
                     break;
 
                 case BackgroundAccessStatus.Unspecified:
-                case BackgroundAccessStatus.Denied:
+                case BackgroundAccessStatus.DeniedBySystemPolicy:
+                case BackgroundAccessStatus.DeniedByUser:
                     return null;
             }
 
@@ -55,12 +56,13 @@ namespace OpenWeen.UWP.Common.Helpers
             var allowed = BackgroundExecutionManager.GetAccessStatus();
             switch (allowed)
             {
-                case BackgroundAccessStatus.AllowedWithAlwaysOnRealTimeConnectivity:
-                case BackgroundAccessStatus.AllowedMayUseActiveRealTimeConnectivity:
+                case BackgroundAccessStatus.AlwaysAllowed:
+                case BackgroundAccessStatus.AllowedSubjectToSystemPolicy:
                     break;
 
                 case BackgroundAccessStatus.Unspecified:
-                case BackgroundAccessStatus.Denied:
+                case BackgroundAccessStatus.DeniedBySystemPolicy:
+                case BackgroundAccessStatus.DeniedByUser:
                     return false;
             }
 

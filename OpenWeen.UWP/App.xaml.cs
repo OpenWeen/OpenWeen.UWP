@@ -24,6 +24,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using System.Threading.Tasks;
+using Windows.UI.Core;
 
 namespace OpenWeen.UWP
 {
@@ -93,6 +94,34 @@ namespace OpenWeen.UWP
             ExceptionHandlingSynchronizationContext
                 .Register()
                 .UnhandledException += SynchronizationContext_UnhandledException;
+        }
+
+        public static void HandleBackButton()
+        {
+            SystemNavigationManager.GetForCurrentView().BackRequested += App_BackRequested;
+            (Window.Current.Content as Frame).Navigated += App_Navigated;
+        }
+
+        private static void App_Navigated(object sender, NavigationEventArgs e)
+        {
+            if ((Window.Current.Content as Frame).CanGoBack)
+                SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+            else
+                SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
+        }
+
+        private static void App_BackRequested(object sender, BackRequestedEventArgs e)
+        {
+            var rootFrame = Window.Current.Content as Frame;
+            if (rootFrame.CanGoBack)
+            {
+                e.Handled = true;
+                rootFrame.GoBack();
+            }
+            else if (StaticResource.IsPhone)
+            {
+                Current.Exit();
+            }
         }
 
         private void SynchronizationContext_UnhandledException(object sender, Common.UnhandledExceptionEventArgs e)

@@ -222,7 +222,7 @@ namespace OpenWeen.UWP.View
             dialog.ProgressMaximum = list.Count;
             var folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("emotion", CreationCollisionOption.OpenIfExists);
             using (var client = new HttpClient())
-                for (int i = 0; i < list.Count; i++)
+                for (var i = 0; i < list.Count; i++)
                 {
                     var item = list[i];
                     if (string.IsNullOrEmpty(item.Category))

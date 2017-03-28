@@ -143,30 +143,8 @@ namespace OpenWeen.UWP.View
             {
                 rootFrame.Navigate(typeof(LoginPage));
             }
-            SystemNavigationManager.GetForCurrentView().BackRequested += ExtendedSplash_BackRequested;
-            rootFrame.Navigated += RootFrame_Navigated;
             Window.Current.Content = rootFrame;
-        }
-
-        private void ExtendedSplash_BackRequested(object sender, BackRequestedEventArgs e)
-        {
-            if (rootFrame.CanGoBack)
-            {
-                e.Handled = true;
-                rootFrame.GoBack();
-            }
-            else
-            {
-                Application.Current.Exit();
-            }
-        }
-
-        private void RootFrame_Navigated(object sender, NavigationEventArgs e)
-        {
-            if (rootFrame.CanGoBack)
-                SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
-            else
-                SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
+            App.HandleBackButton();
         }
     }
 }

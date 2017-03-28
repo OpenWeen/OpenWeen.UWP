@@ -7,6 +7,8 @@ using OpenWeen.Core.Model;
 using OpenWeen.UWP.Shared.Common;
 using OpenWeen.UWP.Shared.Common.Helpers;
 using Windows.Storage;
+using System.Net;
+using System.Net.Http;
 
 namespace OpenWeen.UWP.Common
 {
@@ -61,6 +63,10 @@ namespace OpenWeen.UWP.Common
                         return false;
                 } while (true);
                 return true;
+            }
+            catch (Exception e) when (e is WebException || e is HttpRequestException)
+            {
+                return false;
             }
             catch (Exception e)// when (e is Core.Exception.InvalidAccessTokenException || e is SettingException)
             {

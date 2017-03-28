@@ -41,7 +41,6 @@
             <x:Double x:Key="EmotionSize">20</x:Double>
             <SolidColorBrush x:Key="AppColor" Color="#FF327AFF" />
             <converter:WeiboImageRelyOnNetwork x:Key="WeiboImageRelyOnNetwork"/>
-            <converter:StringToBitmapImageConverter x:Key="StringToBitmapImageConverter"/>
             <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
             <converter:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
             <converter:TimeConverter x:Key="TimeConverter" />
