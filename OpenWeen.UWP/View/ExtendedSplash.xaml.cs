@@ -26,6 +26,10 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
+using Windows.UI.Xaml.Hosting;
+using Windows.UI.Composition;
+using Windows.UI.Xaml.Media;
+using Windows.UI;
 
 // “空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=234238 上提供
 
@@ -41,6 +45,7 @@ namespace OpenWeen.UWP.View
         internal bool dismissed = false;
         internal Frame rootFrame = new Frame();
         private double ScaleFactor;
+
         public string StateText
         {
             get { return StateTextblock.Text; }
@@ -143,8 +148,14 @@ namespace OpenWeen.UWP.View
             {
                 rootFrame.Navigate(typeof(LoginPage));
             }
+            //var rootGrid = new Grid();
+            //var grid = new Grid();
+            //rootGrid.Children.Add(grid);
+            //rootGrid.Children.Add(rootFrame);
+            //Window.Current.Content = rootGrid;
             Window.Current.Content = rootFrame;
-            App.HandleBackButton();
+            App.HandleBackButton(rootFrame);
+            //App.InitBlurEffect(grid);
         }
     }
 }

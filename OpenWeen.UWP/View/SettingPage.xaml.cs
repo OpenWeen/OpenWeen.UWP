@@ -28,18 +28,18 @@ namespace OpenWeen.UWP.View
         public ObservableCollection<UserListModel> UserList => new ObservableCollection<UserListModel>(Settings.AccessToken.Select((item) => new UserListModel(item)));
         public bool IsMoreInfoNotifyEnable
         {
-            get { return Settings.IsMoreInfoNotifyEnable; }
-            set { Settings.IsMoreInfoNotifyEnable = value; }
+            get => Settings.IsMoreInfoNotifyEnable;
+            set => Settings.IsMoreInfoNotifyEnable = value; 
         }
         public int SelectedUserIndex
         {
-            get { return Settings.SelectedUserIndex; }
+            get => Settings.SelectedUserIndex;
             set { Settings.SelectedUserIndex = value; Window.Current.Content = new ExtendedSplash(null); }
         }
         public bool EnableWaterFall
         {
-            get { return Settings.EnableWaterFall; }
-            set { Settings.EnableWaterFall = value; }
+            get => Settings.EnableWaterFall;
+            set => Settings.EnableWaterFall = value;
         }
         public bool IsAutoOffImage
         {

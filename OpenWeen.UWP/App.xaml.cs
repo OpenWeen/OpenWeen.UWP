@@ -25,6 +25,9 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using System.Threading.Tasks;
 using Windows.UI.Core;
+using Windows.UI.Xaml.Hosting;
+using Windows.UI.Composition;
+using System.Numerics;
 
 namespace OpenWeen.UWP
 {
@@ -33,6 +36,9 @@ namespace OpenWeen.UWP
     /// </summary>
     sealed partial class App : Application
     {
+        private static Compositor _compositor;
+        private static SpriteVisual _hostSprite;
+
         public static Color AppTheme => ((SolidColorBrush)App.Current.Resources["AppTheme"]).Color;
         /// <summary>
         /// 初始化单一实例应用程序对象。这是执行的创作代码的第一行，
@@ -83,6 +89,13 @@ namespace OpenWeen.UWP
                 }
                 Window.Current.Content = new ExtendedSplash(e.SplashScreen);
             }
+
+            //Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = false;
+            //Windows.UI.Core.SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = Windows.UI.Core.AppViewBackButtonVisibility.Collapsed;
+            //Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+            //Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar.ButtonBackgroundColor = Colors.Transparent;
+            //Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar.BackgroundColor = Colors.Transparent;
+            //Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar.ButtonForegroundColor = Colors.Black;
             Window.Current.Activate();
 #if !DEBUG
             UnhandledException += App_UnhandledException;
@@ -96,32 +109,27 @@ namespace OpenWeen.UWP
                 .UnhandledException += SynchronizationContext_UnhandledException;
         }
 
-        public static void HandleBackButton()
+        internal static void HandleBackButton(Frame rootFrame)
         {
-            SystemNavigationManager.GetForCurrentView().BackRequested += App_BackRequested;
-            (Window.Current.Content as Frame).Navigated += App_Navigated;
-        }
-
-        private static void App_Navigated(object sender, NavigationEventArgs e)
-        {
-            if ((Window.Current.Content as Frame).CanGoBack)
-                SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
-            else
-                SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
-        }
-
-        private static void App_BackRequested(object sender, BackRequestedEventArgs e)
-        {
-            var rootFrame = Window.Current.Content as Frame;
-            if (rootFrame.CanGoBack)
+            SystemNavigationManager.GetForCurrentView().BackRequested += (sender, e) =>
             {
-                e.Handled = true;
-                rootFrame.GoBack();
-            }
-            else if (StaticResource.IsPhone)
+                if (rootFrame.CanGoBack)
+                {
+                    e.Handled = true;
+                    rootFrame.GoBack();
+                }
+                else if (StaticResource.IsPhone)
+                {
+                    Current.Exit();
+                }
+            };
+            rootFrame.Navigated += (sender, e) =>
             {
-                Current.Exit();
-            }
+                if (rootFrame.CanGoBack)
+                    SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+                else
+                    SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
+            };
         }
 
         private void SynchronizationContext_UnhandledException(object sender, Common.UnhandledExceptionEventArgs e)
@@ -147,6 +155,27 @@ namespace OpenWeen.UWP
                 return true;
             }
             return false;
+        }
+
+        internal static void InitBlurEffect(Grid grid)
+        {
+            _compositor = ElementCompositionPreview
+               .GetElementVisual(grid).Compositor;
+            grid.Loaded += (sender, e) =>
+            {
+                _hostSprite = _compositor.CreateSpriteVisual();
+                _hostSprite.Size = new Vector2(
+                    (float)grid.ActualWidth,
+                    (float)grid.ActualHeight);
+                ElementCompositionPreview.SetElementChildVisual(
+                    grid, _hostSprite);
+                _hostSprite.Brush = _compositor.CreateHostBackdropBrush();
+            };
+            grid.SizeChanged += (sender, e) =>
+            {
+                if (_hostSprite != null)
+                    _hostSprite.Size = e.NewSize.ToVector2();
+            };
         }
 
         private void App_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
